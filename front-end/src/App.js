@@ -11,23 +11,29 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import App2 from './Main/App2';
 import Welcome from './Main/Welcome Page/welcome';
 import Dashboard from './Main/Appointment/Dashboard';
+import LayoutWithNavigation from './LayoutWithNavigation';
+import LayoutWithoutNav from './LayoutWithoutNav';
 
 function App() {
-  return (
-    <Router>
+  return (<Router>
      <Routes>
-     <Route path="/" element={<Welcome/>} /> 
+       {/* Layout with MainNavigation */}
+       <Route element={<LayoutWithNavigation />}>
+       <Route path="/home" element={<MyHome/>}/>      
+       <Route path="/dashboard" element={<DashBoard/>}/>
+        </Route>
+        {/* Layout without MainNavigation */}
+        {/* <Route element={<LayoutWithoutNav />}> */}
+        <Route path="/" element={<Welcome/>} /> 
        <Route path="/login" element={<Login />}/>
        <Route path="/signUp" element={<SignUp/>}/>
        <Route path="/home" element={<App2/>}/>  
        <Route path="/dashboard" element={<Dashboard/>}/>     
      </Routes>
     
-   </Router>
-  );
+   </Router>);
 }
 
 export default App;

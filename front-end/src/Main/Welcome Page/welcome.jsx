@@ -21,6 +21,7 @@ const Welcome=()=>{
       <li>
         <Button value="submit" myStyles={myStyles} />
       </li>
+      <a href="/dashboard">go</a>
     </ul>
     <div className="carousal">
       <Carousal/>
