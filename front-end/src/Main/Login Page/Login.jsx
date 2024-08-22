@@ -18,7 +18,7 @@ const Login = () => {
         background: "#224AA4"
     }
     return (
-        <MDBContainer className="my-5 gradient-form">
+        <div className="login_body">        <MDBContainer className="my-5 gradient-form">
 
             <MDBRow>
                 <MDBCol col='6' className="mb-5">
@@ -69,6 +69,8 @@ const Login = () => {
             </MDBRow>
 
         </MDBContainer>
+        </div>
+
     );
 }
 

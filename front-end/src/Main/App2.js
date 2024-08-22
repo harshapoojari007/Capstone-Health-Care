@@ -15,7 +15,7 @@ import MainNavigation from "../Components/navigation/MainNavigation";
        <MainNavigation/>
         <main>
        <Routes>
-         <Route path="*" element={<Navigate to="/" />} /> 
+         <Route path="*" element={<Navigate to="/home"/>} /> 
          <Route path="/" element={<Home/>}/>  
              
        </Routes>
