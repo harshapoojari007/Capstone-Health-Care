@@ -10,7 +10,6 @@ import {
   Navigate,
   RouterProvider,
 } from "react-router-dom";
-import MainNavigation from './Components/navigation/MainNavigation';
 import App2 from './Main/App2';
 import Welcome from './Main/Welcome Page/welcome';
 

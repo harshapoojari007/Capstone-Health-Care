@@ -17,16 +17,15 @@ const Login = () => {
         width: "5rem",
         background: "#224AA4"
     }
-    return (
-        <div className="login_body">        <MDBContainer className="my-5 gradient-form">
-
+    return (    <div className="one">
+         <MDBContainer className="my-5 gradient-form">
             <MDBRow>
                 <MDBCol col='6' className="mb-5">
                     <div className="d-flex flex-column  justify-content-center gradient-custom-2 h-100 mb-4">
 
                         <div className="text-white px-3 py-4 p-md-5 mx-md-4">
-                            <h4 class="mb-4">We are more than just a company</h4>
-                            <p class="small mb-0">Our healthcare appointment service streamlines your path to quality care by connecting you with top-rated healthcare centers in your area. We handle the research and coordination, ensuring you find a provider that meets your needs and preferences. From scheduling consultations to managing follow-ups, our dedicated team simplifies the entire process for you. Trust us to make accessing the right healthcare convenient and stress-free.
+                            <h4 className="mb-4">We are more than just a company</h4>
+                            <p className="small mb-0">Our healthcare appointment service streamlines your path to quality care by connecting you with top-rated healthcare centers in your area. We handle the research and coordination, ensuring you find a provider that meets your needs and preferences. From scheduling consultations to managing follow-ups, our dedicated team simplifies the entire process for you. Trust us to make accessing the right healthcare convenient and stress-free.
                             </p>
                         </div>
 
@@ -70,7 +69,6 @@ const Login = () => {
 
         </MDBContainer>
         </div>
-
     );
 }
 
