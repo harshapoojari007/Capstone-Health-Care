@@ -25,6 +25,9 @@ const Welcome=()=>{
     <div className="carousal">
       <Carousal/>
     </div>
+    <div className="text-blue-700">
+           <NavLink to={"dashboard"}>Book an Appointment</NavLink>
+        </div>
 
   </div>)
 }

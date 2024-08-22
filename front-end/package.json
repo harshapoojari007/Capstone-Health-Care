@@ -43,5 +43,8 @@
   "main": "index.js",
   "author": "",
   "license": "ISC",
-  "keywords": []
+  "keywords": [],
+  "devDependencies": {
+    "tailwindcss": "^3.4.10"
+  }
 }
