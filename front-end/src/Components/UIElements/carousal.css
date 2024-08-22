@@ -1,4 +1,15 @@
 .carousal_img{
     display: flex;
     align-items: center;
+    justify-content: center;
+}
+
+.img{
+    width: 50%;
+    height: 50%;
+}
+
+.carousal_main{
+    background-color: #6A5ACD;
+    width: 80%;
 }

@@ -9,7 +9,7 @@ const Welcome=()=>{
     color:"#3795BD"
   }
 
-  return (<div>
+  return (<div className="welcome_main">
     <h1>hello welcome</h1>
     <ul>
       <li>
