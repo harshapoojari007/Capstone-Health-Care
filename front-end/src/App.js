@@ -12,25 +12,28 @@ import {
   RouterProvider,
 } from "react-router-dom";
 import Welcome from './Main/Welcome Page/welcome';
-import Dashboard from './Main/Appointment/Dashboard';
 import LayoutWithNavigation from './LayoutWithNavigation';
 import LayoutWithoutNav from './LayoutWithoutNav';
-
+import MyHome from './Main/Home Page/MyHome';
+import ApointmentForm from './Main/Appointment/ApointmentForm';
+import Dashboard from './Main/Dashboard/Dashboard';
 function App() {
   return (<Router>
      <Routes>
        {/* Layout with MainNavigation */}
        <Route element={<LayoutWithNavigation />}>
-       <Route path="/home" element={<MyHome/>}/>      
-       <Route path="/dashboard" element={<DashBoard/>}/>
+       <Route path="/home" element={<MyHome/>}/> 
+       <Route path="/appointmentBooking" element={<ApointmentForm/>}/> 
+       
         </Route>
         {/* Layout without MainNavigation */}
-        {/* <Route element={<LayoutWithoutNav />}> */}
+        <Route path='' element={<LayoutWithoutNav/>}>
         <Route path="/" element={<Welcome/>} /> 
        <Route path="/login" element={<Login />}/>
        <Route path="/signUp" element={<SignUp/>}/>
-       <Route path="/home" element={<App2/>}/>  
-       <Route path="/dashboard" element={<Dashboard/>}/>     
+       <Route path="/dashboard" element={<Dashboard/>}/>
+
+       </Route>
      </Routes>
     
    </Router>);
