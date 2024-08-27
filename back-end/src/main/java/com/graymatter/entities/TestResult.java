@@ -22,7 +22,7 @@ public class TestResult {
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	private double testReading;
-	private String condition;
+	private String testCondition;
 	
 	@ManyToOne
 	@JoinColumn(name="appointmentId",referencedColumnName = "id")

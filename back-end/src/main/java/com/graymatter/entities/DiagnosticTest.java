@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,6 +26,17 @@ public class DiagnosticTest {
 	private double testPrice;
 	private String normalValue;
 	private String units;
-	@ManyToMany(mappedBy = "diagnosticTests")
+	
+	@ManyToMany
+	@JoinTable(
+	        name = "diagnostic_center_test",
+	        joinColumns = @JoinColumn(name = "diagnostic_test_id"),
+	        inverseJoinColumns = @JoinColumn(name = "diagnostic_center_id")
+	    )
 	private Set<DiagnosticCenter> diagnosticCenters;
+	
+	@ManyToMany(mappedBy = "diagnosticTests")
+    private Set<Appointment> appointments;
+	
+	
 }

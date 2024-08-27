@@ -24,6 +24,8 @@ public class CenterAdministrator {
 	private String name;
 	private String phoneNo;
     private String address;
+    
+    @OneToOne(mappedBy = "centerAdmin")
 	private DiagnosticCenter diagnosticCenter;
 	
 	@OneToOne

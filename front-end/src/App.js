@@ -14,7 +14,7 @@ import {
 import Welcome from './Main/Welcome Page/welcome';
 import LayoutWithNavigation from './LayoutWithNavigation';
 import LayoutWithoutNav from './LayoutWithoutNav';
-import MyHome from './Main/Home Page/MyHome';
+import Home from './Main/Home Page/Home';
 import ApointmentForm from './Main/Appointment/ApointmentForm';
 import Dashboard from './Main/Dashboard/Dashboard';
 function App() {
@@ -22,7 +22,7 @@ function App() {
      <Routes>
        {/* Layout with MainNavigation */}
        <Route element={<LayoutWithNavigation />}>
-       <Route path="/home" element={<MyHome/>}/> 
+       <Route path="/home" element={<Home/>}/> 
        <Route path="/appointmentBooking" element={<ApointmentForm/>}/> 
        
         </Route>

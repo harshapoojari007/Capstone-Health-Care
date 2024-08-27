@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}",],
   theme: {
-    extend: {},
+    extend: {
+      rotate: {
+        '30': '30deg', // Add a custom rotation class
+      },
+    },
   },
   plugins: [],
 }

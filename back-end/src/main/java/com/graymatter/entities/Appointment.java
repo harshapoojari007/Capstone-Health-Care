@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
@@ -26,17 +28,22 @@ public class Appointment {
 	private Date appointmentDate;
 	private ApprovalStatus approvalStatus;
 	
-	@OneToMany(mappedBy = "appointment")
-	private Set<DiagnosticTest> diagnosticTests;
-	
-	@ManyToOne
-	@JoinColumn(name="patientId",referencedColumnName = "id")
-	private Patient patient;
-	
-	@ManyToOne
-	@JoinColumn(name="diagnosticCenterId",referencedColumnName = "id")
-	private DiagnosticCenter diagnosticCenter;
-	
-	@OneToMany(mappedBy="appointment")
-	private Set<TestResult> testResults;
+	   @ManyToMany
+	    @JoinTable(
+	        name = "appointment_diagnostic_test",
+	        joinColumns = @JoinColumn(name = "appointment_id"),
+	        inverseJoinColumns = @JoinColumn(name = "diagnostic_test_id")
+	    )
+	    private Set<DiagnosticTest> diagnosticTests;
+
+	    @ManyToOne
+	    @JoinColumn(name = "patient_id")
+	    private Patient patient;
+
+	    @ManyToOne
+	    @JoinColumn(name = "diagnostic_center_id")
+	    private DiagnosticCenter diagnosticCenter;
+
+	    @OneToMany(mappedBy = "appointment")
+	    private Set<TestResult> testResults;
 }
