@@ -1,17 +1,30 @@
 package com.graymatter.services;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.graymatter.dao.AppointmentDao;
+import com.graymatter.dto.AppointmentDto;
+import com.graymatter.dto.AppointmentMapper;
+import com.graymatter.dto.DiagnosticTestDto;
+import com.graymatter.dto.DiagnosticTestMapper;
+import com.graymatter.dto.PatientDto;
+import com.graymatter.dto.TestResultDto;
+import com.graymatter.dto.TestResultMapper;
 import com.graymatter.entities.Appointment;
 import com.graymatter.entities.DiagnosticCenter;
 import com.graymatter.entities.DiagnosticTest;
 import com.graymatter.entities.Patient;
 import com.graymatter.entities.TestResult;
+import com.graymatter.exceptions.IdNotFoundException;
 
 @Service
 public class AppointmentService implements AppointmentServiceInterface{
@@ -19,47 +32,104 @@ public class AppointmentService implements AppointmentServiceInterface{
 	@Autowired
 	AppointmentDao dao;
 	
+	@Autowired
+	AppointmentMapper mapper;
+	
+	@Autowired
+	DiagnosticTestMapper testMapper;
+	
+	@Autowired
+	TestResultMapper resultMapper;
+	
+	
 	@Override
-	public List<Appointment> getAllAppointments() {
+	public ResponseEntity<?> getAllAppointments() {
 		// TODO Auto-generated method stub
-		return dao.getAllAppointments();
+		List<Appointment> aList=dao.getAllAppointments();
+		List<AppointmentDto> appointmentDtoList= aList.stream().map((a)->mapper.mapToAppointmentDto(a)).collect(Collectors.toList());
+		Map<String, Object> map=new HashMap<>();
+		if(!appointmentDtoList.isEmpty()) {
+			map.put("status",10);
+			map.put("data", appointmentDtoList);
+			return new ResponseEntity<>(map,HttpStatus.OK);
+			
+		}else {
+			map.put("status",20);
+			map.put("data", "No Events to display");
+			return new ResponseEntity<>(map,HttpStatus.NO_CONTENT);
+			
+		}
 	}
 
 	@Override
-	public Appointment getAppointmentById(int id) {
+	public ResponseEntity<?> getAppointmentById(int id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
-		return dao.getAppointmentById(id);
-	}
-
-	@Override
-	public Appointment addAppointment(Appointment appointment) {
-		// TODO Auto-generated method stub
-		return dao.addAppointment(appointment);
-	}
-
-	@Override
-	public Appointment deleteAppointmentById(int id) {
-		// TODO Auto-generated method stub
-		return dao.deleteAppointmentById(id);
+		AppointmentDto appointment= mapper.mapToAppointmentDto(dao.getAppointmentById(id));
+		Map<String, Object> map=new HashMap<>();
+		map.put("status",10);
+		map.put("data", appointment);
+		return new ResponseEntity<>(map,HttpStatus.OK);
 		
 	}
 
 	@Override
-	public Appointment updateAppointment(int id, Appointment appointment) {
+	public ResponseEntity<?> addAppointment(AppointmentDto appointment) {
 		// TODO Auto-generated method stub
-		return dao.updateAppointment(id,appointment);
+		AppointmentDto appointmentDto= mapper.mapToAppointmentDto(dao.addAppointment(mapper.mapToAppointment(appointment))) ;
+		Map<String, Object> map=new HashMap<>();
+		map.put("status",10);
+		map.put("data", appointmentDto);
+		return new ResponseEntity<>(map,HttpStatus.OK);
 	}
 
 	@Override
-	public Set<DiagnosticTest> getAllTestOfAppointment(int id) {
+	public ResponseEntity<?> deleteAppointmentById(int id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
-		return dao.getAllTestOfAppointment(id);
+		AppointmentDto appointmentDto= mapper.mapToAppointmentDto(dao.deleteAppointmentById(id));
+		Map<String, Object> map=new HashMap<>();
+		map.put("status",10);
+		map.put("data", appointmentDto);
+		return new ResponseEntity<>(map,HttpStatus.OK);
+		
 	}
 
 	@Override
-	public Patient getPatientByAppointment(int id) {
+	public ResponseEntity<?> updateAppointment(int id, AppointmentDto appointment) throws IdNotFoundException {
 		// TODO Auto-generated method stub
-		return dao.getPatientByAppointment(id);
+		AppointmentDto appointmentDto= mapper.mapToAppointmentDto(dao.updateAppointment(id,mapper.mapToAppointment(appointment))) ;
+		Map<String, Object> map=new HashMap<>();
+		map.put("status",10);
+		map.put("data", appointment);
+		return new ResponseEntity<>(map,HttpStatus.OK);
+	}
+
+	@Override
+	public ResponseEntity<?> getAllTestOfAppointment(int id) throws IdNotFoundException {
+		// TODO Auto-generated method stub
+		Set<DiagnosticTest> testSet=dao.getAllTestOfAppointment(id);
+		Set<DiagnosticTestDto> tests= testSet.stream().map((test)->testMapper.mapToDiagnosticTestDto(test)).collect(Collectors.toSet());
+		Map<String, Object> map=new HashMap<>();
+		if(!tests.isEmpty()) {
+			map.put("status",10);
+			map.put("data", tests);
+			return new ResponseEntity<>(map,HttpStatus.OK);
+			
+		}else {
+			map.put("status",20);
+			map.put("data", "No tests to display");
+			return new ResponseEntity<>(map,HttpStatus.NO_CONTENT);
+			
+		}
+	}
+
+	@Override
+	public ResponseEntity<?> getPatientByAppointment(int id) throws IdNotFoundException{
+		// TODO Auto-generated method stub
+		PatientDto patient= patientMapper.mapToPatientDto(dao.getPatientByAppointment(id)) ;
+		Map<String, Object> map=new HashMap<>();
+		map.put("status",10);
+		map.put("data", patient);
+		return new ResponseEntity<>(map,HttpStatus.OK);
 	}
 
 //	@Override
@@ -69,28 +139,82 @@ public class AppointmentService implements AppointmentServiceInterface{
 //	}
 
 	@Override
-	public Set<TestResult> getTestResultOfAppointment(int id) {
+	public ResponseEntity<?> getTestResultOfAppointment(int id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
-		return dao.getTestResultOfAppointment(id);
+		Set<TestResult> resultSet=dao.getTestResultOfAppointment(id);
+		Set<TestResultDto> testResults= resultSet.stream().map((result)->resultMapper.mapToTestResultDto(result)).collect(Collectors.toSet());
+		Map<String, Object> map=new HashMap<>();
+		if(!testResults.isEmpty()) {
+			map.put("status",10);
+			map.put("data", testResults);
+			return new ResponseEntity<>(map,HttpStatus.OK);
+			
+		}else {
+			map.put("status",20);
+			map.put("data", "No test results to display");
+			return new ResponseEntity<>(map,HttpStatus.NO_CONTENT);
+			
+		}
+		
 	}
 
 	@Override
-	public List<Appointment> getUpcomingAppointments() {
+	public ResponseEntity<?> getUpcomingAppointments() {
 		// TODO Auto-generated method stub
-		return dao.getUpcomingAppointments();
+		List<Appointment> aList=dao.getUpcomingAppointments();
+		List<AppointmentDto> appointments =aList.stream().map((a)->mapper.mapToAppointmentDto(a)).collect(Collectors.toList());
+		Map<String, Object> map=new HashMap<>();
+		if(!appointments.isEmpty()) {
+			map.put("status",10);
+			map.put("data", appointments);
+			return new ResponseEntity<>(map,HttpStatus.OK);
+			
+		}else {
+			map.put("status",20);
+			map.put("data", "No appointments to display");
+			return new ResponseEntity<>(map,HttpStatus.NO_CONTENT);
+			
+		}
 	}
 
 	@Override
-	public List<Appointment> getPastAppointments() {
+	public ResponseEntity<?> getPastAppointments() {
 		// TODO Auto-generated method stub
-		return dao.getPastAppointments();
+		List<Appointment> aList=dao.getPastAppointments();
+		List<AppointmentDto> appointments= aList.stream().map((a)->mapper.mapToAppointmentDto(a)).collect(Collectors.toList());
+		Map<String, Object> map=new HashMap<>();
+		if(!appointments.isEmpty()) {
+			map.put("status",10);
+			map.put("data", appointments);
+			return new ResponseEntity<>(map,HttpStatus.OK);
+			
+		}else {
+			map.put("status",20);
+			map.put("data", "No appointments to display");
+			return new ResponseEntity<>(map,HttpStatus.NO_CONTENT);
+			
+		}
 	}
 
 
 	@Override
-	public List<Appointment> getAppointmentsOfPatient(Patient patient) {
+	public ResponseEntity<?> getAppointmentsOfPatient(int patient_id) {
 		// TODO Auto-generated method stub
-		return dao.getAppointmentsOfPatient(patient);
+		List<Appointment> aList=dao.getAppointmentsOfPatient(patient_id);
+		List<AppointmentDto> appointments= aList.stream().map((a)->mapper.mapToAppointmentDto(a)).collect(Collectors.toList());
+		Map<String, Object> map=new HashMap<>();
+		if(!appointments.isEmpty()) {
+			map.put("status",10);
+			map.put("data", appointments);
+			return new ResponseEntity<>(map,HttpStatus.OK);
+			
+		}else {
+			map.put("status",20);
+			map.put("data", "No appointments to display");
+			return new ResponseEntity<>(map,HttpStatus.NO_CONTENT);
+			
+		}
+		
 	}
 
 }
