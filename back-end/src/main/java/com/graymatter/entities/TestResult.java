@@ -20,6 +20,7 @@ public class TestResult {
 	@Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+	private String testName;
 	private double testReading;
 	private String testCondition;
 	

@@ -28,6 +28,7 @@ public class Patient {
 	
 	@OneToMany(mappedBy="patient")
 	private Set<Appointment> appointments;
+	
 	@OneToOne
 	@JoinColumn(name="userId",referencedColumnName = "id")
 	private User user;

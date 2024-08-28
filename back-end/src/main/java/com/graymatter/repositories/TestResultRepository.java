@@ -1,9 +1,17 @@
 package com.graymatter.repositories;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.graymatter.entities.Appointment;
 import com.graymatter.entities.TestResult;
 
 public interface TestResultRepository extends JpaRepository<TestResult, Integer>{
-
+	
+	
+	List<TestResult> findByAppointmentIdIn(List<Integer> appointmentIds);
+	
 }
