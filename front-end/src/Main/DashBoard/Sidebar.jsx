@@ -32,7 +32,7 @@ const Sidebar = ({ setSelectedView }) => {
                     : userLinks;
 
   return (
-    <nav id="sidebar" className="col-md-3 col-lg-2 d-md-block bg-light sidebar">
+    <nav id="sidebar" className="col-md-3 col-lg-2 d-md-block bg-dark text-white sidebar p-4">
       <div className="position-sticky">
         <div className="user-details p-3 border-bottom">
           <h5>User Details</h5>

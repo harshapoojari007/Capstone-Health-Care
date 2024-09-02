@@ -21,6 +21,10 @@ return <ul className="nav-links">
     <NavLink to="/donate">Service</NavLink>
 </li>
 
+<li>
+<NavLink to="/dashboard">User</NavLink>
+</li>
+
 </ul>
 }
 

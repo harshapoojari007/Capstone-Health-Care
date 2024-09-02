@@ -2,7 +2,7 @@ import React from 'react'
 
 const ApointmentForm = () => {
   return (
-<div class="container d-flex justify-content-center align-items-center vh-100">
+<div className="container d-flex justify-content-center align-items-center ">
         <form class="form-container border p-4 rounded shadow">
             <h2 class="text-center mb-4">Appointment Form</h2>
             <div class="row g-3">
