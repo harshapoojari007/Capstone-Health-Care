@@ -24,7 +24,6 @@ public interface AppointmentServiceInterface {
 	public ResponseEntity<?>  deleteAppointmentById(int id) throws IdNotFoundException;
 	public ResponseEntity<?>  updateAppointment(int id,AppointmentDto appointment) throws IdNotFoundException;
 	public ResponseEntity<?>  getAllTestOfAppointment(int id) throws IdNotFoundException;
-//	public DiagnosticCenter getDiagnosticCenterOfAppointment(int id);
 	public ResponseEntity<?>  getTestResultOfAppointment(int id) throws IdNotFoundException;
 	public ResponseEntity<?>  getUpcomingAppointments();
 	public ResponseEntity<?>  getPastAppointments();

@@ -10,7 +10,7 @@ import TestResult from './DashboardComponents/TestResult';
 import Patient from './DashboardComponents/Patient';
 import Setting from './DashboardComponents/Setting';
 
-const Dashboard = () => {
+const DashBoard = () => {
     const { user } = useUser();
     const [selectedView, setSelectedView] = useState('dashboard'); // Default view
   
@@ -47,4 +47,4 @@ const Dashboard = () => {
       </div>
     );
   };
-export default Dashboard
+export default DashBoard;
