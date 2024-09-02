@@ -17,6 +17,7 @@ import com.graymatter.dto.AppointmentMapper;
 import com.graymatter.dto.DiagnosticTestDto;
 import com.graymatter.dto.DiagnosticTestMapper;
 import com.graymatter.dto.PatientDto;
+import com.graymatter.dto.PatientMapper;
 import com.graymatter.dto.TestResultDto;
 import com.graymatter.dto.TestResultMapper;
 import com.graymatter.entities.Appointment;
@@ -40,6 +41,9 @@ public class AppointmentService implements AppointmentServiceInterface{
 	
 	@Autowired
 	TestResultMapper resultMapper;
+	
+	@Autowired
+	PatientMapper patientMapper;
 	
 	
 	@Override

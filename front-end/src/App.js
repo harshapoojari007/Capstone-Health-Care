@@ -16,7 +16,8 @@ import LayoutWithNavigation from './LayoutWithNavigation';
 import LayoutWithoutNav from './LayoutWithoutNav';
 import Home from './Main/Home Page/Home';
 import ApointmentForm from './Main/Appointment/ApointmentForm';
-import Dashboard from './Main/Dashboard/Dashboard';
+import DashBoard from "./Main/DashBoard/DashBoard"
+
 function App() {
   return (<Router>
      <Routes>
@@ -31,8 +32,7 @@ function App() {
         <Route path="/" element={<Welcome/>} /> 
        <Route path="/login" element={<Login />}/>
        <Route path="/signUp" element={<SignUp/>}/>
-       <Route path="/dashboard" element={<Dashboard/>}/>
-
+       <Route path="/dashboard" element={<DashBoard/>}/>
        </Route>
      </Routes>
     
