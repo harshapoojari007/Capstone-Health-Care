@@ -36,7 +36,7 @@ const DashBoard = () => {
   
     return (
      
-      <div className="container-fluid h-full -mt-[65px]">
+      <div className="container-fluid h-full ">
         <div className="row vh-100">
           <Sidebar setSelectedView={setSelectedView} />
           <main className="col-md-9 ms-sm-auto col-lg-10 px-4">

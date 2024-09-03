@@ -107,7 +107,10 @@ const TestResult = () => {
           </tr>
         </thead>
         <tbody>
-          {testResults.map(test => (
+          {typeof testResults === 'string' ? (
+                <p>{testResults}</p>
+            ) :
+          testResults.map(test => (
             <tr key={test.id}>
               <td>{test.testName}</td>
               <td>{test.testReading}</td>

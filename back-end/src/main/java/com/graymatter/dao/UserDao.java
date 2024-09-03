@@ -36,7 +36,7 @@ public class UserDao {
 	}
 	
 	public User findUserByUsername(String userName) {
-		return repo.findByUserName(userName);
+		return repo.findByUsername(userName);
 	}
 
 	public User updateUser(int userId, User user) throws IdNotFoundException {

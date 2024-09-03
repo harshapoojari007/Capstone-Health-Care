@@ -62,7 +62,7 @@ const Patient = () => {
       await Axios.delete(`/patients/${id}`);
       setShowAlert({ show: true, message: 'Patient deleted successfully.', variant: 'success' });
       // Fetch updated patient list
-      const updatedResponse = await Axios.get('/patients');
+      const updatedResponse = await Axios.get('/patient');
       setPatients(updatedResponse.data);
     } catch (error) {
       console.error('Error deleting patient:', error);
@@ -127,7 +127,10 @@ const Patient = () => {
           </tr>
         </thead>
         <tbody>
-          {patients.map(patient => (
+          {typeof patients === 'string' ? (
+                <p>{patients}</p>
+            ) :
+          patients.map(patient => (
             <tr key={patient.id}>
               <td>{patient.name}</td>
               <td>{patient.phoneNo}</td>

@@ -61,7 +61,11 @@ console.log(appointmentsList)
           </tr>
         </thead>
         <tbody>
-          {appointmentsList.map(appointment => (
+          
+          {typeof appointmentsList === 'string' ? (
+                <p>{appointmentsList}</p>
+            ) :
+          appointmentsList.map(appointment => (
             <tr key={appointment.id}>
               <td>{appointment.patientName}</td>
               <td>{appointment.mobileNumber}</td>

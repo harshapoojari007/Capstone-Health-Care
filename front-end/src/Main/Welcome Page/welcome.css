@@ -3,12 +3,8 @@
 .welcome_main{
     display: flex;
     flex-direction: column;
-<<<<<<< HEAD
     
    
-=======
-    height: 100%;
->>>>>>> 27dfb12a60eb88582ecc9ae5c3779c2645c330b8
 }
 .welcome_navbar{
     width: 100%;

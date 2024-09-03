@@ -82,7 +82,7 @@ const DiagnosticTest = () => {
         </Button>
       </div>
 
-      {/* <Table striped bordered hover>
+      <Table striped bordered hover>
         <thead>
           <tr>
             <th>Test Name</th>
@@ -94,7 +94,12 @@ const DiagnosticTest = () => {
           </tr>
         </thead>
         <tbody>
-          {testsList.map(test => (
+
+
+          {typeof testsList === 'string' ? (
+                <p>{testsList}</p>
+            ) :
+          testsList.map(test => (
             <tr key={test.id}>
               <td>{test.testName}</td>
               <td>${test.testPrice.toFixed(2)}</td>
@@ -110,7 +115,7 @@ const DiagnosticTest = () => {
             </tr>
           ))}
         </tbody>
-      </Table> */}
+      </Table>
 
       {/* Add Test Modal */}
       <Modal show={showModal} onHide={handleCloseModal}>

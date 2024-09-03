@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -42,45 +41,16 @@ const Signup = () => {
       setError('Failed to sign up. Please try again.');
     }
   };
-=======
-import React from 'react';
-import {
-  MDBBtn,
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardBody,
-  MDBInput,
-  MDBRadio
-}
-from 'mdb-react-ui-kit';
-import { NavLink } from "react-router-dom";
-
-// import axios from 'axios';
-
-import "./signup.css"
-import Button from '../../Components/UIElements/Button';
-
-const SignUp=()=> {
-  
-  const style={
-    color: "white",
-    width:"5rem",
-    background:"#224AA4"
-}
->>>>>>> 27dfb12a60eb88582ecc9ae5c3779c2645c330b8
-
   return (
-    <div className='flex  items-center h-screen auth'>
-      <button onClick={() => { navigate('/') }} className='rounded-2xl px-4 py-2 bg-[#343434] text-white text-lg m-2 absolute top-0'>  <i class="fa-regular fa-hand-point-left mr-2"></i>Back to home</button>
+    <div className='flex  items-center h-screen auth relative overflow-hidden'>
+      <button onClick={() => { navigate('/') }} className='rounded-2xl px-4 py-2 bg-[#343434] text-white text-md m-2 absolute top-0'>  <i class="fa-regular fa-hand-point-left mr-2"></i>Back to home</button>
 
 
 
-      <div className="w-full max-w-lg p-6 text-white ml-[10%] ">
-        <img src={logo} className='w-24 ml-[38%] mb-4' alt="" />
-        <h2 className="text-center mb-4 font-bold">Create Account</h2>
-        <p className='mt-2 text-lg text-center mb-4'>Already a user? <a href="/login" className='text-blue-800 font-semibold'>Login</a></p>
+      <div className="w-full max-w-md p-6 text-white ml-[15%] ">
+        <img src={logo} className='w-20 ml-[38%] mb-4' alt="" />
+        <h3 className="text-center mb-4 font-bold">Create Account</h3>
+        <p className='mt-2 text-md text-center mb-4'>Already a user ? <a href="/login" className='text-blue-800 font-semibold text-decoration-none'>Login</a></p>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
         <form id="signupForm" onSubmit={handleSubmit}>
           <div className="mb-3">
@@ -137,22 +107,28 @@ const SignUp=()=> {
 
         </form>
       </div>
-      <div className='auth-divs'>
+      <div className='auth-divs absolute w-[350px] h-[400px]  -top-24 right-[20%] rotate-6'>
         <div className='bg-[#FFCC00]'>
-Harsha
+
         </div>
       </div>
-      <div className='auth-divs'>
+      <div className='  auth-divs absolute w-[250px] h-[500px]  -top-12 -right-[6%] rotate-3'>
         <div className='bg-[#FF3366]'>
-                          Harsha
+
         </div>
       </div>
-      <div className='auth-divs'>
+      <div className='auth-divs absolute w-[350px] h-[400px]  -bottom-[20%] right-[20%] -rotate-6'>
         <div className=' bg-[#22CB88]'>
-Harsha
+
+        </div>
+      </div>
+      <div className='auth-divs absolute w-[300px] h-[400px]  -bottom-72 -right-36' >
+        <div className=' bg-[#009AFE]'>
+
         </div>
       </div>
     </div>
+
 
   );
 };

@@ -1,75 +1,88 @@
-import React from 'react';
-import {
-    MDBBtn,
-    MDBContainer,
-    MDBRow,
-    MDBCol,
-    MDBInput
-}
-    from 'mdb-react-ui-kit';
-import "./login.css"
-import { NavLink } from 'react-router-dom';
-import Button from '../../Components/UIElements/Button';
-
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import logo from "../../images/MainLogo.png";
 const Login = () => {
-    const style = {
-        color: "white",
-        width: "5rem",
-        background: "#224AA4"
+  const navigate = useNavigate();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('')
+
+    try {
+      await axios.post('http://localhost:8088/auth/login', { username, password});
+      navigate('/'); // Redirect to login after successful signup
+      alert("Successfully Registered");
+    } catch (err) {
+      setError('Failed to login in. Please try again.');
     }
-    return (    <div className="one">
-         <MDBContainer className="my-5 gradient-form">
-            <MDBRow>
-                <MDBCol col='6' className="mb-5">
-                    <div className="d-flex flex-column  justify-content-center gradient-custom-2 h-100 mb-4">
-
-                        <div className="text-white px-3 py-4 p-md-5 mx-md-4">
-                            <h4 className="mb-4">We are more than just a company</h4>
-                            <p className="small mb-0">Our healthcare appointment service streamlines your path to quality care by connecting you with top-rated healthcare centers in your area. We handle the research and coordination, ensuring you find a provider that meets your needs and preferences. From scheduling consultations to managing follow-ups, our dedicated team simplifies the entire process for you. Trust us to make accessing the right healthcare convenient and stress-free.
-                            </p>
-                        </div>
-
-                    </div>
-
-                </MDBCol>
-
-                <MDBCol col='6' className="mb-5">
-                    <div className="d-flex flex-column ms-5">
-
-                        <div className="text-center">
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/lotus.webp"
-                                style={{ width: '180px' }} alt="logo" />
-                            <h4 className="mt-1 mb-5 pb-1">Health Care Appointment</h4>
-                        </div>
-
-                        <p className="login_heading" >Login to your account</p>
+  };
+  return (
+    <div className='flex  items-center h-screen auth relative overflow-hidden'>
+      <button onClick={() => { navigate('/') }} className='rounded-2xl px-4 py-2 bg-[#343434] text-white text-md m-4 absolute top-0 right-0'>  <i class="fa-regular fa-hand-point-left mr-2"></i>Back to home</button>
 
 
-                        <MDBInput wrapperClass='mb-4 titles' label='Email address' id='form1' type='email' />
-                        <MDBInput wrapperClass='mb-4 titles' label='Password' id='form2' type='password' />
 
+      <div className="w-full max-w-md p-6 text-white ml-[55%] ">
+        <img src={logo} className='w-20 ml-[40%] mb-4' alt="" />
+        <h2 className="text-center mb-4 font-bold">Login</h2>
+        <p className='mt-2 text-md text-center mb-4'>Don't have an account ? <a href="/signup" className='text-blue-800 font-semibold text-lg text-decoration-none'>Sign Up</a></p>
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+        <form id="signupForm" onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <input
+              type="text"
+              className={`form-control text-white`}
+              id="username"
+              name="username"
+              pattern="[a-zA-Z0-9_]{3,15}"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div className="mb-3">
+            <input
+              type="password"
+              className={`form-control text-white`}
+              id="password"
+              name="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <button type="submit" className=" w-full ">Login</button>
 
-                        <div className="text-center pt-1 mb-5 pb-1">
-                            <MDBBtn className="mb-4 w-100 gradient-custom-2">Login </MDBBtn>
-                            <a className="text-muted" href="#!">Forgot password?</a>
-                        </div>
+        </form>
+      </div>
+      <div className='auth-divs absolute w-[350px] h-[400px]  -top-24 left-[20%] -rotate-6'>
+        <div className='bg-[#FFCC00]'>
 
-                        <div className="d-flex flex-row align-items-center justify-content-center pb-4 mb-4">
-                            <p className="mb-0">Don't have an account?</p>
-                            <NavLink to={"/signup"} >
-                                <Button value="SignUp" myStyles={{ ...style }} />
-                            </NavLink>
-                        </div>
-
-                    </div>
-
-                </MDBCol>
-
-            </MDBRow>
-
-        </MDBContainer>
         </div>
-    );
-}
+      </div>
+      <div className='  auth-divs absolute w-[250px] h-[500px]  -top-12 -left-[6%] -rotate-3'>
+        <div className='bg-[#FF3366]'>
+
+        </div>
+      </div>
+      <div className='auth-divs absolute w-[350px] h-[400px]  -bottom-[20%] left-[20%] rotate-6'>
+        <div className=' bg-[#22CB88]'>
+
+        </div>
+      </div>
+      <div className='auth-divs absolute w-[350px] h-[400px]  -bottom-72 -left-36' >
+        <div className=' bg-[#009AFE]'>
+
+        </div>
+      </div>
+    </div>
+
+
+  );
+};
 
 export default Login;
