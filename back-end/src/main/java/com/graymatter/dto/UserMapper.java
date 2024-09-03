@@ -4,9 +4,9 @@ import com.graymatter.entities.User;
 
 public class UserMapper {
 	public User mapToUser(UserDto userDto) {
-		return new User(userDto.getId(),userDto.getName(),userDto.getPassword(),userDto.getRole());
+		return new User(userDto.getId(),userDto.getUsername(),userDto.getPassword(),userDto.getEmail(),userDto.getRole());
 	}
 	public UserDto mapToUserDto(User u) {
-		return new UserDto(u.getId(),u.getName(),u.getPassword(),u.getRole());
+		return new UserDto(u.getId(),u.getUsername(),u.getPassword(),u.getEmail(),u.getRole());
 	}
 }

@@ -3,8 +3,7 @@
 .welcome_main{
     display: flex;
     flex-direction: column;
-    position: relative;
-    bottom:4rem;
+    height: 100%;
 }
 .welcome_navbar{
     width: 100%;
@@ -21,6 +20,10 @@
 .welcome_navbar div{
     display: flex;
     gap: 10px;
+}
+
+.welcome_navbar h1{
+    font-size: 2rem;
 }
 
 .welcome_one{
@@ -78,7 +81,7 @@
    align-items: center;
 }
 .welcome_first_img{
-    height: 125%;
+    height: 115%;
     position: relative; 
        border-radius: 10px;
 }
@@ -99,3 +102,102 @@
     align-items: center;
 
 }
+
+.welcome_three h2{
+    width: 80%;
+    text-align: center;
+    font-size: 2rem;
+    font-family: "Lora", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+}
+.welcome_span_1{
+    background: #121FCF;
+    background: linear-gradient(to right, #121FCF 0%, #CF1512 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    padding: 0.3rem;
+    letter-spacing: 0.2px;
+    
+}
+.welcome_span_2{
+    background: #FF0000;
+background: linear-gradient(to left, #FF0000 0%, #4E62FF 100%);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+font-weight: 800;
+padding: 0.3rem;
+letter-spacing: 0.2px;
+}
+.welcome_four{
+    background-color: #000;
+    color: #fff;
+    padding: 20px 0;
+    bottom: 0;
+  
+}
+.footer {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 100px;
+    width: 100%;
+  }
+  .footer-content{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+  }
+  .footer-section {
+    flex: 1;
+    margin: 0 10px;
+  }
+  
+  .footer-section h3 {
+    margin-bottom: 10px;
+  }
+  
+  .footer-section p,
+  .footer-section ul {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .footer-section ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .footer-section ul li {
+    margin-bottom: 10px;
+  }
+  
+  .footer-section ul li a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .footer-section ul li a:hover {
+    text-decoration: underline;
+  }
+  
+  .social-icons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .social-icon {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .footer-bottom {
+    text-align: center;
+    padding: 10px 20px;
+    border-top: 1px solid #fff;
+  }

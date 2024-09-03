@@ -1,15 +1,20 @@
 package com.graymatter.services;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.graymatter.dao.UserDao;
 import com.graymatter.dto.UserDto;
 import com.graymatter.dto.UserMapper;
 import com.graymatter.entities.User;
+import com.graymatter.exceptions.IdNotFoundException;
 
 @Service
 public class UserService implements UserServiceInterface{
@@ -20,30 +25,67 @@ public class UserService implements UserServiceInterface{
 	UserMapper mapper;
 	
 	@Override
-	public List<UserDto> getAllUsers() {
+	public ResponseEntity<?> getAllUsers() {
 		List<User> userList= dao.getAllUsers();
-		return userList.stream().map((user)->mapper.mapToUserDto(user)).collect(Collectors.toList());
+		List<UserDto> output=userList.stream().map((user)->mapper.mapToUserDto(user)).collect(Collectors.toList());
+		Map<String, Object> map=new HashMap<>();
+			map.put("status",10);
+			map.put("data", output);
+			return new ResponseEntity<>(map,HttpStatus.OK);
+			
 	}
 
 	@Override
-	public UserDto addNewUser(UserDto user) {
-		return mapper.mapToUserDto(dao.addNewUser(mapper.mapToUser(user)));
+	public ResponseEntity<?> addNewUser(UserDto user) {
+		UserDto output= mapper.mapToUserDto(dao.addNewUser(mapper.mapToUser(user)));
+		Map<String, Object> map=new HashMap<>();
+		map.put("status",10);
+		map.put("data", output);
+		map.put("message", "user added successfully");
+		return new ResponseEntity<>(map,HttpStatus.OK);
 	}
 
 	@Override
-	public UserDto updateUser(UserDto user) {
-		return mapper.mapToUserDto(dao.updateUser(mapper.mapToUser(user)));
+	public ResponseEntity<?> updateUser(int userId,UserDto user) throws IdNotFoundException {
+		UserDto output=mapper.mapToUserDto( dao.updateUser(userId, mapper.mapToUser(user)));
+		Map<String, Object> map=new HashMap<>();
+		map.put("status",10);
+		map.put("message", "user with userId "+userId+" deleted successfully");
+		map.put("data", output);
+		return new ResponseEntity<>(map,HttpStatus.OK);
+
 	}
 
 	@Override
-	public void deleteUser(int userId) {
-		dao.deleteUser(userId);
+	public ResponseEntity<?> deleteUser(int userId) throws IdNotFoundException {
+		UserDto output=mapper.mapToUserDto(dao.deleteUser(userId));
+		Map<String, Object> map=new HashMap<>();
+		map.put("status",10);
+		map.put("data", output);
+		map.put("message", "user with userId "+userId+" deleted successfully");
+		return new ResponseEntity<>(map,HttpStatus.OK);
 		
 	}
 
 	@Override
-	public UserDto getUserById(int userId) {
-		return mapper.mapToUserDto(dao.getUserById(userId));
+	public ResponseEntity<?> getUserById(int userId) throws IdNotFoundException {
+		UserDto output= mapper.mapToUserDto(dao.getUserById(userId));
+		Map<String, Object> map=new HashMap<>();
+		map.put("status",10);
+		map.put("data", output);
+		map.put("message", "user with userId "+userId+"  fetched successfully");
+		return new ResponseEntity<>(map,HttpStatus.OK);
 	}
 
+	@Override
+	public ResponseEntity<?> getUserByUserName(String username) {
+		UserDto output= mapper.mapToUserDto(dao.findUserByUsername(username));
+		Map<String, Object> map=new HashMap<>();
+		map.put("status",10);
+		map.put("data", output);
+		map.put("message", "user with username "+username+"  fetched successfully");
+		return new ResponseEntity<>(map,HttpStatus.OK);
+		
+	}
+		
 }

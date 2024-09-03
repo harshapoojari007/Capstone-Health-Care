@@ -11,10 +11,14 @@ import {
 }
 from 'mdb-react-ui-kit';
 import { NavLink } from "react-router-dom";
+
+// import axios from 'axios';
+
 import "./signup.css"
 import Button from '../../Components/UIElements/Button';
 
 const SignUp=()=> {
+  
   const style={
     color: "white",
     width:"5rem",
