@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.graymatter.dto.UserDto;
 import com.graymatter.exceptions.IdNotFoundException;
+import com.graymatter.exceptions.UserOrEmailAlreadyPresent;
 import com.graymatter.services.UserService;
 
 @RestController
@@ -22,7 +23,7 @@ public class UserController {
 	UserService service;
 	
 	@PostMapping("/user")
-	public ResponseEntity<?> addNewUser(@RequestBody UserDto user)
+	public ResponseEntity<?> addNewUser(@RequestBody UserDto user) throws UserOrEmailAlreadyPresent
 	{
 		return service.addNewUser(user);
 	}

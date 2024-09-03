@@ -2,6 +2,8 @@ package com.graymatter.entities;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -19,12 +21,13 @@ import lombok.NoArgsConstructor;
 @Entity
 public class CenterAdministrator {
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String name;
 	private String phoneNo;
     private String address;
     
+    @JsonIgnore
     @OneToOne(mappedBy = "centerAdmin", cascade = CascadeType.ALL, orphanRemoval = true)
 	private DiagnosticCenter diagnosticCenter;
 	

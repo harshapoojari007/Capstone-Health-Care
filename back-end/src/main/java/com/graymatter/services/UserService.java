@@ -15,6 +15,7 @@ import com.graymatter.dto.UserDto;
 import com.graymatter.dto.UserMapper;
 import com.graymatter.entities.User;
 import com.graymatter.exceptions.IdNotFoundException;
+import com.graymatter.exceptions.UserOrEmailAlreadyPresent;
 
 @Service
 public class UserService implements UserServiceInterface{
@@ -43,7 +44,7 @@ public class UserService implements UserServiceInterface{
 	}
 
 	@Override
-	public ResponseEntity<?> addNewUser(UserDto user) {
+	public ResponseEntity<?> addNewUser(UserDto user) throws UserOrEmailAlreadyPresent {
 		UserDto output= mapper.mapToUserDto(dao.addNewUser(mapper.mapToUser(user)));
 		Map<String, Object> map=new HashMap<>();
 		map.put("status",10);

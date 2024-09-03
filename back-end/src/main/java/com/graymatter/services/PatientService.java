@@ -31,10 +31,7 @@ public class PatientService implements PatientServiceInterface{
 	@Autowired
 	TestResultMapper tMapper;
 	@Override
-<<<<<<< HEAD
-=======
-
->>>>>>> 463e20bc9b6b873f47ef707e52f221ffc393320c
+	
 	public ResponseEntity<?> registerPatient(PatientDto patient) {
 		PatientDto output=pMapper.mapToPatientDto(dao.addPatient(pMapper.mapToPatient(patient)));
 		Map<String,Object> map= new HashMap<>();
@@ -42,10 +39,7 @@ public class PatientService implements PatientServiceInterface{
 			map.put("data",output);
 			map.put("message", "Patient added successfully");
 			return new ResponseEntity<>(map,HttpStatus.CREATED);
-<<<<<<< HEAD
 
-=======
->>>>>>> 463e20bc9b6b873f47ef707e52f221ffc393320c
 	}
 
 	@Override

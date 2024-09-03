@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.graymatter.entities.User;
 import com.graymatter.exceptions.IdNotFoundException;
+import com.graymatter.exceptions.UserOrEmailAlreadyPresent;
 import com.graymatter.repositories.UserRepository;
 
 @Repository
@@ -27,8 +28,16 @@ public class UserDao {
 	}
 
 
-	public User addNewUser(User user) {
-		return repo.save(user);
+	public User addNewUser(User user) throws UserOrEmailAlreadyPresent {
+		if(user.getRole()==null)
+		user.setRole("USER");
+		if (repo.existsByUsername(user.getUsername())) {
+            throw new UserOrEmailAlreadyPresent("Username is already taken");
+        }
+        if (repo.existsByEmail(user.getEmail())) {
+            throw new UserOrEmailAlreadyPresent("Email is already in use");
+        }
+	return repo.save(user);
 	}
 
 	public List<User> getAllUsers() {

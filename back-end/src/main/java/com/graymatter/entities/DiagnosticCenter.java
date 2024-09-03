@@ -24,7 +24,7 @@ import lombok.NoArgsConstructor;
 public class DiagnosticCenter {
 	
 	    @Id
-	    @GeneratedValue(strategy = GenerationType.AUTO)
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    private int id;
 
 	    private String name;
@@ -32,7 +32,7 @@ public class DiagnosticCenter {
 	    private String address;
 	    private String email;
 
-	    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	    @ManyToMany()
 	    @JoinTable(
 	        name = "diagnostic_center_test",
 	        joinColumns = @JoinColumn(name = "diagnostic_center_id"),
@@ -40,10 +40,10 @@ public class DiagnosticCenter {
 	    )
 	    private Set<DiagnosticTest> diagnosticTests;
 
-	    @OneToMany(mappedBy = "diagnosticCenter",cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+	    @OneToMany(mappedBy = "diagnosticCenter",cascade = {CascadeType.ALL}, orphanRemoval = true)
 	    private Set<Appointment> appointments;
 	    
-	    @OneToOne
+	    @OneToOne(cascade = {CascadeType.ALL})
 	    @JoinColumn(name = "centerAdmin_id")
 	    private CenterAdministrator centerAdmin;
 }

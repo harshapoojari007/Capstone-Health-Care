@@ -56,7 +56,7 @@ public class DiagnosticCenterController {
 	public ResponseEntity<?> removeDiagnosticCenter(int diagnosticCentreId) throws IdNotFoundException{
 		return service.removeDiagnosticCenter(diagnosticCentreId);
 	}
-	@GetMapping("/diagnosticcenter/{centername}")
+	@GetMapping("/diagnosticcenter/centername/{centername}")
 	public ResponseEntity<?> getListOfAppointments(@PathVariable("centername") String centerName){
 		return service.getListOfAppointments(centerName);
 	}
