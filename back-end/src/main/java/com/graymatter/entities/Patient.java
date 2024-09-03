@@ -2,6 +2,7 @@ package com.graymatter.entities;
 
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,7 +27,7 @@ public class Patient {
 	private int age;
 	private String gender;
 	
-	@OneToMany(mappedBy="patient")
+	@OneToMany(mappedBy="patient", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<Appointment> appointments;
 	
 	@OneToOne

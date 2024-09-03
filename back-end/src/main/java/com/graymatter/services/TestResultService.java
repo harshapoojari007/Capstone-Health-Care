@@ -44,7 +44,7 @@ public class TestResultService implements TestResultServiceInterface{
 		}else {
 			map.put("status",20);
 			map.put("data", "No Test Results to display");
-			return new ResponseEntity<>(map,HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
 			
 		}
 	}
@@ -103,7 +103,7 @@ public class TestResultService implements TestResultServiceInterface{
 		}else {
 			map.put("status",20);
 			map.put("data", "No Test Results to display");
-			return new ResponseEntity<>(map,HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
 			
 		}
 	}

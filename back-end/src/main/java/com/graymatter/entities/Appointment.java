@@ -3,6 +3,7 @@ package com.graymatter.entities;
 import java.sql.Date;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -44,6 +45,6 @@ public class Appointment {
 	    @JoinColumn(name = "diagnostic_center_id")
 	    private DiagnosticCenter diagnosticCenter;
 
-	    @OneToMany(mappedBy = "appointment")
+	    @OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL, orphanRemoval = true) // Delete TestResult when Appointment is deleted)
 	    private Set<TestResult> testResults;
 }

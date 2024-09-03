@@ -3,8 +3,8 @@
 .welcome_main{
     display: flex;
     flex-direction: column;
-    position: relative;
-    bottom:4rem;
+    
+   
 }
 .welcome_navbar{
     width: 100%;

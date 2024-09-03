@@ -1,14 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dropdown, DropdownButton, Table, Button, Modal, Form } from 'react-bootstrap'; // Ensure react-bootstrap is installed
-
-const initialTests = [
-  { id: 1, testName: 'Blood Test', testPrice: 150.0, normalValue: '5-10 g/dL', units: 'g/dL', diagnosticCenters: ['Center A', 'Center B'] },
-  { id: 2, testName: 'X-Ray', testPrice: 500.0, normalValue: 'N/A', units: 'N/A', diagnosticCenters: ['Center A'] },
-  // Add more diagnostic tests as needed
-];
-
+import Axios from '../../../configurations/Axios';
 const DiagnosticTest = () => {
-  const [testsList, setTestsList] = useState(initialTests);
+  const [testsList, setTestsList] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [newTest, setNewTest] = useState({
     testName: '',
@@ -17,27 +11,55 @@ const DiagnosticTest = () => {
     units: '',
     diagnosticCenters: []
   });
+  useEffect(() => {
+    const fetchDiagnosticTests = async () => {
+      try {
+        const response = await Axios.get('/diagnostictests');
+        const testData=response.data;
+        setTestsList(testData.data)
+            } catch (error) {
+        console.error('Error fetching tests:', error);
+      }
+    };
 
+    fetchDiagnosticTests();
+  }, []);
   const handleEdit = (id) => {
     // Handle edit logic here
     console.log(`Edit diagnostic test with ID: ${id}`);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     // Handle delete logic here
-    setTestsList(testsList.filter(test => test.id !== id));
+    try {
+      const response=await Axios.post(`/diagnostictest/${id}`);
+      const deletedTestResponse=response.data;
+      const message=deletedTestResponse.message
+      alert(message)
+    } catch (error) {
+      console.error('Error deleting test:', error);
+    }
   };
 
-  const handleAddTest = () => {
-    setTestsList([...testsList, { ...newTest, id: testsList.length + 1, testPrice: parseFloat(newTest.testPrice) }]);
-    setShowModal(false);
-    setNewTest({
-      testName: '',
-      testPrice: '',
-      normalValue: '',
-      units: '',
-      diagnosticCenters: []
-    });
+  const handleAddTest = async() => {
+    try {
+      const response = await Axios.post('/diagnostictest', newTest);
+      const addedTestResponse = response.data;
+      const addedTest=addedTestResponse.data;
+      const message=addedTestResponse.message;
+      setTestsList([...testsList, addedTest]);
+      alert(message)
+      setShowModal(false);
+      setNewTest({
+        testName: '',
+        testPrice: '',
+        normalValue: '',
+        units: '',
+        diagnosticCenters: []
+      });
+    } catch (error) {
+      console.error('Error adding test:', error);
+    }
   };
 
   const handleChange = (e) => {
@@ -60,7 +82,7 @@ const DiagnosticTest = () => {
         </Button>
       </div>
 
-      <Table striped bordered hover>
+      {/* <Table striped bordered hover>
         <thead>
           <tr>
             <th>Test Name</th>
@@ -88,7 +110,7 @@ const DiagnosticTest = () => {
             </tr>
           ))}
         </tbody>
-      </Table>
+      </Table> */}
 
       {/* Add Test Modal */}
       <Modal show={showModal} onHide={handleCloseModal}>

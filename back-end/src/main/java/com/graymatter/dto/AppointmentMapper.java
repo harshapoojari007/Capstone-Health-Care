@@ -1,7 +1,10 @@
 package com.graymatter.dto;
 
+import org.springframework.stereotype.Component;
+
 import com.graymatter.entities.Appointment;
 
+@Component
 public class AppointmentMapper {
 
 	public Appointment mapToAppointment(AppointmentDto a) {

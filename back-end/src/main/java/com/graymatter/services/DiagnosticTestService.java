@@ -124,7 +124,7 @@ public class DiagnosticTestService implements DiagnosticTestServiceInterface{
 		}else {
 			map.put("status",20);
 			map.put("data", "No Tests to display");
-			return new ResponseEntity<>(map,HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
 			
 		}
 	}

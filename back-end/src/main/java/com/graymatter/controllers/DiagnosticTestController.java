@@ -39,7 +39,7 @@ public class DiagnosticTestController {
 		return service.updateDiagnosticTestDetails(id, diagnosticTest);
 	}
 	
-	@GetMapping("/diagnostictests")
+	@GetMapping("/diagnostictest/{id}")
 	public ResponseEntity<?> getDiagnosticTestById(@PathVariable("id") int id) throws IdNotFoundException {
 		return service.getDiagnosticTestById(id);
 	}

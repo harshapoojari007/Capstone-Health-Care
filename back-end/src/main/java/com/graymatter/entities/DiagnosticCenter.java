@@ -3,6 +3,7 @@ package com.graymatter.entities;
 
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,7 +32,7 @@ public class DiagnosticCenter {
 	    private String address;
 	    private String email;
 
-	    @ManyToMany
+	    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	    @JoinTable(
 	        name = "diagnostic_center_test",
 	        joinColumns = @JoinColumn(name = "diagnostic_center_id"),
@@ -39,7 +40,7 @@ public class DiagnosticCenter {
 	    )
 	    private Set<DiagnosticTest> diagnosticTests;
 
-	    @OneToMany(mappedBy = "diagnosticCenter")
+	    @OneToMany(mappedBy = "diagnosticCenter",cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	    private Set<Appointment> appointments;
 	    
 	    @OneToOne

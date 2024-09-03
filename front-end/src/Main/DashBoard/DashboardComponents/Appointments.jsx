@@ -1,25 +1,39 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dropdown, DropdownButton, Button, Table, Modal } from 'react-bootstrap'; // Ensure react-bootstrap is installed
-
-const initialAppointments = [
-  { id: 1, patientName: 'John Doe', age: 30, mobileNumber: '123-456-7890', gender: 'Male', aadharNumber: '1234 5678 9012', appointmentDate: '2024-09-10T10:00', diagnosticTests: ['Test 1','Test 2'], diagnosticCenter: 'Center A' },
-  { id: 2, patientName: 'Jane Smith', age: 25, mobileNumber: '987-654-3210', gender: 'Female', aadharNumber: '9876 5432 1098', appointmentDate: '2024-09-12T14:00', diagnosticTests: ['Test 2'], diagnosticCenter: 'Center B' },
-  // Add more appointments as needed
-];
-
+import Axios from '../../../configurations/Axios';
 const Appointments = () => {
-  const [appointmentsList, setAppointmentsList] = useState(initialAppointments);
+  
+  const [appointmentsList, setAppointmentsList] = useState([]);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const response = await Axios.get('/appointments');
+        const appointmentData=response.data;
+        setAppointmentsList(appointmentData.data);
+      } catch (error) {
+        console.error('Error fetching appointments:', error);
+      }
+    };
+
+    fetchAppointments();
+  }, []);
   const handleEdit = (id) => {
     // Handle edit logic here
     console.log(`Edit appointment with ID: ${id}`);
   };
 
-  const handleDelete = (id) => {
-    // Handle delete logic here
-    setAppointmentsList(appointmentsList.filter(appointment => appointment.id !== id));
+  const handleDelete =async (id) => {
+    try {
+      const response=await Axios.post(`/appointment/${id}`);
+      const deletedAppointmentResponse=response.data;
+      const message= deletedAppointmentResponse.message;
+      alert(message)
+    } catch (error) {
+      console.error('Error deleting Appointment:', error);
+    }
   };
 
   const handleView = (id) => {
@@ -32,10 +46,11 @@ const Appointments = () => {
     setShowModal(false);
     setSelectedAppointment(null);
   };
-
+console.log(appointmentsList)
   return (
     <div className="container mt-4">
       <h2 className="text-center mb-4">Appointments List</h2>
+      <p>{appointmentsList}</p>
       <Table striped bordered hover>
         <thead>
           <tr>

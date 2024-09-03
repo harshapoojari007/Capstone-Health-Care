@@ -1,8 +1,10 @@
 package com.graymatter.dto;
 
 
-import com.graymatter.entities.CenterAdministrator;
+import org.springframework.stereotype.Component;
 
+import com.graymatter.entities.CenterAdministrator;
+@Component
 public class CenterAdministratorMapper {
 	public CenterAdministrator mapToCenterAdministrator(CenterAdministratorDto cDto) {
 		return new CenterAdministrator(cDto.getId(),cDto.getName(),cDto.getPhoneNo(),cDto.getAddress(),cDto.getDiagnosticCenter(),cDto.getUser());

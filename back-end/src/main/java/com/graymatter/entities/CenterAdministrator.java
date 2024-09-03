@@ -3,6 +3,7 @@ package com.graymatter.entities;
 import java.sql.Date;
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,7 +26,7 @@ public class CenterAdministrator {
 	private String phoneNo;
     private String address;
     
-    @OneToOne(mappedBy = "centerAdmin")
+    @OneToOne(mappedBy = "centerAdmin", cascade = CascadeType.ALL, orphanRemoval = true)
 	private DiagnosticCenter diagnosticCenter;
 	
 	@OneToOne

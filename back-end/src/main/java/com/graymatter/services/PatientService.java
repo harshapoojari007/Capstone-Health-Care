@@ -22,7 +22,8 @@ public class PatientService implements PatientServiceInterface{
 
 	@Override
 	public PatientDto registerPatient(PatientDto patient) {
-		return mapper.mapToPatientDto(dao.addPatient(mapper.mapToPatient(patient)));
+		//return mapper.mapToPatientDto(dao.addPatient(mapper.mapToPatient(patient)));
+		return null;
 	}
 
 	@Override
@@ -42,6 +43,12 @@ public class PatientService implements PatientServiceInterface{
 
 	@Override
 	public TestResultDto viewTestResultById(int testResultId) {
+		return null;
+	}
+
+	@Override
+	public TestResultDto viewTestResult(int testResultId) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

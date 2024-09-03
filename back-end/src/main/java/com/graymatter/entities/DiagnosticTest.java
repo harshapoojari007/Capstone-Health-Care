@@ -36,6 +36,5 @@ public class DiagnosticTest {
 	
 	@ManyToMany(mappedBy = "diagnosticTests")
     private Set<Appointment> appointments;
-	
-	
+
 }

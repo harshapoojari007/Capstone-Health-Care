@@ -16,25 +16,20 @@ import LayoutWithNavigation from './LayoutWithNavigation';
 import LayoutWithoutNav from './LayoutWithoutNav';
 import Home from './Main/Home Page/Home';
 import ApointmentForm from './Main/Appointment/ApointmentForm';
-<<<<<<< HEAD
-import Dashboard from './Main/Dashboard/DashBoard';
-=======
-import DashBoard from "./Main/DashBoard/DashBoard"
-
->>>>>>> 812b32d0ae2d3327d98fa2253da12a8fcfd56b5f
+import DashBoard from './Main/Dashboard/DashBoard';
 function App() {
   return (<Router>
      <Routes>
        {/* Layout with MainNavigation */}
        <Route element={<LayoutWithNavigation />}>
        <Route path="/home" element={<Home/>}/> 
-       <Route path="/" element={<Welcome/>} /> 
+       
        <Route path="/appointmentBooking" element={<ApointmentForm/>}/> 
        
         </Route>
         {/* Layout without MainNavigation */}
         <Route path='' element={<LayoutWithoutNav/>}>
-       
+        <Route path="/" element={<Welcome/>} /> 
        <Route path="/login" element={<Login />}/>
        <Route path="/signUp" element={<SignUp/>}/>
        <Route path="/dashboard" element={<DashBoard/>}/>

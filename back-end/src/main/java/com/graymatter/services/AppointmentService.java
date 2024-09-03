@@ -59,8 +59,8 @@ public class AppointmentService implements AppointmentServiceInterface{
 			
 		}else {
 			map.put("status",20);
-			map.put("data", "No Events to display");
-			return new ResponseEntity<>(map,HttpStatus.NO_CONTENT);
+			map.put("data", "No Appointments to display");
+			return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
 			
 		}
 	}
@@ -156,7 +156,7 @@ public class AppointmentService implements AppointmentServiceInterface{
 		}else {
 			map.put("status",20);
 			map.put("data", "No test results to display");
-			return new ResponseEntity<>(map,HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
 			
 		}
 		
@@ -176,7 +176,7 @@ public class AppointmentService implements AppointmentServiceInterface{
 		}else {
 			map.put("status",20);
 			map.put("data", "No appointments to display");
-			return new ResponseEntity<>(map,HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
 			
 		}
 	}
@@ -195,7 +195,7 @@ public class AppointmentService implements AppointmentServiceInterface{
 		}else {
 			map.put("status",20);
 			map.put("data", "No appointments to display");
-			return new ResponseEntity<>(map,HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
 			
 		}
 	}
@@ -215,7 +215,7 @@ public class AppointmentService implements AppointmentServiceInterface{
 		}else {
 			map.put("status",20);
 			map.put("data", "No appointments to display");
-			return new ResponseEntity<>(map,HttpStatus.NO_CONTENT);
+			return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
 			
 		}
 		
