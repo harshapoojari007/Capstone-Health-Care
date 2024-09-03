@@ -35,12 +35,16 @@ const Signup = () => {
 
     try {
       await axios.post('http://localhost:8088/auth/signup', { username, password, email });
-      navigate('/login'); // Redirect to login after successful signup
+      navigate('/login'); 
       alert("Successfully Registered");
     } catch (err) {
       setError('Failed to sign up. Please try again.');
     }
   };
+<<<<<<< HEAD
+=======
+
+>>>>>>> 463e20bc9b6b873f47ef707e52f221ffc393320c
   return (
     <div className='flex  items-center h-screen auth relative overflow-hidden'>
       <button onClick={() => { navigate('/') }} className='rounded-2xl px-4 py-2 bg-[#343434] text-white text-md m-2 absolute top-0'>  <i class="fa-regular fa-hand-point-left mr-2"></i>Back to home</button>

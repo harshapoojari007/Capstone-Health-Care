@@ -1,0 +1,31 @@
+<<<<<<< HEAD
+=======
+.mainContainer {
+   /* fallback for old browsers */
+   background: #30cfd0;
+  
+   /* Chrome 10-25, Safari 5.1-6 */
+   background: -webkit-linear-gradient(to left, rgba(48,207,208,0.6), rgba(51,8,103,0.6));
+ 
+   /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+   background: linear-gradient(to left, rgba(48,207,208,0.6), rgba(51,8,103,0.6));
+   height: 100vh;
+    padding: 1rem;
+   
+  }
+  .slide-enter {
+    transform: translateX(100%);
+    transition: transform 300ms ease-in-out;
+  }
+  .slide-enter-active {
+    transform: translateX(0);
+  }
+  .slide-exit {
+    transform: translateX(0);
+    transition: transform 300ms ease-in-out;
+  }
+  .slide-exit-active {
+    transform: translateX(-100%);
+  }
+  
+>>>>>>> 463e20bc9b6b873f47ef707e52f221ffc393320c
