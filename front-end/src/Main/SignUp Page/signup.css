@@ -11,3 +11,18 @@
     padding: 1rem;
    
   }
+  .slide-enter {
+    transform: translateX(100%);
+    transition: transform 300ms ease-in-out;
+  }
+  .slide-enter-active {
+    transform: translateX(0);
+  }
+  .slide-exit {
+    transform: translateX(0);
+    transition: transform 300ms ease-in-out;
+  }
+  .slide-exit-active {
+    transform: translateX(-100%);
+  }
+  

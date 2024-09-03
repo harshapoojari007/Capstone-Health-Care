@@ -41,12 +41,19 @@ public class DiagnosticCenterService implements DiagnsoticCenterServiceInterface
 	@Override
 	public ResponseEntity<?> getAllDiagnosticCenters() {
 		List<DiagnosticCenter> dclist= dao.getAllDiagnosticCenters();
-		List<DiagnosticCenterDto>output= dclist.stream().map((dc)->mapper.mapToDiagnosticCenterDto(dc)).collect(Collectors.toList());
+		List<DiagnosticCenterDto> output= dclist.stream().map((dc)->mapper.mapToDiagnosticCenterDto(dc)).collect(Collectors.toList());
 		Map<String,Object> map= new HashMap<>();
+		if(!output.isEmpty()) {
 		 map.put("status", 10);
 			map.put("data",output);
 			map.put("message", "DiagnosticCenters fetched successfully");
-			return new ResponseEntity<>(map,HttpStatus.CREATED);
+			return new ResponseEntity<>(map,HttpStatus.OK);
+	}else {
+		map.put("status",20);
+		map.put("data", "No DiagnosticCenters to display");
+		return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
+		
+	}
 	}
 
 	@Override

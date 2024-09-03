@@ -29,9 +29,16 @@ public class UserService implements UserServiceInterface{
 		List<User> userList= dao.getAllUsers();
 		List<UserDto> output=userList.stream().map((user)->mapper.mapToUserDto(user)).collect(Collectors.toList());
 		Map<String, Object> map=new HashMap<>();
+		if(!output.isEmpty()) {
 			map.put("status",10);
 			map.put("data", output);
 			return new ResponseEntity<>(map,HttpStatus.OK);
+		}else {
+			map.put("status",20);
+			map.put("data", "No Appointments to display");
+			return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
+			
+		}
 			
 	}
 

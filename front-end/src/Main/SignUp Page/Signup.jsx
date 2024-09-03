@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -36,40 +35,12 @@ const Signup = () => {
 
     try {
       await axios.post('http://localhost:8088/auth/signup', { username, password, email });
-      navigate('/login'); // Redirect to login after successful signup
+      navigate('/login'); 
       alert("Successfully Registered");
     } catch (err) {
       setError('Failed to sign up. Please try again.');
     }
   };
-=======
-import React from 'react';
-import {
-  MDBBtn,
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBCard,
-  MDBCardBody,
-  MDBInput,
-  MDBRadio
-}
-from 'mdb-react-ui-kit';
-import { NavLink } from "react-router-dom";
-
-// import axios from 'axios';
-
-import "./signup.css"
-import Button from '../../Components/UIElements/Button';
-
-const SignUp=()=> {
-  
-  const style={
-    color: "white",
-    width:"5rem",
-    background:"#224AA4"
-}
->>>>>>> 27dfb12a60eb88582ecc9ae5c3779c2645c330b8
 
   return (
     <div className='flex  items-center h-screen auth'>

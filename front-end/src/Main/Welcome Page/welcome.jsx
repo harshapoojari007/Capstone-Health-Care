@@ -5,7 +5,8 @@ import { Button } from "react-bootstrap";
 
 import "./welcome.css"
 import div2img from "../../Components/Images/welcome3.jpg"
-import div2img2 from "../../Components/Images/welcome2.avif"
+import div2img2 from "../../Components/Images/welcome_main.jpg"
+import Cards from "../../Components/UIElements/Card";
 
 const Welcome = () => {
   const myStyles = {
@@ -30,13 +31,19 @@ const Welcome = () => {
       </div>
     </div>
     <div className="welcome_two">
-      <img src={div2img2} alt="" className="welcome_first_img" />
+      <img src={div2img2} alt="" className="welcome_first_img"  />
       <img src={div2img} alt="" className="welcome_second_img" />
     </div>
     <div className="welcome_three">
-      <h2>We provide a seamless platform for booking medical appointments and managing diagnostic services. Customers can easily <span className="welcome_span_1"> schedule and track appointments </span>at their chosen diagnostic centers, while diagnostic centers can <span className="welcome_span_2">register to manage appointments, conduct tests, and handle reports.</span> </h2>
+      <div className="welcome_three_left">
+        <Cards/>
+      </div>
+      <div className="welcome_three_right"><h2>We provide a seamless platform for booking medical appointments and managing diagnostic services. Customers can easily <span className="welcome_span_1"> schedule and track appointments </span>at their chosen diagnostic centers, while diagnostic centers can <span className="welcome_span_2">register to manage appointments, conduct tests, and handle reports.</span> </h2></div>
     </div>
     <div className="welcome_four">
+
+    </div>
+    <div className="welcome_five">
 
     </div>
     

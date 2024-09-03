@@ -31,11 +31,7 @@ public class PatientService implements PatientServiceInterface{
 	@Autowired
 	TestResultMapper tMapper;
 	@Override
-<<<<<<< HEAD
-	public PatientDto registerPatient(PatientDto patient) {
-		//return mapper.mapToPatientDto(dao.addPatient(mapper.mapToPatient(patient)));
-		return null;
-=======
+
 	public ResponseEntity<?> registerPatient(PatientDto patient) {
 		PatientDto output=pMapper.mapToPatientDto(dao.addPatient(pMapper.mapToPatient(patient)));
 		Map<String,Object> map= new HashMap<>();
@@ -43,7 +39,6 @@ public class PatientService implements PatientServiceInterface{
 			map.put("data",output);
 			map.put("message", "Patient added successfully");
 			return new ResponseEntity<>(map,HttpStatus.CREATED);
->>>>>>> 27dfb12a60eb88582ecc9ae5c3779c2645c330b8
 	}
 
 	@Override
@@ -111,16 +106,18 @@ public class PatientService implements PatientServiceInterface{
 		List<Patient> p= dao.getAllPatients();
 		List<PatientDto> output= p.stream().map((item)->pMapper.mapToPatientDto(item)).collect(Collectors.toList());
 		Map<String,Object> map= new HashMap<>();
+		if(!output.isEmpty()) {
 		 map.put("status", 10);
 		 map.put("data",output);
 		 map.put("message", "All patients fetched successfully");
 		return new ResponseEntity<>(map,HttpStatus.CREATED);
+		}else {
+			map.put("status",20);
+			map.put("data", "No Patients to display");
+			return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
+			
+		}
 	}
 
-	@Override
-	public TestResultDto viewTestResult(int testResultId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }
