@@ -1,16 +1,19 @@
 package com.graymatter.services;
 
-import java.util.List;
+
+import org.springframework.http.ResponseEntity;
 
 import com.graymatter.dto.PatientDto;
-import com.graymatter.dto.TestResultDto;
+import com.graymatter.exceptions.IdNotFoundException;
 
 public interface PatientServiceInterface {
-	public PatientDto registerPatient(PatientDto patient);
-	public PatientDto updatePatient(PatientDto patient);
-	public List<TestResultDto> getAllTestResult(String patientUserName);
-	public TestResultDto viewTestResult(int testResultId);
-	PatientDto viewPatientByUsername(String patientUsername);
-	TestResultDto viewTestResultById(int testResultId);
+	public ResponseEntity<?> registerPatient(PatientDto patient);
+	public ResponseEntity<?> deletePatientById(int id) throws IdNotFoundException;
+	public ResponseEntity<?> updatePatient(int id,PatientDto patient);
+	public ResponseEntity<?> getPatientById(int id) throws IdNotFoundException;
+	public ResponseEntity<?> getAllPatients();
+	public ResponseEntity<?> getAllTestResult(String patientUserName);
+	public ResponseEntity<?> viewPatientByUsername(String patientUsername);
+
 	
 }

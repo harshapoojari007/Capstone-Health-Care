@@ -11,12 +11,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.graymatter.dao.TestResultDao;
-import com.graymatter.dto.PatientDto;
+
 import com.graymatter.dto.PatientMapper;
 import com.graymatter.dto.TestResultDto;
 import com.graymatter.dto.TestResultMapper;
-import com.graymatter.entities.Patient;
-import com.graymatter.entities.TestResult;
 import com.graymatter.exceptions.IdNotFoundException;
 
 @Service
@@ -85,6 +83,7 @@ public class TestResultService implements TestResultServiceInterface{
 	TestResultDto testResult=mapper.mapToTestResultDto(dao.deleteTestResultById(id));
 		Map<String, Object> map=new HashMap<>();
 		map.put("status",10);
+		map.put("data",testResult);
 		map.put("message", "Successfully Deleted");
 		return new ResponseEntity<>(map,HttpStatus.OK);
 		

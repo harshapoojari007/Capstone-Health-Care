@@ -1,19 +1,22 @@
 package com.graymatter.services;
 
-import java.util.List;
+import java.util.Set;
+
+import org.springframework.http.ResponseEntity;
 
 import com.graymatter.dto.DiagnosticCenterDto;
-import com.graymatter.dto.DiagnosticTestDto;
-import com.graymatter.entities.Appointment;
+import com.graymatter.entities.DiagnosticTest;
+import com.graymatter.exceptions.IdNotFoundException;
 
 interface DiagnsoticCenterServiceInterface {
-	public List<DiagnosticCenterDto> getAllDiagnosticCenters();
-	public DiagnosticCenterDto addDiagnosticCenter(DiagnosticCenterDto diagnosticCenter);
-	public DiagnosticCenterDto getDiagnosticCenterById(int diagnosticCenterId);
-	public DiagnosticCenterDto updateDiagnosticCenter(DiagnosticCenterDto diagnosticCenter);
-	public DiagnosticTestDto viewTestResults(int diagnosticCentreId,String testName);
-	public DiagnosticTestDto addTest(int diagnosticCentreId, int testId );
-	public DiagnosticCenterDto removeDiagnosticCenter(int diagnosticCentreId);
-	public List<Appointment> getListOfAppointments(String centerName);
+	public ResponseEntity<?> getAllDiagnosticCenters();
+	public ResponseEntity<?> addDiagnosticCenter(DiagnosticCenterDto diagnosticCenter);
+	public ResponseEntity<?> getDiagnosticCenterById(int diagnosticCenterId) throws IdNotFoundException;
+	public ResponseEntity<?> updateDiagnosticCenter(int id,DiagnosticCenterDto diagnosticCenter) throws IdNotFoundException;
+	public ResponseEntity<?> viewTestResults(int diagnosticCentreId,String testName);
+	public ResponseEntity<?> addTest(int diagnosticCentreId, int testId );
+	public ResponseEntity<?> removeDiagnosticCenter(int diagnosticCentreId) throws IdNotFoundException;
+	public ResponseEntity<?> getListOfAppointments(String centerName);
+	public ResponseEntity<?> findByDiagnosticTests(Set<DiagnosticTest> diagnosticTests);
 	
 }

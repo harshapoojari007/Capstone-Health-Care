@@ -10,7 +10,10 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.26);
     padding: 0 1rem;
   }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 27dfb12a60eb88582ecc9ae5c3779c2645c330b8
   
   @media (min-width: 768px) {
     .main-header {

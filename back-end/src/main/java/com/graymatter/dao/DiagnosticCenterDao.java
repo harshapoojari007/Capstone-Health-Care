@@ -1,11 +1,14 @@
 package com.graymatter.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.graymatter.entities.DiagnosticCenter;
+import com.graymatter.entities.DiagnosticTest;
+import com.graymatter.exceptions.IdNotFoundException;
 import com.graymatter.repositories.DiagnosticCenterRepository;
 @Repository
 public class DiagnosticCenterDao {
@@ -14,7 +17,7 @@ public class DiagnosticCenterDao {
 	DiagnosticCenterRepository repo;
 
 	public List<DiagnosticCenter> getAllDiagnosticCenters() {
-		// TODO Auto-generated method stub
+
 		return repo.findAll();
 	}
 
@@ -22,15 +25,52 @@ public class DiagnosticCenterDao {
 		return repo.save(diagnosticCenter);
 	}
 
-	public DiagnosticCenter getDiagnosticCenterById(int diagnosticCenterId) {
-		// TODO Auto-generated method stub
-		return repo.findById(diagnosticCenterId).get();
+	public DiagnosticCenter getDiagnosticCenterById(int diagnosticCenterId) throws IdNotFoundException {
+
+		return repo.findById(diagnosticCenterId).orElseThrow(()->new IdNotFoundException("DiagnosticCenter id: "+diagnosticCenterId+" is not present"));
 	}
 
-	public DiagnosticCenter updateDiagnosticCenter(DiagnosticCenter diagnosticCenter) {
-		// TODO Auto-generated method stub
-		return repo.save(diagnosticCenter);
+	public DiagnosticCenter updateDiagnosticCenter(int id, DiagnosticCenter diagnosticCenter) throws IdNotFoundException {
+
+		 DiagnosticCenter existingCenter = repo.findById(id).orElseThrow(()->new IdNotFoundException("DiagnosticCenter id: "+id+" is not present"));
+	   
+
+	        // Update fields if they are not null
+	        if (diagnosticCenter.getName() != null && !diagnosticCenter.getName().isEmpty()) {
+	            existingCenter.setName(diagnosticCenter.getName());
+	        }
+	        if (diagnosticCenter.getContactNO() != null && !diagnosticCenter.getContactNO().isEmpty()) {
+	            existingCenter.setContactNO(diagnosticCenter.getContactNO());
+	        }
+	        if (diagnosticCenter.getAddress() != null && !diagnosticCenter.getAddress().isEmpty()) {
+	            existingCenter.setAddress(diagnosticCenter.getAddress());
+	        }
+	        if (diagnosticCenter.getEmail() != null && !diagnosticCenter.getEmail().isEmpty()) {
+	            existingCenter.setEmail(diagnosticCenter.getEmail());
+	        }
+	        if (diagnosticCenter.getDiagnosticTests() != null) {
+	            existingCenter.setDiagnosticTests(diagnosticCenter.getDiagnosticTests());
+	        }
+	        if (diagnosticCenter.getAppointments() != null) {
+	            existingCenter.setAppointments(diagnosticCenter.getAppointments());
+	        }
+	        if (diagnosticCenter.getCenterAdmin() != null) {
+	            existingCenter.setCenterAdmin(diagnosticCenter.getCenterAdmin());
+	        }
+
+	        // Save the updated DiagnosticCenter
+	        DiagnosticCenter savedCenter = repo.save(existingCenter);
+
+	        return savedCenter;	
+	}
+	public DiagnosticCenter deleteDiagnosticCenter(int id) throws IdNotFoundException {
+		DiagnosticCenter d= repo.findById(id).orElseThrow(()->new IdNotFoundException("Diagnostic Center id: "+id+" is not present"));
+		repo.deleteById(id);
+		return d;
 	}
 	
+	public List<DiagnosticCenter> findByDiagnosticTests(Set<DiagnosticTest> diagnosticTests){
+		return repo.findByDiagnosticTests(diagnosticTests);
+	}
 	
 }

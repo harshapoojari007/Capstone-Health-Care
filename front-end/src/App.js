@@ -16,7 +16,11 @@ import LayoutWithNavigation from './LayoutWithNavigation';
 import LayoutWithoutNav from './LayoutWithoutNav';
 import Home from './Main/Home Page/Home';
 import ApointmentForm from './Main/Appointment/ApointmentForm';
+<<<<<<< HEAD
 import DashBoard from './Main/Dashboard/DashBoard';
+=======
+import DashBoard from './Main/DashBoard/DashBoard';
+>>>>>>> 27dfb12a60eb88582ecc9ae5c3779c2645c330b8
 function App() {
   return (<Router>
      <Routes>

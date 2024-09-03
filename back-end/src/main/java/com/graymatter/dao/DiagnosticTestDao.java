@@ -2,12 +2,11 @@
 package com.graymatter.dao;
 
 import java.util.List;
-import java.util.Set;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.graymatter.entities.DiagnosticCenter;
 import com.graymatter.entities.DiagnosticTest;
 import com.graymatter.exceptions.IdNotFoundException;
 import com.graymatter.repositories.DiagnosticTestRepository;
