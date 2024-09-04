@@ -73,19 +73,19 @@ public class DiagnosticCenterService implements DiagnsoticCenterServiceInterface
 		 map.put("status", 10);
 			map.put("data",output);
 			map.put("message", "DiagnosticCenter fetched successfully");
-			return new ResponseEntity<>(map,HttpStatus.CREATED);
+			return new ResponseEntity<>(map,HttpStatus.OK);
 		
 	}
 
 	
 	@Override
 	public ResponseEntity<?> removeDiagnosticCenter(int diagnosticCentreId) throws IdNotFoundException {
-		DiagnosticCenterDto output=mapper.mapToDiagnosticCenterDto(dao.deleteDiagnosticCenter(diagnosticCentreId));
+		String output=dao.deleteDiagnosticCenter(diagnosticCentreId);
 		Map<String,Object> map= new HashMap<>();
 		 map.put("status", 10);
 		 map.put("data", output);
-			map.put("message", "DiagnosticCenter updated successfully");
-			return new ResponseEntity<>(map,HttpStatus.CREATED);
+			map.put("message", "DiagnosticCenter deleted successfully");
+			return new ResponseEntity<>(map,HttpStatus.OK);
 		
 	}
 	@Override
@@ -95,7 +95,7 @@ public class DiagnosticCenterService implements DiagnsoticCenterServiceInterface
 		 map.put("status", 10);
 			map.put("data",output);
 			map.put("message", "DiagnosticCenter updated successfully");
-			return new ResponseEntity<>(map,HttpStatus.CREATED);
+			return new ResponseEntity<>(map,HttpStatus.OK);
 	}
 
 	@Override
@@ -112,6 +112,7 @@ public class DiagnosticCenterService implements DiagnsoticCenterServiceInterface
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 
 	@Override
 	public ResponseEntity<?> getListOfAppointments(String centerName) {

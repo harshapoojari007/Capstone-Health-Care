@@ -2,13 +2,15 @@ import React, { useState } from 'react'
 import Sidebar from './Sidebar';
 import UserDashboard from './UserDashboard';
 import AdminDashboard from './AdminDashboard';
-import Appointments from './DashboardComponents/Appointments';
+
 import { useUser } from '../../UserContext';
-import DiagnosticCenter from './DashboardComponents/DiagnosticCenter';
+
 import DiagnosticTest from './DashboardComponents/DiagnosticTest';
 import TestResult from './DashboardComponents/TestResult';
 import Patient from './DashboardComponents/Patient';
 import Setting from './DashboardComponents/Setting';
+import DiagnosticCenter from './DashboardComponents/DiagnosticCenter';
+import Appointments from './DashboardComponents/Appointments';
 
 const DashBoard = () => {
     const { user } = useUser();

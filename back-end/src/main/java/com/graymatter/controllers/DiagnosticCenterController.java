@@ -3,6 +3,7 @@ package com.graymatter.controllers;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,9 +53,13 @@ public class DiagnosticCenterController {
 	public ResponseEntity<?> addTest(@PathVariable("id") int diagnosticCentreId,@PathVariable("testid") int testId ){
 		return service.addTest(diagnosticCentreId, testId);
 	}
-	@DeleteMapping("/diagnosticcenter/{id}")
+	@DeleteMapping("/diagnosticcenter/delete/{id}")
 	public ResponseEntity<?> removeDiagnosticCenter(int diagnosticCentreId) throws IdNotFoundException{
-		return service.removeDiagnosticCenter(diagnosticCentreId);
+		try{return service.removeDiagnosticCenter(diagnosticCentreId);
+		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error deleting diagnostic center");
+		}
 	}
 	@GetMapping("/diagnosticcenter/centername/{centername}")
 	public ResponseEntity<?> getListOfAppointments(@PathVariable("centername") String centerName){

@@ -4,7 +4,7 @@ import cardImg from "../Images/welcome_3.avif"
 
 function Cards() {
   return (
-    <Card style={{ width: '20rem',borderRadius:"10px" }}>
+    <Card style={{ width: '20rem',borderRadius:"10px",padding:"1rem" }}>
       <Card.Img variant="top" src={cardImg} style={{ height: '14rem' }} />
       <Card.Body>
         <Card.Title style={{ textAlign:"center" }} >Add and Manage your Bookings here</Card.Title>

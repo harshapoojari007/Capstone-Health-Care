@@ -1,6 +1,8 @@
-package com.graymatter.entities;
+	package com.graymatter.entities;
 
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,6 +34,7 @@ public class DiagnosticTest {
 	        joinColumns = @JoinColumn(name = "diagnostic_test_id"),
 	        inverseJoinColumns = @JoinColumn(name = "diagnostic_center_id")
 	    )
+	@JsonIgnore
 	private Set<DiagnosticCenter> diagnosticCenters;
 	
 	@ManyToMany(mappedBy = "diagnosticTests")

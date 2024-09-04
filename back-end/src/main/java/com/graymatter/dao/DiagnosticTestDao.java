@@ -7,8 +7,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.graymatter.entities.DiagnosticCenter;
 import com.graymatter.entities.DiagnosticTest;
 import com.graymatter.exceptions.IdNotFoundException;
+import com.graymatter.repositories.DiagnosticCenterRepository;
 import com.graymatter.repositories.DiagnosticTestRepository;
 @Repository
 public class DiagnosticTestDao {
@@ -16,6 +18,8 @@ public class DiagnosticTestDao {
 	@Autowired
 	DiagnosticTestRepository repo;
 	
+	@Autowired
+	DiagnosticCenterRepository diagnosticCenterRepository;
 
 	public List<DiagnosticTest> getAllDiagnosticTest(){
 		return repo.findAll();
@@ -61,5 +65,13 @@ public class DiagnosticTestDao {
 		return repo.findByTestName(testName).get(0).getUnits();
 	}
 	
-	
+	public DiagnosticTest addTest(int diagnosticCentreId, int testId) {
+          return null;
+
+           
+    }
+
+
 }
+	
+

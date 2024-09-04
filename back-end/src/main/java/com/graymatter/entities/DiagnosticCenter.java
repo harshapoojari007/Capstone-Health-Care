@@ -3,6 +3,8 @@ package com.graymatter.entities;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -24,7 +26,7 @@ import lombok.NoArgsConstructor;
 public class DiagnosticCenter {
 	
 	    @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    @GeneratedValue(strategy = GenerationType.AUTO)
 	    private int id;
 
 	    private String name;
@@ -38,6 +40,7 @@ public class DiagnosticCenter {
 	        joinColumns = @JoinColumn(name = "diagnostic_center_id"),
 	        inverseJoinColumns = @JoinColumn(name = "diagnostic_test_id")
 	    )
+	    @JsonIgnore
 	    private Set<DiagnosticTest> diagnosticTests;
 
 	    @OneToMany(mappedBy = "diagnosticCenter",cascade = {CascadeType.ALL}, orphanRemoval = true)

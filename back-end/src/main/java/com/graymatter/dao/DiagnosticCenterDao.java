@@ -1,6 +1,7 @@
 package com.graymatter.dao;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,14 +64,18 @@ public class DiagnosticCenterDao {
 
 	        return savedCenter;	
 	}
-	public DiagnosticCenter deleteDiagnosticCenter(int id) throws IdNotFoundException {
-		DiagnosticCenter d= repo.findById(id).orElseThrow(()->new IdNotFoundException("Diagnostic Center id: "+id+" is not present"));
-		repo.deleteById(id);
-		return d;
+	public String  deleteDiagnosticCenter(int id) throws IdNotFoundException {
+		Optional<DiagnosticCenter> d= repo.findById(id);
+		if(d.isPresent()) {
+			repo.delete(d.get());
+		}
+		else {
+			throw new IdNotFoundException("id not found");
+		}
+		return "successfully deleted";
 	}
 	
 	public List<DiagnosticCenter> findByDiagnosticTests(Set<DiagnosticTest> diagnosticTests){
 		return repo.findByDiagnosticTests(diagnosticTests);
 	}
-	
 }
