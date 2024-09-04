@@ -20,8 +20,8 @@ const Patient = () => {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await Axios.get('/patients');
-        setPatients(response.data);
+        const response = await Axios.get('/patient');
+        setPatients(response.data.data);
       } catch (error) {
         console.error('Error fetching patients:', error);
       }
@@ -35,7 +35,7 @@ const Patient = () => {
 
   const handleAddPatient = async () => {
     try {
-      const response = await Axios.post('/patients', newPatient);
+      const response = await Axios.post('/patient', newPatient);
       const addedPatientResponse = response.data;
       const message = addedPatientResponse.message;
 
@@ -49,7 +49,7 @@ const Patient = () => {
         userId: ''
       });
       // Fetch updated patient list
-      const updatedResponse = await Axios.get('/patients');
+      const updatedResponse = await Axios.get('/patient');
       setPatients(updatedResponse.data);
     } catch (error) {
       console.error('Error adding patient:', error);
@@ -78,8 +78,8 @@ const Patient = () => {
 
   const handleViewAppointments = async (patient) => {
     try {
-      const response = await Axios.get(`/patients/${patient.id}/appointments`);
-      setAppointments(response.data);
+      const response = await Axios.get(`/appointment/patient/${patient.id}`);
+      setAppointments(response.data.data);
       setSelectedPatient(patient);
       setShowAppointmentsModal(true);
     } catch (error) {

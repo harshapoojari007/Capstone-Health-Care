@@ -53,7 +53,7 @@ public class DiagnosticCenterController {
 		return service.addTest(diagnosticCentreId, testId);
 	}
 	@DeleteMapping("/diagnosticcenter/{id}")
-	public ResponseEntity<?> removeDiagnosticCenter(int diagnosticCentreId) throws IdNotFoundException{
+	public ResponseEntity<?> removeDiagnosticCenter(@PathVariable("id") int diagnosticCentreId) throws IdNotFoundException{
 		return service.removeDiagnosticCenter(diagnosticCentreId);
 	}
 	@GetMapping("/diagnosticcenter/centername/{centername}")

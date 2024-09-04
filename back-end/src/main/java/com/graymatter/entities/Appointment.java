@@ -1,10 +1,15 @@
 package com.graymatter.entities;
 
 import java.sql.Date;
-import java.util.Set;
+import java.util.*;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -23,28 +28,28 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Appointment {
 
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-	private int id;
-	private Date appointmentDate;
-	private ApprovalStatus approvalStatus;
-	
-	   @ManyToMany
-	    @JoinTable(
-	        name = "appointment_diagnostic_test",
-	        joinColumns = @JoinColumn(name = "appointment_id"),
-	        inverseJoinColumns = @JoinColumn(name = "diagnostic_test_id")
-	    )
-	    private Set<DiagnosticTest> diagnosticTests;
+    private int id;
+    private Date appointmentDate;
+    private ApprovalStatus approvalStatus;
+    
+    @ManyToMany
+    @JoinTable(
+        name = "appointment_diagnostic_test",
+        joinColumns = @JoinColumn(name = "appointment_id"),
+        inverseJoinColumns = @JoinColumn(name = "diagnostic_test_id")
+    )
+    private List<DiagnosticTest> diagnosticTests=new ArrayList<DiagnosticTest>();
 
-	    @ManyToOne
-	    @JoinColumn(name = "patient_id")
-	    private Patient patient;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
 
-	    @ManyToOne
-	    @JoinColumn(name = "diagnostic_center_id")
-	    private DiagnosticCenter diagnosticCenter;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "diagnostic_center_id")
+    private DiagnosticCenter diagnosticCenter;
 
-	    @OneToMany(mappedBy = "appointment",cascade = CascadeType.ALL, orphanRemoval = true) // Delete TestResult when Appointment is deleted)
-	    private Set<TestResult> testResults;
+    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TestResult> testResults=new ArrayList<TestResult>();
 }

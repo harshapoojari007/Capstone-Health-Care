@@ -42,11 +42,11 @@ public class PatientController {
 		return service.getAllPatients()	;
 	}
 	
-	@GetMapping("/testresult/{username}")
+	@GetMapping("/patient/testresult/username/{username}")
 	public ResponseEntity<?> getAllTestResult(@PathVariable("username") String patientUserName){
 		return service.getAllTestResult(patientUserName);
 	}
-	@GetMapping("/patient/{username}")
+	@GetMapping("/patient/username/{username}")
 	public ResponseEntity<?> viewPatientByUsername(@PathVariable("id") String patientUsername){
 		return service.viewPatientByUsername(patientUsername);
 	}

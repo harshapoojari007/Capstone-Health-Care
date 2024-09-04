@@ -1,6 +1,6 @@
 package com.graymatter.dto;
 
-import java.util.Set;
+import java.util.*;
 
 import com.graymatter.entities.Appointment;
 import com.graymatter.entities.User;
@@ -19,6 +19,6 @@ public class PatientDto {
 	private int age;
 	private String gender;
 	
-	private Set<Appointment> appointments;
+	private List<Appointment> appointments=new ArrayList<Appointment>();
 	private User user;
 }

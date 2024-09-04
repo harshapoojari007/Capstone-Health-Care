@@ -14,7 +14,7 @@ const AppointmentForm = () => {
     diagnosticCenter: ''
   });
   
-  const [diagnosticTests, setDiagnosticTests] = useState([]);
+  const [diagnosticTests, setDiagnosticTests] = useState(["1","2"]);
   const [centersList, setCentersList] = useState([]);
   const [showAlert, setShowAlert] = useState({ show: false, message: '', variant: '' });
 
@@ -23,7 +23,7 @@ const AppointmentForm = () => {
     const fetchDiagnosticTests = async () => {
       try {
         const response = await Axios.get('/diagnostictests');
-        setDiagnosticTests(response.data.data); // Assuming response.data.data contains the list of tests
+        //setDiagnosticTests(response.data.data); // Assuming response.data.data contains the list of tests
       } catch (error) {
         console.error('Error fetching diagnostic tests:', error);
       }
@@ -83,7 +83,7 @@ const AppointmentForm = () => {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="container mt-12">
       <Form className="form-container border p-4 rounded shadow" onSubmit={handleSubmit}>
         <h2 className="text-center mb-4">Appointment Form</h2>
         {showAlert.show && <Alert variant={showAlert.variant}>{showAlert.message}</Alert>}

@@ -21,14 +21,15 @@ import lombok.NoArgsConstructor;
 @Entity
 public class CenterAdministrator {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	private String name;
 	private String phoneNo;
     private String address;
     
-    @JsonIgnore
+    
     @OneToOne(mappedBy = "centerAdmin", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
 	private DiagnosticCenter diagnosticCenter;
 	
 	@OneToOne

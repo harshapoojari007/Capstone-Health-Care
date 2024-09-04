@@ -40,7 +40,7 @@ const DashBoards = () => {
         <div className="row vh-100">
           <Sidebar setSelectedView={setSelectedView} />
           <main className="col-md-9 ms-sm-auto col-lg-10 px-4">
-            <h1 className="my-4">{selectedView.charAt(0).toUpperCase() + selectedView.slice(1)}</h1>
+            {/* <h1 className="my-4">{selectedView.charAt(0).toUpperCase() + selectedView.slice(1)}</h1> */}
             {renderContent()}
           </main>
         </div>

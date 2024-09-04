@@ -1,6 +1,8 @@
 package com.graymatter.entities;
 
-import java.util.Set;
+import java.util.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -32,9 +34,11 @@ public class DiagnosticTest {
 	        joinColumns = @JoinColumn(name = "diagnostic_test_id"),
 	        inverseJoinColumns = @JoinColumn(name = "diagnostic_center_id")
 	    )
-	private Set<DiagnosticCenter> diagnosticCenters;
+	@JsonIgnore
+	private List<DiagnosticCenter> diagnosticCenters=new ArrayList<DiagnosticCenter>();
 	
 	@ManyToMany(mappedBy = "diagnosticTests")
-    private Set<Appointment> appointments;
+	@JsonIgnore
+    private List<Appointment> appointments=new ArrayList<Appointment>();
 
 }

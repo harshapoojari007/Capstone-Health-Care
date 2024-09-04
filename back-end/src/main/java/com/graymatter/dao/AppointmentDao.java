@@ -1,6 +1,6 @@
 package com.graymatter.dao;
 
-import java.util.List;
+import java.util.*;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +66,7 @@ public class AppointmentDao{
 	}
 
 	
-	public Set<DiagnosticTest> getAllTestOfAppointment(int id) throws IdNotFoundException {
+	public List<DiagnosticTest> getAllTestOfAppointment(int id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
 		Appointment appointment= repo.findById(id).orElseThrow(()->new IdNotFoundException("Appointment id: "+id+" is not present"));
 		return appointment.getDiagnosticTests();
@@ -81,7 +81,7 @@ public class AppointmentDao{
 //	}
 
 	
-	public Set<TestResult> getTestResultOfAppointment(int id) throws IdNotFoundException {
+	public List<TestResult> getTestResultOfAppointment(int id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
 		Appointment appointment= repo.findById(id).orElseThrow(()->new IdNotFoundException("Appointment id: "+id+" is not present"));
 		return appointment.getTestResults();

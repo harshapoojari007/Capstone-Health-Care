@@ -1,6 +1,6 @@
 package com.graymatter.dto;
 
-import java.util.Set;
+import java.util.*;
 
 import com.graymatter.entities.Appointment;
 import com.graymatter.entities.CenterAdministrator;
@@ -20,7 +20,7 @@ public class DiagnosticCenterDto {
 	    private String contactNO;
 	    private String address;
 	    private String email;
-	    private Set<DiagnosticTest> diagnosticTests;
-	    private Set<Appointment> appointments;
+	    private List<DiagnosticTest> diagnosticTests=new ArrayList<DiagnosticTest>();
+	    private List<Appointment> appointments=new ArrayList<Appointment>();
 	    private CenterAdministrator centerAdmin;
 }

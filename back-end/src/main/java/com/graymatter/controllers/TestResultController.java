@@ -45,7 +45,7 @@ public class TestResultController {
 		return service.getTestResultById(id);
 	}
 	
-	@DeleteMapping("/testresult")
+	@DeleteMapping("/testresult/{id}")
 	public ResponseEntity<?> deleteTestResultById(@PathVariable("id")int id) throws IdNotFoundException
 	{
 		 return service.deleteTestResultById(id);

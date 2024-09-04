@@ -1,7 +1,7 @@
 package com.graymatter.entities;
 
-
-import java.util.Set;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -13,6 +13,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import java.util.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,28 +23,30 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 public class DiagnosticCenter {
-	
-	    @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private int id;
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
 
-	    private String name;
-	    private String contactNO;
-	    private String address;
-	    private String email;
+    private String name;
+    private String contactNO;
+    private String address;
+    private String email;
 
-	    @ManyToMany()
-	    @JoinTable(
-	        name = "diagnostic_center_test",
-	        joinColumns = @JoinColumn(name = "diagnostic_center_id"),
-	        inverseJoinColumns = @JoinColumn(name = "diagnostic_test_id")
-	    )
-	    private Set<DiagnosticTest> diagnosticTests;
+    @ManyToMany
+    @JoinTable(
+        name = "diagnostic_center_test",
+        joinColumns = @JoinColumn(name = "diagnostic_center_id"),
+        inverseJoinColumns = @JoinColumn(name = "diagnostic_test_id")
+    )
+    private List<DiagnosticTest> diagnosticTests=new ArrayList<DiagnosticTest>();
 
-	    @OneToMany(mappedBy = "diagnosticCenter",cascade = {CascadeType.ALL}, orphanRemoval = true)
-	    private Set<Appointment> appointments;
-	    
-	    @OneToOne(cascade = {CascadeType.ALL})
-	    @JoinColumn(name = "centerAdmin_id")
-	    private CenterAdministrator centerAdmin;
+    @JsonIgnore
+    @OneToMany(mappedBy = "diagnosticCenter", cascade = {CascadeType.ALL}, orphanRemoval = true)
+    private List<Appointment> appointments=new ArrayList<Appointment>();
+    
+    @OneToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "centerAdmin_id")
+    @JsonIgnore
+    private CenterAdministrator centerAdmin;
 }
