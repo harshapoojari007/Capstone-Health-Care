@@ -1,6 +1,8 @@
 	package com.graymatter.entities;
 
-import java.util.Set;
+import java.util.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -35,9 +37,14 @@ public class DiagnosticTest {
 	        inverseJoinColumns = @JoinColumn(name = "diagnostic_center_id")
 	    )
 	@JsonIgnore
+<<<<<<< HEAD
 	private Set<DiagnosticCenter> diagnosticCenters;
+=======
+	private List<DiagnosticCenter> diagnosticCenters=new ArrayList<DiagnosticCenter>();
+>>>>>>> bfe8f01c3e1610282283a4d8faeb047724adbb60
 	
 	@ManyToMany(mappedBy = "diagnosticTests")
-    private Set<Appointment> appointments;
+	@JsonIgnore
+    private List<Appointment> appointments=new ArrayList<Appointment>();
 
 }

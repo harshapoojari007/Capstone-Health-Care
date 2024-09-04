@@ -53,6 +53,7 @@ public class DiagnosticCenterController {
 	public ResponseEntity<?> addTest(@PathVariable("id") int diagnosticCentreId,@PathVariable("testid") int testId ){
 		return service.addTest(diagnosticCentreId, testId);
 	}
+<<<<<<< HEAD
 	@DeleteMapping("/diagnosticcenter/delete/{id}")
 	public ResponseEntity<?> removeDiagnosticCenter(int diagnosticCentreId) throws IdNotFoundException{
 		try{return service.removeDiagnosticCenter(diagnosticCentreId);
@@ -60,6 +61,11 @@ public class DiagnosticCenterController {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error deleting diagnostic center");
 		}
+=======
+	@DeleteMapping("/diagnosticcenter/{id}")
+	public ResponseEntity<?> removeDiagnosticCenter(@PathVariable("id") int diagnosticCentreId) throws IdNotFoundException{
+		return service.removeDiagnosticCenter(diagnosticCentreId);
+>>>>>>> bfe8f01c3e1610282283a4d8faeb047724adbb60
 	}
 	@GetMapping("/diagnosticcenter/centername/{centername}")
 	public ResponseEntity<?> getListOfAppointments(@PathVariable("centername") String centerName){

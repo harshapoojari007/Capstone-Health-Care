@@ -3,7 +3,6 @@ package com.graymatter.services;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,25 +49,26 @@ public class AppointmentService implements AppointmentServiceInterface{
 	public ResponseEntity<?> getAllAppointments() {
 		// TODO Auto-generated method stub
 		List<Appointment> aList=dao.getAllAppointments();
-		List<AppointmentDto> appointmentDtoList= aList.stream().map((a)->mapper.mapToAppointmentDto(a)).collect(Collectors.toList());
-		Map<String, Object> map=new HashMap<>();
+
+	List<AppointmentDto> appointmentDtoList= aList.stream().map((a)->mapper.mapToAppointmentDto(a)).collect(Collectors.toList());	Map<String, Object> map=new HashMap<>();
 		if(!appointmentDtoList.isEmpty()) {
 			map.put("status",10);
 			map.put("data", appointmentDtoList);
 			return new ResponseEntity<>(map,HttpStatus.OK);
 			
-		}else {
+		}else {		
 			map.put("status",20);
-			map.put("data", "No Appointments to display");
+		map.put("data", "No Appointments to display");
+		}
 			return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
 			
 		}
-	}
 
 	@Override
 	public ResponseEntity<?> getAppointmentById(int id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
 		AppointmentDto appointment= mapper.mapToAppointmentDto(dao.getAppointmentById(id));
+		appointment.getDiagnosticCenter().getName();
 		Map<String, Object> map=new HashMap<>();
 		map.put("status",10);
 		map.put("data", appointment);
@@ -110,8 +110,8 @@ public class AppointmentService implements AppointmentServiceInterface{
 	@Override
 	public ResponseEntity<?> getAllTestOfAppointment(int id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
-		Set<DiagnosticTest> testSet=dao.getAllTestOfAppointment(id);
-		Set<DiagnosticTestDto> tests= testSet.stream().map((test)->testMapper.mapToDiagnosticTestDto(test)).collect(Collectors.toSet());
+		List<DiagnosticTest> testSet=dao.getAllTestOfAppointment(id);
+		List<DiagnosticTestDto> tests= testSet.stream().map((test)->testMapper.mapToDiagnosticTestDto(test)).collect(Collectors.toList());
 		Map<String, Object> map=new HashMap<>();
 		if(!tests.isEmpty()) {
 			map.put("status",10);
@@ -145,8 +145,8 @@ public class AppointmentService implements AppointmentServiceInterface{
 	@Override
 	public ResponseEntity<?> getTestResultOfAppointment(int id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
-		Set<TestResult> resultSet=dao.getTestResultOfAppointment(id);
-		Set<TestResultDto> testResults= resultSet.stream().map((result)->resultMapper.mapToTestResultDto(result)).collect(Collectors.toSet());
+		List<TestResult> resultSet=dao.getTestResultOfAppointment(id);
+		List<TestResultDto> testResults= resultSet.stream().map((result)->resultMapper.mapToTestResultDto(result)).collect(Collectors.toList());
 		Map<String, Object> map=new HashMap<>();
 		if(!testResults.isEmpty()) {
 			map.put("status",10);

@@ -1,6 +1,6 @@
 package com.graymatter.dto;
 
-import java.util.Set;
+import java.util.*;
 
 import org.springframework.stereotype.Component;
 
@@ -41,7 +41,7 @@ public class DiagnosticTestDto {
 	 
 	@NotNull(message = "Diagnostic Centers cannot be null")
 	@Size(min = 1, message = "At least one diagnostic center is required")
-	private Set<DiagnosticCenter> diagnosticCenters;
+	private List<DiagnosticCenter> diagnosticCenters=new ArrayList<DiagnosticCenter>();
 	
-    private Set<Appointment> appointments;
+    private List<Appointment> appointments=new ArrayList<Appointment>();
 }

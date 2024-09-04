@@ -11,7 +11,7 @@ function Cards() {
         <Card.Text style={{ textAlign:"center" }}>
          Start booking your appointments now
         </Card.Text>
-        <Button variant="primary" href='/login'style={{ marginLeft:"3rem" }} >Book appointment</Button>
+        <Button variant="primary" href='/appointmentBooking'style={{ marginLeft:"3rem" }} >Book appointment</Button>
       </Card.Body>
     </Card>
   );

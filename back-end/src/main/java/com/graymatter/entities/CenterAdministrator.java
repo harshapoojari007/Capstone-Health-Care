@@ -27,8 +27,9 @@ public class CenterAdministrator {
 	private String phoneNo;
     private String address;
     
-    @JsonIgnore
+    
     @OneToOne(mappedBy = "centerAdmin", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
 	private DiagnosticCenter diagnosticCenter;
 	
 	@OneToOne

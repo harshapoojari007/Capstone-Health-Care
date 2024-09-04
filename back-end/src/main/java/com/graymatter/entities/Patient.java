@@ -1,6 +1,9 @@
 package com.graymatter.entities;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -27,8 +30,10 @@ public class Patient {
 	private int age;
 	private String gender;
 	
-	@OneToMany(mappedBy="patient", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<Appointment> appointments;
+	 
+	@JsonIgnore
+    @OneToMany(mappedBy = "patient", cascade = {CascadeType.ALL}, orphanRemoval = true)
+	private List<Appointment> appointments=new ArrayList<Appointment>();
 	
 	@OneToOne
 	@JoinColumn(name="userId",referencedColumnName = "id")

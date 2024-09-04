@@ -1,7 +1,7 @@
 package com.graymatter.dto;
 
 import java.sql.Date;
-import java.util.Set;
+import java.util.*;
 
 import org.springframework.stereotype.Component;
 
@@ -23,6 +23,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AppointmentDto {
 	
+	
 		private int id;
 		
 		@NotNull(message = "Appointment date cannot be null")
@@ -34,7 +35,7 @@ public class AppointmentDto {
 		
 		@NotNull(message = "Diagnostic tests cannot be null")
 	    @Size(min = 1, message = "At least one diagnostic test is required")
-	    private Set<DiagnosticTest> diagnosticTests;
+	    private List<DiagnosticTest> diagnosticTests=new ArrayList<DiagnosticTest>();
 		
 		@NotNull(message = "Patient cannot be null")
 	    private Patient patient;
@@ -42,6 +43,6 @@ public class AppointmentDto {
 		@NotNull(message = "Diagnostic Center cannot be null")
 	    private DiagnosticCenter diagnosticCenter;
 		
-	    private Set<TestResult> testResults;
+	    private List<TestResult> testResults=new ArrayList<TestResult>();
 	
 }
