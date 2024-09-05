@@ -25,33 +25,16 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 public class DiagnosticCenter {
-<<<<<<< HEAD
-	
-	    @Id
-	    @GeneratedValue(strategy = GenerationType.AUTO)
-	    private int id;
-=======
-    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
->>>>>>> bfe8f01c3e1610282283a4d8faeb047724adbb60
+
 
     private String name;
     private String contactNO;
     private String address;
     private String email;
 
-<<<<<<< HEAD
-	    @ManyToMany()
-	    @JoinTable(
-	        name = "diagnostic_center_test",
-	        joinColumns = @JoinColumn(name = "diagnostic_center_id"),
-	        inverseJoinColumns = @JoinColumn(name = "diagnostic_test_id")
-	    )
-	    @JsonIgnore
-	    private Set<DiagnosticTest> diagnosticTests;
-=======
     @ManyToMany
     @JoinTable(
         name = "diagnostic_center_test",
@@ -59,7 +42,6 @@ public class DiagnosticCenter {
         inverseJoinColumns = @JoinColumn(name = "diagnostic_test_id")
     )
     private List<DiagnosticTest> diagnosticTests=new ArrayList<DiagnosticTest>();
->>>>>>> bfe8f01c3e1610282283a4d8faeb047724adbb60
 
     @JsonIgnore
     @OneToMany(mappedBy = "diagnosticCenter", cascade = {CascadeType.ALL}, orphanRemoval = true)

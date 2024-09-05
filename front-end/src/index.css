@@ -21,7 +21,7 @@ code {
   
 }
 
-.auth input{
+.auth input,select{
   background-color: #343434;
   outline: none;
   border: none;
@@ -62,4 +62,39 @@ code {
   height: 100%;
   
   border-radius: 40px;
+}
+
+
+.auth select {
+  background-color: #343434;
+  color: white;
+  font-size: 14px;
+  padding: 12px;
+  border: none;
+  border-radius: 15px;
+  outline: none;
+  transition: background-color 0.3s;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+
+.auth select:focus {
+  background-color: #343434;
+  border: none;
+  outline: none;
+}
+
+
+.auth select option {
+  background-color: #343434;
+  color: white;
+  padding: 12px;
+  font-size: 14px;
+}
+
+
+.auth select option:hover {
+  background-color: #555;
+  color: white;
 }

@@ -18,6 +18,7 @@ public class PatientDto {
 	private String phoneNo;
 	private int age;
 	private String gender;
+	private String aadharNumber;
 	
 	private List<Appointment> appointments=new ArrayList<Appointment>();
 	private User user;

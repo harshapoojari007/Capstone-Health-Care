@@ -27,7 +27,7 @@ public class AppointmentDto {
 		private int id;
 		
 		@NotNull(message = "Appointment date cannot be null")
-	    @Future(message = "Appointment date must be in the future")
+	  //  @Future(message = "Appointment date must be in the future")
 		private Date appointmentDate;
 		
 		@NotNull(message = "Approval status cannot be null")

@@ -63,12 +63,38 @@ public class PatientService implements PatientServiceInterface{
 
 	@Override
 	public ResponseEntity<?> viewPatientByUsername(String patientUsername) {
-		PatientDto output= pMapper.mapToPatientDto(dao.getPatientByUsername(patientUsername));
+		List<Patient> p= dao.getPatientByUsername(patientUsername);
+		List<PatientDto> output= p.stream().map((item)->pMapper.mapToPatientDto(item)).collect(Collectors.toList());
 		Map<String,Object> map= new HashMap<>();
+		if(!output.isEmpty()) {
 		 map.put("status", 10);
-			map.put("data",output);
-			map.put("message", "Patient fetched successfully");
-			return new ResponseEntity<>(map,HttpStatus.CREATED);
+		 map.put("data",output);
+		 map.put("message", "All patients fetched successfully");
+		return new ResponseEntity<>(map,HttpStatus.CREATED);
+		}else {
+			map.put("status",20);
+			map.put("data", "No Patients to display");
+			return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
+			
+		}
+	}
+	
+	@Override
+	public ResponseEntity<?> viewPatientByMobileNo(String mobileNo) {
+		List<Patient> p= dao.getPatientByMobile(mobileNo);
+		List<PatientDto> output= p.stream().map((item)->pMapper.mapToPatientDto(item)).collect(Collectors.toList());
+		Map<String,Object> map= new HashMap<>();
+		if(!output.isEmpty()) {
+		 map.put("status", 10);
+		 map.put("data",output.get(0));
+		 map.put("message", "All patients fetched successfully");
+		return new ResponseEntity<>(map,HttpStatus.CREATED);
+		}else {
+			map.put("status",20);
+			map.put("data", "No Patients to display");
+			return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
+			
+		}
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.graymatter.services;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,8 @@ interface DiagnsoticCenterServiceInterface {
 	public ResponseEntity<?> addTest(int diagnosticCentreId, int testId );
 	public ResponseEntity<?> removeDiagnosticCenter(int diagnosticCentreId) throws IdNotFoundException;
 	public ResponseEntity<?> getListOfAppointments(String centerName);
-	public ResponseEntity<?> findByDiagnosticTests(Set<DiagnosticTest> diagnosticTests);
+//	public ResponseEntity<?> findByDiagnosticTests(Set<DiagnosticTest> diagnosticTests);
+//	public ResponseEntity<?> findByDiagnosticTests(List<DiagnosticTest> diagnosticTests);
+	public ResponseEntity<?> findByDiagnosticTests(List<Integer> diagnosticTestIds);
 	
 }

@@ -50,5 +50,9 @@ public class PatientController {
 	public ResponseEntity<?> viewPatientByUsername(@PathVariable("id") String patientUsername){
 		return service.viewPatientByUsername(patientUsername);
 	}
+	@GetMapping("/patient/mobile/{mobile}")
+	public ResponseEntity<?> viewPatientByMobileNo(@PathVariable("mobile") String mobile){
+		return service.viewPatientByMobileNo(mobile);
+	}
 
 }

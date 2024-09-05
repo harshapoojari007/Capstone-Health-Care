@@ -14,6 +14,7 @@ public interface PatientServiceInterface {
 	public ResponseEntity<?> getAllPatients();
 	public ResponseEntity<?> getAllTestResult(String patientUserName);
 	public ResponseEntity<?> viewPatientByUsername(String patientUsername);
+	ResponseEntity<?> viewPatientByMobileNo(String mobileNo);
 
 	
 }

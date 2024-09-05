@@ -121,9 +121,22 @@ public class DiagnosticCenterService implements DiagnsoticCenterServiceInterface
 	}
 
 	@Override
-	public ResponseEntity<?> findByDiagnosticTests(Set<DiagnosticTest> diagnosticTests) {
+	public ResponseEntity<?> findByDiagnosticTests(List<Integer> diagnosticTestIds) {
 		// TODO Auto-generated method stub
-		return null;
+		List<DiagnosticCenter> dcList= dao.findByDiagnosticTests(diagnosticTestIds);
+		List<DiagnosticCenterDto> output= dcList.stream().map((dc)->mapper.mapToDiagnosticCenterDto(dc)).collect(Collectors.toList());
+		Map<String,Object> map= new HashMap<>();
+		if(!output.isEmpty()) {
+		 map.put("status", 10);
+			map.put("data",output);
+			map.put("message", "DiagnosticCenters fetched successfully");
+			return new ResponseEntity<>(map,HttpStatus.OK);
+	}else {
+		map.put("status",20);
+		map.put("data", "No DiagnosticCenters to display");
+		return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
+		
+	}
 	}
 
 }

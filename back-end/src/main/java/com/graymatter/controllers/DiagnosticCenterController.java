@@ -1,6 +1,6 @@
 package com.graymatter.controllers;
 
-import java.util.Set;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -53,26 +53,18 @@ public class DiagnosticCenterController {
 	public ResponseEntity<?> addTest(@PathVariable("id") int diagnosticCentreId,@PathVariable("testid") int testId ){
 		return service.addTest(diagnosticCentreId, testId);
 	}
-<<<<<<< HEAD
-	@DeleteMapping("/diagnosticcenter/delete/{id}")
-	public ResponseEntity<?> removeDiagnosticCenter(int diagnosticCentreId) throws IdNotFoundException{
-		try{return service.removeDiagnosticCenter(diagnosticCentreId);
-		}catch(Exception e) {
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error deleting diagnostic center");
-		}
-=======
+
 	@DeleteMapping("/diagnosticcenter/{id}")
 	public ResponseEntity<?> removeDiagnosticCenter(@PathVariable("id") int diagnosticCentreId) throws IdNotFoundException{
 		return service.removeDiagnosticCenter(diagnosticCentreId);
->>>>>>> bfe8f01c3e1610282283a4d8faeb047724adbb60
+
 	}
 	@GetMapping("/diagnosticcenter/centername/{centername}")
 	public ResponseEntity<?> getListOfAppointments(@PathVariable("centername") String centerName){
 		return service.getListOfAppointments(centerName);
 	}
 	@PostMapping("/diagnosticcenter/tests")
-	public ResponseEntity<?> findByDiagnosticTests(@RequestBody Set<DiagnosticTest> diagnosticTests){
+	public ResponseEntity<?> findByDiagnosticTests(@RequestBody List<Integer> diagnosticTests){
 		return service.findByDiagnosticTests(diagnosticTests);
 	}
 }

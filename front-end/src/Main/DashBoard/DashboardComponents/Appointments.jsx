@@ -28,14 +28,14 @@ const Appointments = () => {
     };
 
     fetchAppointments();
-  }, []);
+  }, [appointmentsList]);
 
   const handleEdit = (id) => {
     const appointment = appointmentsList.find(app => app.id === id);
     setFormData({
       id: appointment.id,
-      patientName: appointment.patientName || '',
-      mobileNumber: appointment.mobileNumber || '',
+      patientName: appointment.patient.name || '',
+      mobileNumber: appointment.patient.phoneNo || '',
       appointmentDate: new Date(appointment.appointmentDate).toISOString().substring(0, 10), // Format date for input
       diagnosticTests: appointment.diagnosticTests || [],
       diagnosticCenter: appointment.diagnosticCenter || {}
@@ -93,7 +93,7 @@ const Appointments = () => {
         alert('Appointment added successfully!');
       }
       handleCloseModal();
-      // // Refresh the appointments list
+      // Refresh the appointments list
       // await fetchAppointments();
     } catch (error) {
       console.error('Error saving appointment:', error);
@@ -109,20 +109,22 @@ const Appointments = () => {
             <th>Patient Name</th>
             <th>Mobile Number</th>
             <th>Appointment Date</th>
+            <th>Diagnostic Center</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {appointmentsList.length === 0 ? (
             <tr>
-              <td colSpan="4" className="text-center">No appointments found</td>
+              <td colSpan="5" className="text-center">No appointments found</td>
             </tr>
           ) : (
             appointmentsList.map(appointment => (
               <tr key={appointment.id}>
-                <td>{appointment.patientName || 'N/A'}</td>
-                <td>{appointment.mobileNumber || 'N/A'}</td>
+                <td>{appointment.patient.name || 'N/A'}</td>
+                <td>{appointment.patient.phoneNo || 'N/A'}</td>
                 <td>{new Date(appointment.appointmentDate).toLocaleDateString()}</td>
+                <td>{appointment.diagnosticCenter ? appointment.diagnosticCenter.name : 'N/A'}</td>
                 <td>
                   <DropdownButton id="dropdown-basic-button" title="Actions">
                     <Dropdown.Item as="button" onClick={() => handleView(appointment.id)}>View Details</Dropdown.Item>

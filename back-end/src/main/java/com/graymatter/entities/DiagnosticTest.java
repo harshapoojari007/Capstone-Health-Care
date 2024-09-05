@@ -37,11 +37,7 @@ public class DiagnosticTest {
 	        inverseJoinColumns = @JoinColumn(name = "diagnostic_center_id")
 	    )
 	@JsonIgnore
-<<<<<<< HEAD
-	private Set<DiagnosticCenter> diagnosticCenters;
-=======
 	private List<DiagnosticCenter> diagnosticCenters=new ArrayList<DiagnosticCenter>();
->>>>>>> bfe8f01c3e1610282283a4d8faeb047724adbb60
 	
 	@ManyToMany(mappedBy = "diagnosticTests")
 	@JsonIgnore

@@ -25,7 +25,7 @@ public class PatientDao {
 		return testResultRepo.findAll();
 		}
 
-	public Patient getPatientByUsername(String patientUsername) {
+	public List<Patient> getPatientByUsername(String patientUsername) {
 		
 		return patientRepo.findByUsername(patientUsername);
 	}
@@ -56,6 +56,11 @@ public class PatientDao {
 		Patient p= patientRepo.findById(id).orElseThrow(()->new IdNotFoundException("Appointment id: "+id+" is not present"));
 		patientRepo.deleteById(id);
 		return p;
+	}
+	public List<Patient> getPatientByMobile(String mobileNo){
+	return patientRepo.findByPhoneNo(mobileNo);
+	
+		
 	}
 
 }
