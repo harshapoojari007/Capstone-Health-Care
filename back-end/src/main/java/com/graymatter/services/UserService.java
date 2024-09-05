@@ -15,6 +15,7 @@ import com.graymatter.dto.UserDto;
 import com.graymatter.dto.UserMapper;
 import com.graymatter.entities.User;
 import com.graymatter.exceptions.IdNotFoundException;
+import com.graymatter.exceptions.InvalidCredentialsException;
 import com.graymatter.exceptions.UserOrEmailAlreadyPresent;
 
 @Service
@@ -94,6 +95,16 @@ public class UserService implements UserServiceInterface{
 		map.put("message", "user with username "+username+"  fetched successfully");
 		return new ResponseEntity<>(map,HttpStatus.OK);
 		
+	}
+
+	@Override
+	public ResponseEntity<?> loginUser(String username, String passoword) throws InvalidCredentialsException {
+		UserDto output= mapper.mapToUserDto(dao.login(username, passoword));
+		Map<String, Object> map=new HashMap<>();
+		map.put("status",10);
+		map.put("data", output);
+		map.put("message", "user with username "+username+"  successfully loggedIn");
+		return new ResponseEntity<>(map,HttpStatus.OK);
 	}
 		
 }

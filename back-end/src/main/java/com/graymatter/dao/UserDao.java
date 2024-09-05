@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.graymatter.entities.User;
 import com.graymatter.exceptions.IdNotFoundException;
+import com.graymatter.exceptions.InvalidCredentialsException;
 import com.graymatter.exceptions.UserOrEmailAlreadyPresent;
 import com.graymatter.repositories.UserRepository;
 
@@ -72,5 +73,18 @@ public class UserDao {
 	        return updatedUser;
 	    }
 		
+	public User login(String username, String password) throws InvalidCredentialsException {
+        User user = repo.findByUsername(username);
+        if (user == null) {
+            throw new InvalidCredentialsException("Invalid username or password.");
+        }
+
+       
+        if (!password.equals(user.getPassword())) {
+            throw new InvalidCredentialsException("Invalid username or password.");
+        }
+
+        return user;
+    }
 	}
 

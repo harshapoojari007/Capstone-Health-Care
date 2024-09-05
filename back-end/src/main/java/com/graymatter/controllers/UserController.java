@@ -1,5 +1,7 @@
 package com.graymatter.controllers;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.graymatter.dto.UserDto;
 import com.graymatter.exceptions.IdNotFoundException;
+import com.graymatter.exceptions.InvalidCredentialsException;
 import com.graymatter.exceptions.UserOrEmailAlreadyPresent;
 import com.graymatter.services.UserService;
 
@@ -44,4 +47,12 @@ public class UserController {
 		return service.deleteUser(id);
 	}
 	
+	@PostMapping("/user/login")
+	public ResponseEntity<?> loginUser(@RequestBody Map<String, Object> requestBody) throws InvalidCredentialsException{
+		String username=(String)requestBody.get("username");
+		String password=(String)requestBody.get("password");
+		return service.loginUser(username, password);
+		
+	}
+
 }

@@ -101,6 +101,11 @@ const Patient = () => {
     }));
   };
 
+  const handlePrintInvoice = (appointmentId) => {
+    // Logic for printing invoice, e.g., open a new window with invoice details
+    alert(`Print invoice for appointment ID: ${appointmentId}`);
+  };
+
   return (
     <div className="container mx-auto mt-4 p-4">
       <h2 className="text-2xl font-bold text-center mb-4">Patient Management</h2>
@@ -128,29 +133,30 @@ const Patient = () => {
         </thead>
         <tbody>
           {typeof patients === 'string' ? (
-                <p>{patients}</p>
-            ) :
-          patients.map(patient => (
-            <tr key={patient.id}>
-              <td>{patient.name}</td>
-              <td>{patient.phoneNo}</td>
-              <td>{patient.age}</td>
-              <td>{patient.gender}</td>
-              <td>
-                <Dropdown>
-                  <Dropdown.Toggle variant="secondary">
-                    Actions
-                  </Dropdown.Toggle>
+            <p>{patients}</p>
+          ) : (
+            patients.map(patient => (
+              <tr key={patient.id}>
+                <td>{patient.name}</td>
+                <td>{patient.phoneNo}</td>
+                <td>{patient.age}</td>
+                <td>{patient.gender}</td>
+                <td>
+                  <Dropdown>
+                    <Dropdown.Toggle variant="secondary">
+                      Actions
+                    </Dropdown.Toggle>
 
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => handleViewAppointments(patient)}>View Appointments</Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleUpdatePatient(patient.id)}>Update</Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleDeletePatient(patient.id)}>Delete</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </td>
-            </tr>
-          ))}
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => handleViewAppointments(patient)}>View Appointments</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleUpdatePatient(patient.id)}>Update</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleDeletePatient(patient.id)}>Delete</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </td>
+              </tr>
+            ))
+          )}
         </tbody>
       </Table>
 
@@ -242,21 +248,29 @@ const Patient = () => {
             <thead>
               <tr>
                 <th>Date</th>
+                <th>Approval Status</th>
                 <th>Diagnostic Tests</th>
                 <th>Center</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {appointments.map((appointment, index) => (
-                <tr key={index}>
-                  <td>{new Date(appointment.date).toLocaleString()}</td>
-                  <td>{appointment.diagnosticTests.join(', ')}</td>
-                  <td>{appointment.center}</td>
+              {appointments.map((appointment) => (
+                <tr key={appointment.id}>
+                  <td>{new Date(appointment.appointmentDate).toLocaleDateString()}</td>
+                  <td>{appointment.approvalStatus}</td>
+                  <td>{appointment.diagnosticTests.map(test => test.name).join(', ')}</td>
+                  <td>{appointment.diagnosticCenter.name}</td>
+                  <td>
+                    <Button variant="link" onClick={() => handlePrintInvoice(appointment.id)}>
+                      Print Invoice
+                    </Button>
+                  </td>
                 </tr>
               ))}
               {appointments.length === 0 && (
                 <tr>
-                  <td colSpan="3" className="text-center">No appointments found</td>
+                  <td colSpan="5" className="text-center">No appointments found</td>
                 </tr>
               )}
             </tbody>

@@ -35,8 +35,6 @@ public class AppointmentDao{
 
 	
 	public Appointment addAppointment(Appointment appointment) {
-		// TODO Auto-generated method stub
-		
 		return repo.save(appointment);
 	}
 

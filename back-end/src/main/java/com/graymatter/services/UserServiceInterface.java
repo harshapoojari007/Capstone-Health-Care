@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.graymatter.dto.UserDto;
 import com.graymatter.exceptions.IdNotFoundException;
+import com.graymatter.exceptions.InvalidCredentialsException;
 import com.graymatter.exceptions.UserOrEmailAlreadyPresent;
 
 public interface UserServiceInterface {
@@ -15,5 +16,6 @@ public interface UserServiceInterface {
 	public ResponseEntity<?> deleteUser(int userId) throws IdNotFoundException;
 	public ResponseEntity<?> getUserById(int userId) throws IdNotFoundException;
 	public ResponseEntity<?> getUserByUserName(String username);
+	public ResponseEntity<?> loginUser(String username,String passoword) throws InvalidCredentialsException;
 
 }

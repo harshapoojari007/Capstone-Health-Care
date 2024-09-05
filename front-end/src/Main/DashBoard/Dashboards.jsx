@@ -9,6 +9,7 @@ import DiagnosticTest from './DashboardComponents/DiagnosticTest';
 import TestResult from './DashboardComponents/TestResult';
 import Patient from './DashboardComponents/Patient';
 import Setting from './DashboardComponents/Setting';
+import CenterAdminstatorDashboard from './CenterAdminstatorDashboard';
 
 const DashBoards = () => {
     const { user } = useUser();
@@ -30,7 +31,7 @@ const DashBoards = () => {
         case 'settings':
           return <Setting />;
         default:
-          return user.role === 'admin' ? <AdminDashboard /> : <UserDashboard />;
+          return user.role === 'admin' ? <AdminDashboard /> :user.role === 'centerAdmin' ?<CenterAdminstatorDashboard/> :<UserDashboard />;
       }
     };
   
