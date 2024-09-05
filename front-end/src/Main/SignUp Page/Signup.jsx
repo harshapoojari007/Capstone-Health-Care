@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from '../../configurations/Axios';
 import logo from "../../images/MainLogo.png";
-
+ 
 // Validation functions
 const validateUsername = (username) => /^[a-zA-Z0-9_]{3,15}$/.test(username);
 const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 const validatePassword = (password) => /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/.test(password); // At least 8 characters, one letter and one number
-
+ 
 const Signup = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState('');
@@ -17,38 +17,50 @@ const Signup = () => {
   const [role, setRole] = useState('');
   const [error, setError] = useState('');
   const [formErrors, setFormErrors] = useState({});
-
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
     let errors = {};
     setFormErrors({}); // Clear previous errors
-
+ 
     // Validate fields
     if (!validateUsername(username)) errors.username = 'Invalid username. Must be 3-15 alphanumeric characters or underscores.';
     if (!validateEmail(email)) errors.email = 'Invalid email address.';
     if (!validatePassword(password)) errors.password = 'Password must be at least 8 characters long, including at least one letter and one number.';
     if (password !== confirmPassword) errors.confirmPassword = 'Passwords do not match.';
-
+ 
     if (Object.keys(errors).length > 0) {
       setFormErrors(errors);
       return;
     }
-
+ 
     try {
       await Axios.post('/user', { username, password, email, role });
+<<<<<<< HEAD
       navigate('/login'); 
+=======
+      navigate('/login');
+>>>>>>> 97b500b529adf3e999f04cabf4ffa85abbe5115c
       alert("Successfully Registered");
     } catch (err) {
       setError('Failed to sign up. Please try again.');
     }
   };
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> 97b500b529adf3e999f04cabf4ffa85abbe5115c
   return (
     <div className='flex items-center h-screen auth relative overflow-hidden'>
       <button onClick={() => navigate('/')} className='rounded-2xl px-4 py-2 bg-[#343434] text-white text-md m-2 absolute top-0'>
         <i className="fa-regular fa-hand-point-left mr-2"></i>Back to home
       </button>
+<<<<<<< HEAD
 
+=======
+ 
+>>>>>>> 97b500b529adf3e999f04cabf4ffa85abbe5115c
       <div className="w-full max-w-md p-6 text-white ml-[15%]">
         <img src={logo} className='w-20 ml-[38%] mb-4' alt="Logo" />
         <h3 className="text-center mb-4 font-bold">Create Account</h3>
@@ -113,7 +125,11 @@ const Signup = () => {
               onChange={(e) => setRole(e.target.value)}
             >
               <option value="" disabled> Select your role</option>
+<<<<<<< HEAD
               <option value="USER">User</option> 
+=======
+              <option value="USER">User</option>
+>>>>>>> 97b500b529adf3e999f04cabf4ffa85abbe5115c
               <option value="CENTERADMIN">Center Admin</option>
             </select>
             {formErrors.role && <p className="text-red-500 text-sm">{formErrors.role}</p>}
@@ -136,5 +152,5 @@ const Signup = () => {
     </div>
   );
 };
-
+ 
 export default Signup;

@@ -13,6 +13,10 @@ public class GlobalExceptions {
 		return new ResponseEntity<>(rnfe.getMessage(),HttpStatus.NOT_FOUND);
 	}
 
+	@ExceptionHandler(InvalidCredentialsException.class)
+	public ResponseEntity<String> handleInvalidCredentialsException(InvalidCredentialsException rnfe){
+		return new ResponseEntity<>(rnfe.getMessage(),HttpStatus.NOT_FOUND);
+	}
 //	@ExceptionHandler(ConflictException.class)
 //	public ResponseEntity<String> handleConflictException(ConflictException rnfe){
 //		return new ResponseEntity<>(rnfe.getMessage(),HttpStatus.CONFLICT);
@@ -26,6 +30,8 @@ public class GlobalExceptions {
 	public ResponseEntity<String> handleHttpMessageNotWritableException(HttpMessageNotWritableException rnfe){
 		return new ResponseEntity<>(rnfe.getMessage(),HttpStatus.CONFLICT);
 	}
+	
+	
 	
 
 }

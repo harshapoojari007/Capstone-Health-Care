@@ -49,11 +49,11 @@ public class PatientDao {
 		}
 
 	public Patient getPatientById(int id) throws IdNotFoundException {
-		return patientRepo.findById(id).orElseThrow(()->new IdNotFoundException("Appointment id: "+id+" is not present"));
+		return patientRepo.findById(id).orElseThrow(()->new IdNotFoundException("patient id: "+id+" is not present"));
 	}
 
 	public Patient deletePatientById(int id) throws IdNotFoundException {
-		Patient p= patientRepo.findById(id).orElseThrow(()->new IdNotFoundException("Appointment id: "+id+" is not present"));
+		Patient p= patientRepo.findById(id).orElseThrow(()->new IdNotFoundException("patient id: "+id+" is not present"));
 		patientRepo.deleteById(id);
 		return p;
 	}

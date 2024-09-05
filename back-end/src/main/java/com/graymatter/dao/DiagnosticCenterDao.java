@@ -62,6 +62,7 @@ public class DiagnosticCenterDao {
 	        // Save the updated DiagnosticCenter
 	        DiagnosticCenter savedCenter = repo.save(existingCenter);
 
+	        System.out.println(savedCenter);
 	        return savedCenter;	
 	}
 	public String  deleteDiagnosticCenter(int id) throws IdNotFoundException {
