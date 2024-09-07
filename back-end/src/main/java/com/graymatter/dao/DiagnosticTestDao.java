@@ -30,8 +30,8 @@ public class DiagnosticTestDao {
 		DiagnosticTest existingDiagnosticTest=repo.findById(id).orElseThrow(()->new IdNotFoundException("Diagnostic Test id: "+id+" is not present"));
 		if(updatedDiagnosticTest.getAppointments()!=null)
 			existingDiagnosticTest.setAppointments(updatedDiagnosticTest.getAppointments());
-		if(updatedDiagnosticTest.getDiagnosticCenters()!=null)
-			existingDiagnosticTest.setDiagnosticCenters(updatedDiagnosticTest.getDiagnosticCenters());
+		if(updatedDiagnosticTest.getDiagnosticCenter()!=null)
+			existingDiagnosticTest.setDiagnosticCenter(updatedDiagnosticTest.getDiagnosticCenter());
 		if(updatedDiagnosticTest.getNormalValue()!=null)
 			existingDiagnosticTest.setNormalValue(updatedDiagnosticTest.getNormalValue());
 		if(updatedDiagnosticTest.getTestName()!=null)
@@ -66,8 +66,7 @@ public class DiagnosticTestDao {
 	
 	public DiagnosticTest addTest(int diagnosticCentreId, int testId) {
           return null;
-
-           
+      
     }
 
 

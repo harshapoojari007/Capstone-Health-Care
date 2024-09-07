@@ -25,21 +25,23 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 public class DiagnosticCenter {
+<<<<<<< HEAD
 	    @Id
 	    @GeneratedValue(strategy = GenerationType.AUTO)
 	    private int id;
+=======
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private int id;
+>>>>>>> b27d1802e9ef3437590b2ab13e4bc424b7086e2c
 
     private String name;
     private String contactNO;
     private String address;
     private String email;
 
-    @ManyToMany
-    @JoinTable(
-        name = "diagnostic_center_test",
-        joinColumns = @JoinColumn(name = "diagnostic_center_id"),
-        inverseJoinColumns = @JoinColumn(name = "diagnostic_test_id")
-    )
+    @JsonIgnore
+    @OneToMany(mappedBy = "diagnosticCenter", cascade = {CascadeType.ALL}, orphanRemoval = true)
     private List<DiagnosticTest> diagnosticTests=new ArrayList<DiagnosticTest>();
 
     @JsonIgnore

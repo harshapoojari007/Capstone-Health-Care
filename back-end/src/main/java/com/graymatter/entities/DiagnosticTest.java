@@ -7,12 +7,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,14 +32,9 @@ public class DiagnosticTest {
 	private String normalValue;
 	private String units;
 	
-	@ManyToMany
-	@JoinTable(
-	        name = "diagnostic_center_test",
-	        joinColumns = @JoinColumn(name = "diagnostic_test_id"),
-	        inverseJoinColumns = @JoinColumn(name = "diagnostic_center_id")
-	    )
-	@JsonIgnore
-	private List<DiagnosticCenter> diagnosticCenters=new ArrayList<DiagnosticCenter>();
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "diagnostic_center_id")
+    private DiagnosticCenter diagnosticCenter;
 	
 	@ManyToMany(mappedBy = "diagnosticTests")
 	@JsonIgnore

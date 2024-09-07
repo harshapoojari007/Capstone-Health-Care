@@ -21,4 +21,9 @@ public interface DiagnosticCenterRepository extends JpaRepository<DiagnosticCent
 		                                                 @Param("testCount") long testCount);
 
 
+	@Query("SELECT dc FROM DiagnosticCenter dc " +
+	           "JOIN dc.diagnosticTests dt " +
+	           "WHERE dt.testName IN :testNames " +
+	           "GROUP BY dc.id")
+	    List<DiagnosticCenter> findByDiagnosticTestNames(@Param("testNames") List<String> testNames);
 }

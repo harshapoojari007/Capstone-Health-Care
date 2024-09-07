@@ -13,4 +13,5 @@ public interface CenterAdministratorServiceInterface {
 	public ResponseEntity<?> getCenterAdministratorById(int centerAdministratorId) throws IdNotFoundException;
 	public ResponseEntity<?> deleteCenterAdministrator(int centerAdminId) throws IdNotFoundException;
 	public ResponseEntity<?> updateCenterAdministrator(int id,CenterAdministratorDto centerAdministrator);
+	public ResponseEntity<?> getCenterAdministratorByUserId(int userId) throws IdNotFoundException;
 }

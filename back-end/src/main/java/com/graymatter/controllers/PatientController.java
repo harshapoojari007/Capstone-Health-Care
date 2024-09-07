@@ -37,7 +37,7 @@ public class PatientController {
 	public ResponseEntity<?> getPatientById(@PathVariable("id") int id) throws IdNotFoundException{
 		return service.getPatientById(id);
 	}
-	@GetMapping("/patient")
+	@GetMapping("/patients")
 	public ResponseEntity<?> getAllPatients(){
 		return service.getAllPatients()	;
 	}

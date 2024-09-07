@@ -44,22 +44,22 @@ public class UserService implements UserServiceInterface{
 			
 	}
 
-	@Override
-	public ResponseEntity<?> addNewUser(UserDto user) throws UserOrEmailAlreadyPresent {
-		UserDto output= mapper.mapToUserDto(dao.addNewUser(mapper.mapToUser(user)));
-		Map<String, Object> map=new HashMap<>();
-		map.put("status",10);
-		map.put("data", output);
-		map.put("message", "user added successfully");
-		return new ResponseEntity<>(map,HttpStatus.OK);
-	}
+//	@Override
+//	public ResponseEntity<?> addNewUser(UserDto user) throws UserOrEmailAlreadyPresent {
+//		UserDto output= mapper.mapToUserDto(dao.addNewUser(mapper.mapToUser(user)));
+//		Map<String, Object> map=new HashMap<>();
+//		map.put("status",10);
+//		map.put("data", output);
+//		map.put("message", "user added successfully");
+//		return new ResponseEntity<>(map,HttpStatus.OK);
+//	}
 
 	@Override
 	public ResponseEntity<?> updateUser(int userId,UserDto user) throws IdNotFoundException {
 		UserDto output=mapper.mapToUserDto( dao.updateUser(userId, mapper.mapToUser(user)));
 		Map<String, Object> map=new HashMap<>();
 		map.put("status",10);
-		map.put("message", "user with userId "+userId+" deleted successfully");
+		map.put("message", "user with userId "+userId+" updated successfully");
 		map.put("data", output);
 		return new ResponseEntity<>(map,HttpStatus.OK);
 
@@ -106,5 +106,4 @@ public class UserService implements UserServiceInterface{
 		map.put("message", "user with username "+username+"  successfully loggedIn");
 		return new ResponseEntity<>(map,HttpStatus.OK);
 	}
-		
 }

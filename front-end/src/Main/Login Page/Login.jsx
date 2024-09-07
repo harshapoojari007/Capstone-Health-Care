@@ -2,19 +2,29 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import logo from "../../images/MainLogo.png";
+import { useUser } from '../../UserContext';
 const Login = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-
+  const {login}=useUser();
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('')
 
     try {
+<<<<<<< HEAD
       await axios.post('http://localhost:8089/api/v1/user/login', { username, password});
       navigate('/'); 
+=======
+    const response=await axios.post('http://localhost:8089/api/v1/auth/login', { email, password});
+    console.log(response.data)
+    const loggedUser=response.data.user
+    login(loggedUser)
+      navigate('/'); // Redirect to login after successful signup
+      alert("Successfully logged in");
+>>>>>>> b27d1802e9ef3437590b2ab13e4bc424b7086e2c
     } catch (err) {
       setError('Failed to login in. Please try again.');
     }
@@ -35,12 +45,11 @@ const Login = () => {
             <input
               type="text"
               className={`form-control text-white`}
-              id="username"
-              name="username"
-              pattern="[a-zA-Z0-9_]{3,15}"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              id="email"
+              name="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="mb-3">

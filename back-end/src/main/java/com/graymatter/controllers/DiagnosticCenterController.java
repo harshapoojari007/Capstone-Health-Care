@@ -56,14 +56,23 @@ public class DiagnosticCenterController {
 	@DeleteMapping("/diagnosticcenter/{id}")
 	public ResponseEntity<?> removeDiagnosticCenter(@PathVariable("id") int diagnosticCentreId) throws IdNotFoundException{
 		return service.removeDiagnosticCenter(diagnosticCentreId);
+<<<<<<< HEAD
 
 	}
+=======
+}
+>>>>>>> b27d1802e9ef3437590b2ab13e4bc424b7086e2c
 	@GetMapping("/diagnosticcenter/centername/{centername}")
 	public ResponseEntity<?> getListOfAppointments(@PathVariable("centername") String centerName){
 		return service.getListOfAppointments(centerName);
 	}
+//	@PostMapping("/diagnosticcenter/tests")
+//	public ResponseEntity<?> findByDiagnosticTests(@RequestBody List<Integer> diagnosticTests){
+//		return service.findByDiagnosticTests(diagnosticTests);
+//	}
+	
 	@PostMapping("/diagnosticcenter/tests")
-	public ResponseEntity<?> findByDiagnosticTests(@RequestBody List<Integer> diagnosticTests){
+	public ResponseEntity<?> findByDiagnosticTests(@RequestBody List<String> diagnosticTests){
 		return service.findByDiagnosticTests(diagnosticTests);
 	}
 }

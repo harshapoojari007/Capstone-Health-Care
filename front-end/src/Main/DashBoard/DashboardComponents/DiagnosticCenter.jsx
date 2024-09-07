@@ -18,7 +18,7 @@ const DiagnosticCenter = () => {
       phoneNo: '',
       address: '',
       user: {
-        id: 1 // or another appropriate default value
+        id: 5// or another appropriate default value
       }
     },
     diagnosticTests: [] // Array of diagnostic test objects
@@ -141,7 +141,7 @@ const DiagnosticCenter = () => {
           phoneNo: '',
           address: '',
           user: {
-            id: 1
+            id: 6
           }
         },
         diagnosticTests: []
@@ -222,6 +222,7 @@ const DiagnosticCenter = () => {
           {selectedCenter ? (
             <div className="center-details">
               <h4>Center Information</h4>
+              <p><strong>Id:</strong> {selectedCenter.id || 'null'}</p>
               <p><strong>Name:</strong> {selectedCenter.name || 'null'}</p>
               <p><strong>Contact Number:</strong> {selectedCenter.contactNO || 'null'}</p>
               <p><strong>Address:</strong> {selectedCenter.address || 'null'}</p>

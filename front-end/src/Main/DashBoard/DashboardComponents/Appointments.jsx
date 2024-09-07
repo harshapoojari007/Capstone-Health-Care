@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Dropdown, DropdownButton, Button, Table, Modal, Form } from 'react-bootstrap'; // Ensure react-bootstrap is installed
+import React, { useState } from 'react';
+import { Dropdown, DropdownButton, Button, Table, Modal, Form } from 'react-bootstrap'; 
 import Axios from '../../../configurations/Axios';
 
 const Appointments = () => {
@@ -7,6 +7,7 @@ const Appointments = () => {
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const [selectedDiagnosticTest, setSelectedDiagnosticTest] = useState([]);
   const [formData, setFormData] = useState({
     id: '',
     patientName: '',
@@ -15,20 +16,30 @@ const Appointments = () => {
     diagnosticTests: [],
     diagnosticCenter: {}
   });
+  const [showTestResultsModal, setShowTestResultsModal] = useState(false);
+  const [newTestResult, setNewTestResult] = useState({
+    testName: '',
+    testReading: '',
+    testCondition: '',
+    appointment: {
+      id: ''
+    }
+  });
 
-  useEffect(() => {
-    const fetchAppointments = async () => {
-      try {
-        const response = await Axios.get('/appointments');
-        console.log(response.data); // Log the entire response
-        setAppointmentsList(response.data.data || []); // Ensure data is an array
-      } catch (error) {
-        console.error('Error fetching appointments:', error);
-      }
-    };
+  // Fetch appointments and set the appointments list
+  const fetchAppointments = async () => {
+    try {
+      const response = await Axios.get('/appointments');
+      setAppointmentsList(response.data.data || []);
+    } catch (error) {
+      console.error('Error fetching appointments:', error);
+    }
+  };
 
+  // Fetch appointments on component mount
+  useState(() => {
     fetchAppointments();
-  }, [appointmentsList]);
+  }, []);
 
   const handleEdit = (id) => {
     const appointment = appointmentsList.find(app => app.id === id);
@@ -36,7 +47,7 @@ const Appointments = () => {
       id: appointment.id,
       patientName: appointment.patient.name || '',
       mobileNumber: appointment.patient.phoneNo || '',
-      appointmentDate: new Date(appointment.appointmentDate).toISOString().substring(0, 10), // Format date for input
+      appointmentDate: new Date(appointment.appointmentDate).toISOString().substring(0, 10),
       diagnosticTests: appointment.diagnosticTests || [],
       diagnosticCenter: appointment.diagnosticCenter || {}
     });
@@ -89,14 +100,62 @@ const Appointments = () => {
         await Axios.put(`/appointment/${formData.id}`, formData);
         alert('Appointment updated successfully!');
       } else {
-        await Axios.post('/appointments', formData);
+        await Axios.post('/appointment', formData);
         alert('Appointment added successfully!');
       }
       handleCloseModal();
-      // Refresh the appointments list
-      // await fetchAppointments();
+      fetchAppointments(); // Refresh the appointments list
     } catch (error) {
       console.error('Error saving appointment:', error);
+    }
+  };
+
+  const handleTestResultsModal = (id) => {
+    const appointment = appointmentsList.find(app => app.id === id);
+    
+    if (appointment) {
+      // Assuming `appointment.testResults` contains existing test results
+      const existingTestNames = new Set(appointment.testResults.map(result => result.testName));
+
+      // Filter tests that are not yet added
+      const availableTests = appointment.diagnosticTests.filter(test => !existingTestNames.has(test.testName));
+      console.log(appointment.diagnosticTests)
+      setSelectedAppointment(appointment);
+      setSelectedDiagnosticTest(availableTests);
+      setNewTestResult(prev => ({ ...prev, appointment: { id } }));
+      setShowTestResultsModal(true);
+    } else {
+      console.error('No appointment found with id:', id);
+    }
+  };
+
+  const handleTestResultChange = (e) => {
+    const { name, value } = e.target;
+    setNewTestResult(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleAddTestResult = async (testName) => {
+    try {
+      // Set the test name to the new test result
+      const resultToAdd = { ...newTestResult, testName };
+      
+      await Axios.post('/testresult', resultToAdd);
+      alert('Test result added successfully!');
+      setShowTestResultsModal(false);
+      setNewTestResult({
+        testName: '',
+        testReading: '',
+        testCondition: '',
+        appointment: {
+          id: ''
+        }
+      });
+      fetchAppointments(); // Refresh the appointments list
+    } catch (error) {
+      console.error('Error adding test result:', error);
     }
   };
 
@@ -110,13 +169,14 @@ const Appointments = () => {
             <th>Mobile Number</th>
             <th>Appointment Date</th>
             <th>Diagnostic Center</th>
+            <th>Test Results</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {appointmentsList.length === 0 ? (
             <tr>
-              <td colSpan="5" className="text-center">No appointments found</td>
+              <td colSpan="6" className="text-center">No appointments found</td>
             </tr>
           ) : (
             appointmentsList.map(appointment => (
@@ -126,7 +186,12 @@ const Appointments = () => {
                 <td>{new Date(appointment.appointmentDate).toLocaleDateString()}</td>
                 <td>{appointment.diagnosticCenter ? appointment.diagnosticCenter.name : 'N/A'}</td>
                 <td>
-                  <DropdownButton id="dropdown-basic-button" title="Actions">
+                  <DropdownButton id={`dropdown-${appointment.id}`} title="Test Results">
+                    <Dropdown.Item as="button" onClick={() => handleTestResultsModal(appointment.id)}>Add Test Result</Dropdown.Item>
+                  </DropdownButton>
+                </td>
+                <td>
+                  <DropdownButton id={`dropdown-${appointment.id}`} title="Actions">
                     <Dropdown.Item as="button" onClick={() => handleView(appointment.id)}>View Details</Dropdown.Item>
                     <Dropdown.Item as="button" onClick={() => handleEdit(appointment.id)} className="text-warning fw-bold">Edit</Dropdown.Item>
                     <Dropdown.Item as="button" onClick={() => handleDelete(appointment.id)} className="text-danger fw-bold">Delete</Dropdown.Item>
@@ -194,32 +259,80 @@ const Appointments = () => {
                   onChange={e => setFormData({ ...formData, diagnosticCenter: { name: e.target.value } })} 
                 />
               </Form.Group>
-              <Button variant="primary" type="submit" className="mt-3">
+              <Button variant="primary" type="submit">
                 {isEditing ? 'Update Appointment' : 'Add Appointment'}
               </Button>
             </Form>
           ) : (
-            selectedAppointment ? (
-              <div className="appointment-details">
-                <h4>Patient Information</h4>
-                <p><strong>Name:</strong> {selectedAppointment.patientName || 'N/A'}</p>
-                <p><strong>Age:</strong> {selectedAppointment.age || 'N/A'}</p>
-                <p><strong>Mobile Number:</strong> {selectedAppointment.mobileNumber || 'N/A'}</p>
-                <p><strong>Gender:</strong> {selectedAppointment.gender || 'N/A'}</p>
-                <p><strong>Aadhar Number:</strong> {selectedAppointment.aadharNumber || 'N/A'}</p>
-
-                <h4>Appointment Details</h4>
-                <p><strong>Appointment Date:</strong> {new Date(selectedAppointment.appointmentDate).toLocaleDateString()}</p>
-                <p><strong>Diagnostic Tests:</strong> {selectedAppointment.diagnosticTests.length > 0 ? selectedAppointment.diagnosticTests.join(', ') : 'None'}</p>
-                <p><strong>Diagnostic Center:</strong> {selectedAppointment.diagnosticCenter ? selectedAppointment.diagnosticCenter.name : 'N/A'}</p>
-              </div>
-            ) : (
-              <p>Loading...</p>
-            )
+            <div>
+              <p><strong>Patient Name:</strong> {formData.patientName}</p>
+              <p><strong>Mobile Number:</strong> {formData.mobileNumber}</p>
+              <p><strong>Appointment Date:</strong> {formData.appointmentDate}</p>
+              <p><strong>Diagnostic Center:</strong> {formData.diagnosticCenter.name}</p>
+              <p><strong>Diagnostic Tests:</strong> {formData.diagnosticTests.join(', ')}</p>
+            </div>
           )}
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleCloseModal}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* Modal to add new test result */}
+      <Modal show={showTestResultsModal} onHide={() => setShowTestResultsModal(false)} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Add New Test Result</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <h4 className="mt-4">Available Tests</h4>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Test Name</th>
+                <th>Test Reading</th>
+                <th>Test Condition</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {selectedDiagnosticTest.map((test, index) => (
+                <tr key={index}>
+                  <td>{test.testName}</td>
+                  <td>
+                    <Form.Control 
+                      type="text" 
+                      name="testReading" 
+                      value={newTestResult.testReading}
+                      onChange={e => setNewTestResult(prev => ({ ...prev, testReading: e.target.value }))}
+                      required 
+                    />
+                  </td>
+                  <td>
+                    <Form.Control 
+                      type="text" 
+                      name="testCondition" 
+                      value={newTestResult.testCondition}
+                      onChange={e => setNewTestResult(prev => ({ ...prev, testCondition: e.target.value }))}
+                      required 
+                    />
+                  </td>
+                  <td>
+                    <Button 
+                      variant="primary" 
+                      onClick={() => handleAddTestResult(test.testName)}
+                    >
+                      Add Test Result
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowTestResultsModal(false)}>
             Close
           </Button>
         </Modal.Footer>
@@ -229,3 +342,5 @@ const Appointments = () => {
 };
 
 export default Appointments;
+
+

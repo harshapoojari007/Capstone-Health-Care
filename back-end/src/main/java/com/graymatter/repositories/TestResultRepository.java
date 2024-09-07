@@ -18,6 +18,8 @@ public interface TestResultRepository extends JpaRepository<TestResult, Integer>
 	 @Query("SELECT t FROM TestResult t WHERE t.appointment.patient.user.username = :username")
 	    List<TestResult> findAllTestResultsByPatientUsername(@Param("username") String username);
 
+	     void deleteByAppointmentId(int id);
+
 //	    @Query("SELECT t FROM TestResult t WHERE t.id = :testResultId")
 //	    TestResult findTestResultById(@Param("testResultId") int testResultId);
 	

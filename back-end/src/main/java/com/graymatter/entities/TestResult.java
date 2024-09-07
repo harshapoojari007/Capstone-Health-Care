@@ -27,7 +27,7 @@ public class TestResult {
 	private double testReading;
 	private String testCondition;
 	
-	@ManyToOne  //(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name="appointmentId")
 	@JsonIgnore
 	private Appointment appointment;

@@ -23,7 +23,7 @@ public class DiagnosticTestController {
 	@Autowired
 	DiagnosticTestService service;
 	
-	@GetMapping("/diagnostictests")
+	@GetMapping("/diagnostictest")
 	public ResponseEntity<?> getAllDiagnosticTestDto(){
 		return service.getAllDiagnosticTestDto();
 	}
