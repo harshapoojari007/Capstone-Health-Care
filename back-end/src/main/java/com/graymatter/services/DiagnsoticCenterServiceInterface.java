@@ -20,6 +20,6 @@ interface DiagnsoticCenterServiceInterface {
 	public ResponseEntity<?> getListOfAppointments(String centerName);
 //	public ResponseEntity<?> findByDiagnosticTests(Set<DiagnosticTest> diagnosticTests);
 //	public ResponseEntity<?> findByDiagnosticTests(List<DiagnosticTest> diagnosticTests);
-	public ResponseEntity<?> findByDiagnosticTests(List<Integer> diagnosticTestIds);
+	public ResponseEntity<?> findByDiagnosticTests(List<String> diagnosticTestNames);
 	
 }

@@ -135,11 +135,11 @@ const TestResult = () => {
       {showAlert.show && <Alert variant={showAlert.variant}>{showAlert.message}</Alert>}
 
       {/* Add Test Result Button */}
-      <div className="text-right mb-3">
+      {/* <div className="text-right mb-3">
         <Button variant="success" onClick={handleShowAddTestModal}>
           Add Test Result
         </Button>
-      </div>
+      </div> */}
 
       {/* Test Results Table */}
       <Table striped bordered hover>
@@ -153,7 +153,7 @@ const TestResult = () => {
           </tr>
         </thead>
         <tbody>
-          {testResults.length === 0 ? (
+          {typeof testResults === 'string' ? (
             <tr>
               <td colSpan="5" className="text-center">No test results available</td>
             </tr>

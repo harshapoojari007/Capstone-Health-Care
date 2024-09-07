@@ -41,7 +41,7 @@ public class DiagnosticTestDto {
 	 
 	@NotNull(message = "Diagnostic Centers cannot be null")
 	@Size(min = 1, message = "At least one diagnostic center is required")
-	private List<DiagnosticCenter> diagnosticCenters=new ArrayList<DiagnosticCenter>();
+	private DiagnosticCenter diagnosticCenter;
 	
     private List<Appointment> appointments=new ArrayList<Appointment>();
 }

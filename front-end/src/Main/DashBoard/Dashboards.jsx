@@ -12,7 +12,7 @@ import Setting from './DashboardComponents/Setting';
 import CenterAdminstatorDashboard from './CenterAdminstatorDashboard';
 
 const DashBoards = () => {
-    const { user } = useUser();
+    const { username,role } = useUser();
     const [selectedView, setSelectedView] = useState('dashboard'); // Default view
   
     // Content rendering based on selected view
@@ -31,7 +31,7 @@ const DashBoards = () => {
         case 'settings':
           return <Setting />;
         default:
-          return user.role === 'admin' ? <AdminDashboard /> :user.role === 'centerAdmin' ?<CenterAdminstatorDashboard/> :<UserDashboard />;
+          return role === 'admin' ? <AdminDashboard /> :role === 'centerAdmin' ?<CenterAdminstatorDashboard/> :<UserDashboard />;
       }
     };
   

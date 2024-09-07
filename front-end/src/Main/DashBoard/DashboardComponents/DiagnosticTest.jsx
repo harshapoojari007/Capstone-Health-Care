@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dropdown, DropdownButton, Button, Modal, Form } from 'react-bootstrap'; // Ensure react-bootstrap is installed
+import { Dropdown, DropdownButton, Button, Modal, Form, Table } from 'react-bootstrap'; // Ensure react-bootstrap is installed
 import Axios from '../../../configurations/Axios';
 
 const DiagnosticTest = () => {
@@ -11,16 +11,18 @@ const DiagnosticTest = () => {
     testPrice: '',
     normalValue: '',
     units: '',
-    diagnosticCenters: []
+    diagnosticCenter: {
+      id: ''
+    }
   });
   const [currentTest, setCurrentTest] = useState(null);
 
   useEffect(() => {
     const fetchDiagnosticTests = async () => {
       try {
-        const response = await Axios.get('/diagnostictests');
+        const response = await Axios.get('/diagnostictest');
         const testData = response.data.data;
-        setTestsList(testData.data || []);
+        setTestsList(testData || []);
       } catch (error) {
         console.error('Error fetching tests:', error);
       }
@@ -37,7 +39,9 @@ const DiagnosticTest = () => {
       testPrice: test.testPrice,
       normalValue: test.normalValue,
       units: test.units,
-      diagnosticCenters: test.diagnosticCenters.map(center => center.name).join(', ')
+      diagnosticCenter: {
+        id: test.diagnosticCenter.id
+      }
     });
     setShowEditModal(true);
   };
@@ -45,7 +49,7 @@ const DiagnosticTest = () => {
   const handleDelete = async (id) => {
     try {
       const response = await Axios.delete(`/diagnostictest/${id}`);
-      const deletedTestResponse = response.data;
+      const deletedTestResponse = response.data.data;
       const message = deletedTestResponse.message;
       alert(message);
       setTestsList(testsList.filter(test => test.id !== id));
@@ -57,9 +61,10 @@ const DiagnosticTest = () => {
   const handleAddTest = async () => {
     try {
       const response = await Axios.post('/diagnostictest', newTest);
+       console.log(response)
       const addedTestResponse = response.data;
       const addedTest = addedTestResponse.data;
-      const message = addedTestResponse.message;
+      const message = addedTest.message;
       setTestsList([...testsList, addedTest]);
       alert(message);
       setShowModal(false);
@@ -68,7 +73,9 @@ const DiagnosticTest = () => {
         testPrice: '',
         normalValue: '',
         units: '',
-        diagnosticCenters: []
+        diagnosticCenter: {
+          id: ''
+        }
       });
     } catch (error) {
       console.error('Error adding test:', error);
@@ -80,7 +87,7 @@ const DiagnosticTest = () => {
       const response = await Axios.put(`/diagnostictest/${currentTest.id}`, newTest);
       const updatedTestResponse = response.data;
       const updatedTest = updatedTestResponse.data;
-      const message = updatedTestResponse.message;
+      const message = updatedTest.message;
       setTestsList(testsList.map(test => (test.id === updatedTest.id ? updatedTest : test)));
       alert(message);
       setShowEditModal(false);
@@ -89,7 +96,9 @@ const DiagnosticTest = () => {
         testPrice: '',
         normalValue: '',
         units: '',
-        diagnosticCenters: []
+        diagnosticCenter: {
+          id: ''
+        }
       });
     } catch (error) {
       console.error('Error updating test:', error);
@@ -98,12 +107,34 @@ const DiagnosticTest = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setNewTest(prev => ({ ...prev, [name]: value }));
+
+    if (name === 'diagnosticCenter.id') {
+      setNewTest(prev => ({
+        ...prev,
+        diagnosticCenter: {
+          ...prev.diagnosticCenter,
+          id: value
+        }
+      }));
+    } else {
+      setNewTest(prev => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
-  const handleCloseEditModal = () => setShowEditModal(false);
+  const handleCloseEditModal = () =>{
+    setShowEditModal(false);
+    setNewTest({
+      testName: '',
+      testPrice: '',
+      normalValue: '',
+      units: '',
+      diagnosticCenter: {
+        id: ''
+      }
+    });
+  }
 
   return (
     <div className="container mx-auto my-4 px-4">
@@ -118,16 +149,16 @@ const DiagnosticTest = () => {
         </Button>
       </div>
 
-      <div className="overflow-x-auto">
-        <table className="min-w-full divide-y divide-gray-200">
+      <div>
+        <Table striped bordered hover>
           <thead className="bg-gray-100">
             <tr>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Test Name</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Price</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Normal Value</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Units</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Diagnostic Centers</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              <th>Test Name</th>
+              <th>Price</th>
+              <th>Normal Value</th>
+              <th>Units</th>
+              <th>Diagnostic Centers</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -138,13 +169,13 @@ const DiagnosticTest = () => {
             ) : (
               testsList.map(test => (
                 <tr key={test.id}>
-                  <td className="px-6 py-4 text-sm font-medium text-gray-900">{test.testName}</td>
-                  <td className="px-6 py-4 text-sm text-gray-500">${test.testPrice.toFixed(2)}</td>
-                  <td className="px-6 py-4 text-sm text-gray-500">{test.normalValue}</td>
-                  <td className="px-6 py-4 text-sm text-gray-500">{test.units}</td>
-                  <td className="px-6 py-4 text-sm text-gray-500">{test.diagnosticCenters.map(center => center.name).join(', ')}</td>
-                  <td className="px-6 py-4 text-sm font-medium">
-                    <DropdownButton id="dropdown-basic-button" title="Actions" className="text-gray-600">
+                  <td>{test.testName}</td>
+                  <td>{test.testPrice.toFixed(2)} Rupees</td>
+                  <td>{test.normalValue}</td>
+                  <td>{test.units}</td>
+                  <td>{test.diagnosticCenter.id}</td>
+                  <td>
+                    <DropdownButton id="dropdown-basic-button" title="Actions">
                       <Dropdown.Item as="button" onClick={() => handleEdit(test.id)} className="text-yellow-600">Edit</Dropdown.Item>
                       <Dropdown.Item as="button" onClick={() => handleDelete(test.id)} className="text-red-600">Delete</Dropdown.Item>
                     </DropdownButton>
@@ -153,7 +184,7 @@ const DiagnosticTest = () => {
               ))
             )}
           </tbody>
-        </table>
+        </Table>
       </div>
 
       {/* Add Test Modal */}
@@ -208,12 +239,13 @@ const DiagnosticTest = () => {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formDiagnosticCenters">
-              <Form.Label>Diagnostic Centers (comma separated)</Form.Label>
+              <Form.Label>Diagnostic Center</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter diagnostic centers"
-                value={newTest.diagnosticCenters.join(', ')}
-                onChange={(e) => setNewTest(prev => ({ ...prev, diagnosticCenters: e.target.value.split(',').map(center => center.trim()) }))}
+                placeholder="Enter diagnostic center Id"
+                name="diagnosticCenter.id"
+                value={newTest.diagnosticCenter.id}
+                onChange={handleChange}
               />
             </Form.Group>
           </Form>
@@ -276,12 +308,13 @@ const DiagnosticTest = () => {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formDiagnosticCenters">
-              <Form.Label>Diagnostic Centers (comma separated)</Form.Label>
+              <Form.Label>Diagnostic Center</Form.Label>
               <Form.Control
                 type="text"
-                placeholder="Enter diagnostic centers"
-                value={newTest.diagnosticCenters.join(', ')}
-                onChange={(e) => setNewTest(prev => ({ ...prev, diagnosticCenters: e.target.value.split(',').map(center => center.trim()) }))}
+                placeholder="Enter diagnostic center Id"
+                name="diagnosticCenter.id"
+                value={newTest.diagnosticCenter.id}
+                onChange={handleChange}
               />
             </Form.Group>
           </Form>

@@ -35,11 +35,13 @@ public class DiagnosticTestService implements DiagnosticTestServiceInterface{
 		if(!tests.isEmpty()) {
 			map.put("status",10);
 			map.put("data", tests);
+			map.put("message", "Successfully Retrived Dignostic Test");
 			return new ResponseEntity<>(map,HttpStatus.OK);
 			
 		}else {
 			map.put("status",20);
 			map.put("data", "No Tests to display");
+			
 			return new ResponseEntity<>(map,HttpStatus.NO_CONTENT);
 			
 		}
@@ -52,6 +54,8 @@ public class DiagnosticTestService implements DiagnosticTestServiceInterface{
 		Map<String, Object> map=new HashMap<>();
 		map.put("status",10);
 		map.put("data", test);
+		map.put("message", "Successfully Added Dignostic Test");
+
 	   return new ResponseEntity<>(map,HttpStatus.OK);
 			
 		
@@ -65,6 +69,8 @@ public class DiagnosticTestService implements DiagnosticTestServiceInterface{
 		Map<String, Object> map=new HashMap<>();
 		map.put("status",10);
 		map.put("data", test);
+		map.put("message", "Successfully Updated Dignostic Test");
+
 	   return new ResponseEntity<>(map,HttpStatus.OK);
 	}
 
@@ -86,7 +92,7 @@ public class DiagnosticTestService implements DiagnosticTestServiceInterface{
 		Map<String, Object> map=new HashMap<>();
 		map.put("status",10);
 		map.put("data",diagnosticTest);
-		map.put("message", "Successfully Deleted");
+		map.put("message", "Successfully Deleted Diagnostic Test");
 	   return new ResponseEntity<>(map,HttpStatus.OK);
 		
 	}

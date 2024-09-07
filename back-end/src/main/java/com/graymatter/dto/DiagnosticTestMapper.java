@@ -8,10 +8,10 @@ import com.graymatter.entities.DiagnosticTest;
 public class DiagnosticTestMapper {
 	
 	public DiagnosticTest mapToDiagnosticTest(DiagnosticTestDto test) {
-		return new DiagnosticTest(test.getId(),test.getTestName(),test.getTestPrice(),test.getNormalValue(),test.getUnits(),test.getDiagnosticCenters(),test.getAppointments());
+		return new DiagnosticTest(test.getId(),test.getTestName(),test.getTestPrice(),test.getNormalValue(),test.getUnits(),test.getDiagnosticCenter(),test.getAppointments());
 	}
 	public DiagnosticTestDto mapToDiagnosticTestDto(DiagnosticTest test) {
-		return new DiagnosticTestDto(test.getId(),test.getTestName(),test.getTestPrice(),test.getNormalValue(),test.getUnits(),test.getDiagnosticCenters(),test.getAppointments());
+		return new DiagnosticTestDto(test.getId(),test.getTestName(),test.getTestPrice(),test.getNormalValue(),test.getUnits(),test.getDiagnosticCenter(),test.getAppointments());
 	}
 	
 	

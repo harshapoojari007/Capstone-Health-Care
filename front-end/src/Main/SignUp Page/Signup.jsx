@@ -35,32 +35,18 @@ const Signup = () => {
     }
  
     try {
-      await Axios.post('/user', { username, password, email, role });
-<<<<<<< HEAD
+      await Axios.post('/auth/signup', { username, password, email, role });
       navigate('/login'); 
-=======
-      navigate('/login');
->>>>>>> 97b500b529adf3e999f04cabf4ffa85abbe5115c
       alert("Successfully Registered");
     } catch (err) {
       setError('Failed to sign up. Please try again.');
     }
   };
-<<<<<<< HEAD
-
-=======
- 
->>>>>>> 97b500b529adf3e999f04cabf4ffa85abbe5115c
   return (
     <div className='flex items-center h-screen auth relative overflow-hidden'>
       <button onClick={() => navigate('/')} className='rounded-2xl px-4 py-2 bg-[#343434] text-white text-md m-2 absolute top-0'>
         <i className="fa-regular fa-hand-point-left mr-2"></i>Back to home
       </button>
-<<<<<<< HEAD
-
-=======
- 
->>>>>>> 97b500b529adf3e999f04cabf4ffa85abbe5115c
       <div className="w-full max-w-md p-6 text-white ml-[15%]">
         <img src={logo} className='w-20 ml-[38%] mb-4' alt="Logo" />
         <h3 className="text-center mb-4 font-bold">Create Account</h3>
@@ -125,11 +111,7 @@ const Signup = () => {
               onChange={(e) => setRole(e.target.value)}
             >
               <option value="" disabled> Select your role</option>
-<<<<<<< HEAD
               <option value="USER">User</option> 
-=======
-              <option value="USER">User</option>
->>>>>>> 97b500b529adf3e999f04cabf4ffa85abbe5115c
               <option value="CENTERADMIN">Center Admin</option>
             </select>
             {formErrors.role && <p className="text-red-500 text-sm">{formErrors.role}</p>}

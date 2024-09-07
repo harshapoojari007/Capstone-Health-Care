@@ -77,4 +77,15 @@ public class CenterAdministratorService implements CenterAdministratorServiceInt
 			return new ResponseEntity<>(map,HttpStatus.CREATED);
 	}
 
+	@Override
+	public ResponseEntity<?> getCenterAdministratorByUserId(int userId) throws IdNotFoundException {
+		// TODO Auto-generated method stub
+		CenterAdministratorDto output= mapper.mapToCenterAdministratorDto(dao.getCenterAdministratorByUserId(userId));
+		Map<String,Object> map= new HashMap<>();
+		map.put("status", 10);
+		map.put("data",output);
+		map.put("message", "CenterAdministrator fetched successfully");
+		return new ResponseEntity<>(map,HttpStatus.CREATED);
+	}
+
 }

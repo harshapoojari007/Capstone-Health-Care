@@ -20,7 +20,7 @@ const Patient = () => {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await Axios.get('/patient');
+        const response = await Axios.get('/patients');
         setPatients(response.data.data);
       } catch (error) {
         console.error('Error fetching patients:', error);
@@ -59,11 +59,11 @@ const Patient = () => {
 
   const handleDeletePatient = async (id) => {
     try {
-      await Axios.delete(`/patients/${id}`);
+      await Axios.delete(`/patient/${id}`);
       setShowAlert({ show: true, message: 'Patient deleted successfully.', variant: 'success' });
       // Fetch updated patient list
-      const updatedResponse = await Axios.get('/patient');
-      setPatients(updatedResponse.data);
+     // const updatedResponse = await Axios.get('/patient');
+      //setPatients(updatedResponse.data);
     } catch (error) {
       console.error('Error deleting patient:', error);
       setShowAlert({ show: true, message: 'Error deleting patient.', variant: 'danger' });
@@ -115,9 +115,9 @@ const Patient = () => {
 
       {/* Add Patient Button */}
       <div className="text-right mb-3">
-        <Button variant="success" onClick={handleShowAddPatientModal}>
+        {/* <Button variant="success" onClick={handleShowAddPatientModal}>
           Add Patient
-        </Button>
+        </Button> */}
       </div>
 
       {/* Patients Table */}
@@ -132,8 +132,10 @@ const Patient = () => {
           </tr>
         </thead>
         <tbody>
-          {typeof patients === 'string' ? (
-            <p>{patients}</p>
+          {typeof patients === 'string' || patients.length===0 ? (
+             <tr>
+             <td colSpan="5" className="text-center">No Patients currently</td>
+             </tr>
           ) : (
             patients.map(patient => (
               <tr key={patient.id}>
@@ -255,7 +257,11 @@ const Patient = () => {
               </tr>
             </thead>
             <tbody>
-              {appointments.map((appointment) => (
+              {typeof appointments==='string' ?(<tr>
+              <td colSpan="5" className="text-center">No Appointments available</td>
+            </tr>):
+              
+              appointments.map((appointment) => (
                 <tr key={appointment.id}>
                   <td>{new Date(appointment.appointmentDate).toLocaleDateString()}</td>
                   <td>{appointment.approvalStatus}</td>

@@ -14,13 +14,19 @@ import com.graymatter.entities.Patient;
 import com.graymatter.entities.TestResult;
 import com.graymatter.exceptions.IdNotFoundException;
 import com.graymatter.repositories.AppointmentRepository;
+import com.graymatter.repositories.TestResultRepository;
 import com.graymatter.services.AppointmentServiceInterface;
+
+import jakarta.transaction.Transactional;
 
 @Repository
 public class AppointmentDao{
 	
 	@Autowired
 	AppointmentRepository repo;
+	
+    @Autowired
+    TestResultRepository testResultRepository;
 
 	public List<Appointment> getAllAppointments() {
 		// TODO Auto-generated method stub
@@ -38,15 +44,17 @@ public class AppointmentDao{
 		return repo.save(appointment);
 	}
 
-	
+	@Transactional
 	public Appointment deleteAppointmentById(int id) throws IdNotFoundException {
 		// TODO Auto-generated method stub
-		Appointment appointment=repo.findById(id).orElseThrow(()->new IdNotFoundException("Appointment id: "+id+" is not present"));;
+		Appointment appointment=repo.findById(id).orElseThrow(()->new IdNotFoundException("Appointment id: "+id+" is not present"));
+		testResultRepository.deleteByAppointmentId(id);
+		
 		repo.deleteById(id);
 		return appointment;
 	}
 
-	
+//	@Transactional
 	public Appointment updateAppointment(int id, Appointment updatedAppointment) throws IdNotFoundException {
 		// TODO Auto-generated method stub
 		Appointment existingAppoinment=repo.findById(id).orElseThrow(()->new IdNotFoundException("Appointment id: "+id+" is not present"));

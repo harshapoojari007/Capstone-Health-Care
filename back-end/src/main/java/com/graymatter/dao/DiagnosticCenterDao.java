@@ -76,11 +76,9 @@ public class DiagnosticCenterDao {
 		return "successfully deleted";
 	}
 	
-	public List<DiagnosticCenter> findByDiagnosticTests(List<Integer> diagnosticTestIds){
-		if (diagnosticTestIds == null || diagnosticTestIds.isEmpty()) {
-            return List.of();
-        }
-        long testCount = diagnosticTestIds.size();
-		return repo.findByDiagnosticTestIds(diagnosticTestIds,testCount);
+	public List<DiagnosticCenter> findByDiagnosticTests(List<String> diagnosticTestIds){
+		return repo.findByDiagnosticTestNames(diagnosticTestIds);
 	}
+	
+	
 }

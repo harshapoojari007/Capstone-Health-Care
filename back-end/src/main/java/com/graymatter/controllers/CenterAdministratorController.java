@@ -44,4 +44,8 @@ public class CenterAdministratorController {
 	public ResponseEntity<?> updateCenterAdministrator(@PathVariable int id, @RequestBody CenterAdministratorDto centerAdministrator){
 		return service.updateCenterAdministrator(id, centerAdministrator);
 	}
+	@GetMapping("/centerAdministrator/user/{id}")
+	public ResponseEntity<?> getCenterAdministratorByUserId(@PathVariable("id") int userId) throws IdNotFoundException{
+		return service.getCenterAdministratorByUserId(userId);
+	}
 }

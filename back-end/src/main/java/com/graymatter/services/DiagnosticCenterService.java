@@ -121,9 +121,9 @@ public class DiagnosticCenterService implements DiagnsoticCenterServiceInterface
 	}
 
 	@Override
-	public ResponseEntity<?> findByDiagnosticTests(List<Integer> diagnosticTestIds) {
+	public ResponseEntity<?> findByDiagnosticTests(List<String> diagnosticTestNames) {
 		// TODO Auto-generated method stub
-		List<DiagnosticCenter> dcList= dao.findByDiagnosticTests(diagnosticTestIds);
+		List<DiagnosticCenter> dcList= dao.findByDiagnosticTests(diagnosticTestNames);
 		List<DiagnosticCenterDto> output= dcList.stream().map((dc)->mapper.mapToDiagnosticCenterDto(dc)).collect(Collectors.toList());
 		Map<String,Object> map= new HashMap<>();
 		if(!output.isEmpty()) {

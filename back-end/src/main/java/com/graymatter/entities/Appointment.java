@@ -47,6 +47,6 @@ public class Appointment {
     @JoinColumn(name = "diagnostic_center_id")
     private DiagnosticCenter diagnosticCenter;
 
-    @OneToMany(mappedBy = "appointment", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "appointment")
     private List<TestResult> testResults=new ArrayList<TestResult>();
 }
