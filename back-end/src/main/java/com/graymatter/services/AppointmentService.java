@@ -20,9 +20,7 @@ import com.graymatter.dto.PatientMapper;
 import com.graymatter.dto.TestResultDto;
 import com.graymatter.dto.TestResultMapper;
 import com.graymatter.entities.Appointment;
-import com.graymatter.entities.DiagnosticCenter;
 import com.graymatter.entities.DiagnosticTest;
-import com.graymatter.entities.Patient;
 import com.graymatter.entities.TestResult;
 import com.graymatter.exceptions.IdNotFoundException;
 
@@ -99,11 +97,10 @@ public class AppointmentService implements AppointmentServiceInterface{
 
 	@Override
 	public ResponseEntity<?> updateAppointment(int id, AppointmentDto appointment) throws IdNotFoundException {
-		// TODO Auto-generated method stub
 		AppointmentDto appointmentDto= mapper.mapToAppointmentDto(dao.updateAppointment(id,mapper.mapToAppointment(appointment))) ;
 		Map<String, Object> map=new HashMap<>();
 		map.put("status",10);
-		map.put("data", appointment);
+		map.put("data", appointmentDto);
 		return new ResponseEntity<>(map,HttpStatus.OK);
 	}
 

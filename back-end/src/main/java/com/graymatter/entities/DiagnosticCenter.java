@@ -1,8 +1,5 @@
 package com.graymatter.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.CascadeType;
@@ -15,8 +12,11 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Transient;
+
 import java.util.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -25,17 +25,9 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 public class DiagnosticCenter {
-<<<<<<< HEAD
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-
-=======
-	
 	    @Id
 	    @GeneratedValue(strategy = GenerationType.AUTO)
 	    private int id;
->>>>>>> 97b500b529adf3e999f04cabf4ffa85abbe5115c
 
     private String name;
     private String contactNO;
@@ -58,4 +50,9 @@ public class DiagnosticCenter {
     @JoinColumn(name = "centerAdmin_id")
     @JsonIgnore
     private CenterAdministrator centerAdmin;
+    
+//    @Transient
+//    @OneToOne
+//    @JoinColumn(name = "pendingDiagnosticCenterRequest_id")
+//    private PendingDiagnosticCenterRequest pendingDiagnosticCenterRequest;
 }

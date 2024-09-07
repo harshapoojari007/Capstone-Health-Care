@@ -5,6 +5,7 @@ import AdminDashboard from './AdminDashboard';
 import Appointments from './DashboardComponents/Appointments';
 import { useUser } from '../../UserContext';
 import DiagnosticCenter from './DashboardComponents/DiagnosticCenter';
+import CenterAdministrator from './DashboardComponents/CenterAdministrator.jsx';
 import DiagnosticTest from './DashboardComponents/DiagnosticTest';
 import TestResult from './DashboardComponents/TestResult';
 import Patient from './DashboardComponents/Patient';
@@ -22,6 +23,8 @@ const DashBoards = () => {
           return <Appointments />;
         case 'diagnosticCenters':
           return <DiagnosticCenter />;
+        case 'centerAdministator':
+          return <CenterAdministrator />;
         case 'diagnosticTests':
           return <DiagnosticTest />;
         case 'testResults':

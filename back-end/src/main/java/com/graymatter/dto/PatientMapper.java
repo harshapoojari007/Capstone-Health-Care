@@ -3,7 +3,6 @@ package com.graymatter.dto;
 import org.springframework.stereotype.Component;
 
 import com.graymatter.entities.Patient;
-import com.graymatter.dto.PatientDto;
 
 @Component
 public class PatientMapper {

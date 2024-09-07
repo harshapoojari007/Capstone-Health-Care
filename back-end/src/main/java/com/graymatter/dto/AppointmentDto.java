@@ -10,7 +10,6 @@ import com.graymatter.entities.DiagnosticCenter;
 import com.graymatter.entities.DiagnosticTest;
 import com.graymatter.entities.Patient;
 import com.graymatter.entities.TestResult;
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

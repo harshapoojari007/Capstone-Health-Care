@@ -48,7 +48,8 @@ const Patient = () => {
         gender: '',
         userId: ''
       });
-      // Fetch updated patient list
+   
+      
       const updatedResponse = await Axios.get('/patient');
       setPatients(updatedResponse.data);
     } catch (error) {

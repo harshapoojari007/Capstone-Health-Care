@@ -74,6 +74,7 @@ const Sidebar = ({ setSelectedView }) => {
     'appointments',
     'diagnosticCenters',
     'diagnosticTests',
+    'centerAdministator',
     'testResults',
     'patients',
     'settings'

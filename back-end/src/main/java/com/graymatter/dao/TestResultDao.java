@@ -2,14 +2,9 @@ package com.graymatter.dao;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import com.graymatter.dto.PatientDto;
-import com.graymatter.dto.TestResultDto;
 import com.graymatter.entities.Appointment;
-import com.graymatter.entities.Patient;
 import com.graymatter.entities.TestResult;
 import com.graymatter.exceptions.IdNotFoundException;
 import com.graymatter.repositories.AppointmentRepository;

@@ -3,7 +3,6 @@ package com.graymatter.services;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import com.graymatter.dao.PatientDao;
 import com.graymatter.dto.PatientDto;
 import com.graymatter.dto.PatientMapper;
-import com.graymatter.dto.TestResultDto;
 import com.graymatter.dto.TestResultMapper;
 import com.graymatter.entities.Patient;
 import com.graymatter.entities.TestResult;

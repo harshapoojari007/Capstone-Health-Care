@@ -1,20 +1,14 @@
 package com.graymatter.dao;
 
 import java.util.*;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import com.graymatter.dto.PatientDto;
 import com.graymatter.entities.Appointment;
-import com.graymatter.entities.DiagnosticCenter;
 import com.graymatter.entities.DiagnosticTest;
 import com.graymatter.entities.Patient;
 import com.graymatter.entities.TestResult;
 import com.graymatter.exceptions.IdNotFoundException;
 import com.graymatter.repositories.AppointmentRepository;
-import com.graymatter.services.AppointmentServiceInterface;
 
 @Repository
 public class AppointmentDao{
@@ -23,7 +17,6 @@ public class AppointmentDao{
 	AppointmentRepository repo;
 
 	public List<Appointment> getAllAppointments() {
-		// TODO Auto-generated method stub
 		return repo.findAll();
 	}
 
@@ -40,7 +33,6 @@ public class AppointmentDao{
 
 	
 	public Appointment deleteAppointmentById(int id) throws IdNotFoundException {
-		// TODO Auto-generated method stub
 		Appointment appointment=repo.findById(id).orElseThrow(()->new IdNotFoundException("Appointment id: "+id+" is not present"));;
 		repo.deleteById(id);
 		return appointment;

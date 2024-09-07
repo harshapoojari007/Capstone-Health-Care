@@ -1,12 +1,8 @@
 package com.graymatter.services;
 
 import java.util.List;
-import java.util.Set;
-
 import org.springframework.http.ResponseEntity;
-
 import com.graymatter.dto.DiagnosticCenterDto;
-import com.graymatter.entities.DiagnosticTest;
 import com.graymatter.exceptions.IdNotFoundException;
 
 interface DiagnsoticCenterServiceInterface {

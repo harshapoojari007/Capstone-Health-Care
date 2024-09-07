@@ -2,15 +2,8 @@ package com.graymatter.dto;
 
 import java.util.*;
 
-import org.springframework.stereotype.Component;
-
 import com.graymatter.entities.Appointment;
 import com.graymatter.entities.DiagnosticCenter;
-import com.graymatter.entities.DiagnosticTest;
-
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;

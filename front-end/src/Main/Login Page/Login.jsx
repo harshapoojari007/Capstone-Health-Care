@@ -13,14 +13,8 @@ const Login = () => {
     setError('')
 
     try {
-<<<<<<< HEAD
-      await axios.post('http://localhost:8089/api/v1/user', { username, password});
-      navigate('/'); // Redirect to login after successful signup
-      alert("Successfully logged in");
-=======
       await axios.post('http://localhost:8089/api/v1/user/login', { username, password});
       navigate('/'); 
->>>>>>> 97b500b529adf3e999f04cabf4ffa85abbe5115c
     } catch (err) {
       setError('Failed to login in. Please try again.');
     }
