@@ -17,11 +17,13 @@ import Home from './Main/Home Page/Home';
 import ApointmentForm from './Main/Appointment/ApointmentForm';
 import DashBoards from './Main/DashBoard/Dashboards';
 import InvalidUrlPage from './Components/InvalidUrlPage';
+import ContactUs from './Main/ContactUs/ContactUs';
 function App() {
   return (<Router>
      <Routes>
        <Route element={<LayoutWithNavigation />}>
        <Route path="/home" element={<PrivateRoute element={ <Home/>}/>}/> 
+       <Route path="/contact" element={<ContactUs/>}/>
        <Route path="/appointmentBooking" element={<PrivateRoute element={<ApointmentForm />} />}/> 
       </Route>
 
@@ -29,6 +31,7 @@ function App() {
         <Route path="/" element={<Welcome/>} /> 
        <Route path="/login" element={<Login />}/>
        <Route path="/signUp" element={<SignUp/>}/>
+      
        <Route path="/dashboard" element={ <PrivateRoute element={<DashBoards/>}/> }/>
        </Route>
 

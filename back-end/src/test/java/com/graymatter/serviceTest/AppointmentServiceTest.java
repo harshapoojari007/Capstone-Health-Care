@@ -30,14 +30,5 @@ public class AppointmentServiceTest {
 		ApprovalStatus ap= ApprovalStatus.APPROVED;
 		List<DiagnosticCenter>=new DiagnosticCenter(1,"Naman","8322102831","324Dcross murugeshpalya","namanbhat123@gmial.com",null,)
 		Appointment a = new Appointment(1,"2024-09-03",ap,);
-//        User savedUser = new User(1, "swapna", "swapna@gmail.com");
-//
-//        Mockito.when(userRepository.save(user)).thenReturn(savedUser);
-//
-//        User result = service.createUser(user);
-//
-//        assertEquals(1, result.getId());
-//        assertEquals("swapna", result.getName());
-//        assertEquals("swapna@gmail.com", result.getEmail());
-	}
+
 }

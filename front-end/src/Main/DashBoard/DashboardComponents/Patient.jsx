@@ -6,10 +6,19 @@ const Patient = () => {
   const [patients, setPatients] = useState([]);
   const [showAddPatientModal, setShowAddPatientModal] = useState(false);
   const [showAppointmentsModal, setShowAppointmentsModal] = useState(false);
+  const [showUpdatePatientModal, setShowUpdatePatientModal] = useState(false);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [showAlert, setShowAlert] = useState({ show: false, message: '', variant: '' });
   const [newPatient, setNewPatient] = useState({
+    name: '',
+    phoneNo: '',
+    age: '',
+    gender: '',
+    userId: ''
+  });
+  const [patientToUpdate, setPatientToUpdate] = useState({
+    id: '',
     name: '',
     phoneNo: '',
     age: '',
@@ -33,51 +42,33 @@ const Patient = () => {
   const handleShowAddPatientModal = () => setShowAddPatientModal(true);
   const handleCloseAddPatientModal = () => setShowAddPatientModal(false);
 
-  const handleAddPatient = async () => {
-    try {
-      const response = await Axios.post('/patient', newPatient);
-      const addedPatientResponse = response.data;
-      const message = addedPatientResponse.message;
-
-      setShowAlert({ show: true, message: message, variant: 'success' });
-      handleCloseAddPatientModal();
-      setNewPatient({
-        name: '',
-        phoneNo: '',
-        age: '',
-        gender: '',
-        userId: ''
-      });
-   
-      
-      const updatedResponse = await Axios.get('/patient');
-      setPatients(updatedResponse.data);
-    } catch (error) {
-      console.error('Error adding patient:', error);
-      setShowAlert({ show: true, message: 'Error adding patient.', variant: 'danger' });
-    }
-  };
+ 
 
   const handleDeletePatient = async (id) => {
     try {
       await Axios.delete(`/patient/${id}`);
       setShowAlert({ show: true, message: 'Patient deleted successfully.', variant: 'success' });
-      // Fetch updated patient list
-     // const updatedResponse = await Axios.get('/patient');
-      //setPatients(updatedResponse.data);
+      const updatedResponse = await Axios.get('/patients');
+      setPatients(updatedResponse.data.data);
     } catch (error) {
       console.error('Error deleting patient:', error);
       setShowAlert({ show: true, message: 'Error deleting patient.', variant: 'danger' });
     }
   };
 
-  const handleUpdatePatient = (id) => {
-    const patient = patients.find(patient => patient.id === id);
-    setSelectedPatient(patient);
-    // Show update modal or handle update here
+  const handleUpdatePatient = async (id) => {
+    try {
+      const response = await Axios.get(`/patient/${id}`);
+      const patient = response.data.data;
+      setPatientToUpdate(patient);
+      setShowUpdatePatientModal(true);
+    } catch (error) {
+      console.error('Error fetching patient:', error);
+      setShowAlert({ show: true, message: 'Error fetching patient data.', variant: 'danger' });
+    }
   };
 
-  const handleViewAppointments = async (patient) => {
+  const handleShowAppointmentsModal = async (patient) => {
     try {
       const response = await Axios.get(`/appointment/patient/${patient.id}`);
       setAppointments(response.data.data);
@@ -102,6 +93,36 @@ const Patient = () => {
     }));
   };
 
+  const handleUpdateChange = (e) => {
+    const { name, value } = e.target;
+    setPatientToUpdate(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleUpdateSubmit = async () => {
+    try {
+      await Axios.put(`/patient/${patientToUpdate.id}`, patientToUpdate);
+      setShowAlert({ show: true, message: 'Patient updated successfully.', variant: 'success' });
+      setShowUpdatePatientModal(false);
+      setPatientToUpdate({
+        id: '',
+        name: '',
+        phoneNo: '',
+        age: '',
+        gender: '',
+        userId: ''
+      });
+
+      const updatedResponse = await Axios.get('/patients');
+      setPatients(updatedResponse.data.data);
+    } catch (error) {
+      console.error('Error updating patient:', error);
+      setShowAlert({ show: true, message: 'Error updating patient.', variant: 'danger' });
+    }
+  };
+
   const handlePrintInvoice = (appointmentId) => {
     // Logic for printing invoice, e.g., open a new window with invoice details
     alert(`Print invoice for appointment ID: ${appointmentId}`);
@@ -113,13 +134,6 @@ const Patient = () => {
 
       {/* Alert for Success/Failure */}
       {showAlert.show && <Alert variant={showAlert.variant}>{showAlert.message}</Alert>}
-
-      {/* Add Patient Button */}
-      <div className="text-right mb-3">
-        {/* <Button variant="success" onClick={handleShowAddPatientModal}>
-          Add Patient
-        </Button> */}
-      </div>
 
       {/* Patients Table */}
       <Table striped bordered hover>
@@ -133,10 +147,10 @@ const Patient = () => {
           </tr>
         </thead>
         <tbody>
-          {typeof patients === 'string' || patients.length===0 ? (
-             <tr>
-             <td colSpan="5" className="text-center">No Patients currently</td>
-             </tr>
+          {typeof patients === 'string' ? (
+            <tr>
+              <td colSpan="5" className="text-center">No Patients currently</td>
+            </tr>
           ) : (
             patients.map(patient => (
               <tr key={patient.id}>
@@ -151,7 +165,7 @@ const Patient = () => {
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
-                      <Dropdown.Item onClick={() => handleViewAppointments(patient)}>View Appointments</Dropdown.Item>
+                      <Dropdown.Item onClick={() => handleShowAppointmentsModal(patient)}>View Appointments</Dropdown.Item>
                       <Dropdown.Item onClick={() => handleUpdatePatient(patient.id)}>Update</Dropdown.Item>
                       <Dropdown.Item onClick={() => handleDeletePatient(patient.id)}>Delete</Dropdown.Item>
                     </Dropdown.Menu>
@@ -163,10 +177,10 @@ const Patient = () => {
         </tbody>
       </Table>
 
-      {/* Add Patient Modal */}
-      <Modal show={showAddPatientModal} onHide={handleCloseAddPatientModal}>
+      {/* Update Patient Modal */}
+      <Modal show={showUpdatePatientModal} onHide={() => setShowUpdatePatientModal(false)}>
         <Modal.Header closeButton>
-          <Modal.Title>Add Patient</Modal.Title>
+          <Modal.Title>Update Patient</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -176,8 +190,8 @@ const Patient = () => {
                 type="text"
                 placeholder="Enter name"
                 name="name"
-                value={newPatient.name}
-                onChange={handleChange}
+                value={patientToUpdate.name}
+                onChange={handleUpdateChange}
                 required
               />
             </Form.Group>
@@ -187,8 +201,8 @@ const Patient = () => {
                 type="text"
                 placeholder="Enter phone number"
                 name="phoneNo"
-                value={newPatient.phoneNo}
-                onChange={handleChange}
+                value={patientToUpdate.phoneNo}
+                onChange={handleUpdateChange}
                 required
               />
             </Form.Group>
@@ -198,8 +212,8 @@ const Patient = () => {
                 type="number"
                 placeholder="Enter age"
                 name="age"
-                value={newPatient.age}
-                onChange={handleChange}
+                value={patientToUpdate.age}
+                onChange={handleUpdateChange}
                 required
               />
             </Form.Group>
@@ -208,8 +222,8 @@ const Patient = () => {
               <Form.Control
                 as="select"
                 name="gender"
-                value={newPatient.gender}
-                onChange={handleChange}
+                value={patientToUpdate.gender}
+                onChange={handleUpdateChange}
                 required
               >
                 <option value="">Select gender</option>
@@ -224,18 +238,18 @@ const Patient = () => {
                 type="text"
                 placeholder="Enter user ID"
                 name="userId"
-                value={newPatient.userId}
-                onChange={handleChange}
+                value={patientToUpdate.userId}
+                onChange={handleUpdateChange}
                 required
               />
             </Form.Group>
-            <Button variant="primary" onClick={handleAddPatient} className="mt-3">
-              Add Patient
+            <Button variant="primary" onClick={handleUpdateSubmit} className="mt-3">
+              Update Patient
             </Button>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseAddPatientModal}>
+          <Button variant="secondary" onClick={() => setShowUpdatePatientModal(false)}>
             Close
           </Button>
         </Modal.Footer>
@@ -258,27 +272,24 @@ const Patient = () => {
               </tr>
             </thead>
             <tbody>
-              {typeof appointments==='string' ?(<tr>
-              <td colSpan="5" className="text-center">No Appointments available</td>
-            </tr>):
-              
-              appointments.map((appointment) => (
-                <tr key={appointment.id}>
-                  <td>{new Date(appointment.appointmentDate).toLocaleDateString()}</td>
-                  <td>{appointment.approvalStatus}</td>
-                  <td>{appointment.diagnosticTests.map(test => test.name).join(', ')}</td>
-                  <td>{appointment.diagnosticCenter.name}</td>
-                  <td>
-                    <Button variant="link" onClick={() => handlePrintInvoice(appointment.id)}>
-                      Print Invoice
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-              {appointments.length === 0 && (
+              {typeof appointments === 'string'? (
                 <tr>
                   <td colSpan="5" className="text-center">No appointments found</td>
                 </tr>
+              ) : (
+                appointments.map((appointment) => (
+                  <tr key={appointment.id}>
+                    <td>{new Date(appointment.appointmentDate).toLocaleDateString()}</td>
+                    <td>{appointment.approvalStatus}</td>
+                    <td>{appointment.diagnosticTests.map(test => test.name).join(', ')}</td>
+                    <td>{appointment.diagnosticCenter.name}</td>
+                    <td>
+                      <Button variant="link" onClick={() => handlePrintInvoice(appointment.id)}>
+                        Print Invoice
+                      </Button>
+                    </td>
+                  </tr>
+                ))
               )}
             </tbody>
           </Table>

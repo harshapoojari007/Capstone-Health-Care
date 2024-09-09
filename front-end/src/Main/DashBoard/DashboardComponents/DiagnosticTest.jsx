@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Dropdown, DropdownButton, Button, Modal, Form, Table } from 'react-bootstrap'; // Ensure react-bootstrap is installed
+import { Dropdown, DropdownButton, Button, Modal, Form, Table } from 'react-bootstrap';
 import Axios from '../../../configurations/Axios';
 
 const DiagnosticTest = () => {
@@ -162,7 +162,7 @@ const DiagnosticTest = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {testsList.length === 0 ? (
+            {typeof testsList === 'string' ? (
               <tr>
                 <td colSpan="6" className="text-center py-4">No tests available</td>
               </tr>

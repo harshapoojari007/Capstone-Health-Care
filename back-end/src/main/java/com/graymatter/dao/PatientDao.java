@@ -62,5 +62,29 @@ public class PatientDao {
 	
 		
 	}
+	public Patient updatePatient(int id, Patient updatedPatient) throws IdNotFoundException {
+		Patient existingPatient= patientRepo.findById(id).orElseThrow(()->new IdNotFoundException("The patient with the id : "+id+" not found"));
+		 
+	            if (updatedPatient.getName() != null) {
+	                existingPatient.setName(updatedPatient.getName());
+	            }
+	            if (updatedPatient.getPhoneNo() != null) {
+	                existingPatient.setPhoneNo(updatedPatient.getPhoneNo());
+	            }
+	            if (updatedPatient.getAge() != 0) {
+	                existingPatient.setAge(updatedPatient.getAge());
+	            }
+	            if (updatedPatient.getGender() != null) {
+	                existingPatient.setGender(updatedPatient.getGender());
+	            }
+	            if (updatedPatient.getAadharNumber() != null) {
+	                existingPatient.setAadharNumber(updatedPatient.getAadharNumber());
+	            }
+	            if (updatedPatient.getUser() != null) {
+	                existingPatient.setUser(updatedPatient.getUser());
+	            }
+
+	            return patientRepo.save(existingPatient);
+	}
 
 }

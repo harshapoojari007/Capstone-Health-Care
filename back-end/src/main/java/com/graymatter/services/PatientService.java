@@ -41,22 +41,13 @@ public class PatientService implements PatientServiceInterface{
 	}
 
 	@Override
-	public ResponseEntity<?> updatePatient(int id,PatientDto patient) {
+	public ResponseEntity<?> updatePatient(int id,PatientDto patient) throws IdNotFoundException {
+		PatientDto output=pMapper.mapToPatientDto(dao.updatePatient(id,pMapper.mapToPatient(patient)));
 		Map<String,Object> map= new HashMap<>();
-		if(dao.isPresent(id)) {
-		 Patient p= pMapper.mapToPatient(patient);
-		 p.setId(id);
-		 Patient updatedPatient=  dao.addPatient(p);
-		PatientDto output=pMapper.mapToPatientDto(updatedPatient);
 		 map.put("status", 10);
 			map.put("data",output);
-			map.put("message", "Product updated successfully");
-			return new ResponseEntity<>(map,HttpStatus.CREATED);
-			}else {
-				map.put("status",40);
-				map.put("data", "No products to display");
-				return new ResponseEntity<>(map,HttpStatus.NOT_FOUND);
-			}
+			map.put("message", "Patient updated successfully");
+			return new ResponseEntity<>(map,HttpStatus.OK);
 	}
 
 	@Override

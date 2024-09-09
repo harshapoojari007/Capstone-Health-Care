@@ -160,6 +160,7 @@ const Appointments = () => {
   };
 
   return (
+    
     <div className="container mt-4">
       <h2 className="text-center mb-4">Appointments List</h2>
       <Table striped bordered hover>
@@ -174,7 +175,7 @@ const Appointments = () => {
           </tr>
         </thead>
         <tbody>
-          {appointmentsList.length === 0 ? (
+          { typeof appointmentsList === 'string' ? (
             <tr>
               <td colSpan="6" className="text-center">No appointments found</td>
             </tr>

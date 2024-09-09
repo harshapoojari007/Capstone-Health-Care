@@ -30,7 +30,7 @@ public class PatientController {
 		return service.deletePatientById(id);
 	}
 	@PutMapping("/patient/{id}")
-	public ResponseEntity<?> updatePatient(@PathVariable("id") int id,@RequestBody PatientDto patient){
+	public ResponseEntity<?> updatePatient(@PathVariable("id") int id,@RequestBody PatientDto patient) throws IdNotFoundException{
 		return service.updatePatient(id, patient);
 	}
 	@GetMapping("/patient/{id}")

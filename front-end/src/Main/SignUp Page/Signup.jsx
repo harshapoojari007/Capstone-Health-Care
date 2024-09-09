@@ -35,26 +35,18 @@ const Signup = () => {
     }
  
     try {
-<<<<<<< HEAD
       if(role==='CENTERADMIN') {
 
         await Axios.post('/request',{ username, password, email, approved:"false" })
 
       }
       else{
-        await Axios.post('/user', { username, password, email, role });
-        navigate('/login'); 
-        alert("Successfully Registered")
-      }
-       
-        
-      
-      
-=======
-      await Axios.post('/auth/signup', { username, password, email, role });
+        await Axios.post('/auth/signup', { username, password, email, role });
       navigate('/login'); 
       alert("Successfully Registered");
->>>>>>> b27d1802e9ef3437590b2ab13e4bc424b7086e2c
+      }
+       
+
     } catch (err) {
       setError('Failed to sign up. Please try again.');
       console.log(err);

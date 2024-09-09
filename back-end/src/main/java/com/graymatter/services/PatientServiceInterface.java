@@ -9,7 +9,7 @@ import com.graymatter.exceptions.IdNotFoundException;
 public interface PatientServiceInterface {
 	public ResponseEntity<?> registerPatient(PatientDto patient);
 	public ResponseEntity<?> deletePatientById(int id) throws IdNotFoundException;
-	public ResponseEntity<?> updatePatient(int id,PatientDto patient);
+	public ResponseEntity<?> updatePatient(int id,PatientDto patient) throws IdNotFoundException;
 	public ResponseEntity<?> getPatientById(int id) throws IdNotFoundException;
 	public ResponseEntity<?> getAllPatients();
 	public ResponseEntity<?> getAllTestResult(String patientUserName);

@@ -7,6 +7,7 @@ import div2img from "../../Components/Images/welcome_changes.avif"
 import div2img2 from "../../Components/Images/welcome_main.jpg"
 import Cards from "../../Components/UIElements/Card";
 import { useUser } from "../../UserContext";
+import Footer from "../../Components/Footer/Footer";
 
 const Welcome = () => {
   const myStyles = {
@@ -49,11 +50,8 @@ const Welcome = () => {
       <img src={div2img2} alt="" className="welcome_first_img"  />
       <img src={div2img} alt="" className="welcome_second_img" />
     </div>
-    <div className="welcome_four">
-
-    </div>
     <div className="welcome_five">
-
+      <Footer/>
     </div>
     
 
