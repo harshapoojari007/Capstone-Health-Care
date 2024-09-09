@@ -218,4 +218,23 @@ public class AppointmentService implements AppointmentServiceInterface{
 		
 	}
 
+	public ResponseEntity<?> getAllAppointmentsOfUser(int id) {
+		// TODO Auto-generated method stub
+		List<Appointment> aList=dao.getAllAppointmentsOfUser(id);
+		List<AppointmentDto> appointments= aList.stream().map((a)->mapper.mapToAppointmentDto(a)).collect(Collectors.toList());
+		Map<String, Object> map=new HashMap<>();
+		if(!appointments.isEmpty()) {
+			map.put("status",10);
+			map.put("data", appointments);
+			return new ResponseEntity<>(map,HttpStatus.OK);
+			
+		}else {
+			map.put("status",20);
+			map.put("data", "No appointments to display");
+			return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
+			
+		}
+		
+	}
+
 }

@@ -11,11 +11,12 @@ import TestResult from './DashboardComponents/TestResult';
 import Patient from './DashboardComponents/Patient';
 import Setting from './DashboardComponents/Setting';
 import CenterAdminstatorDashboard from './CenterAdminstatorDashboard';
-
+import ProfileImage from '../../Components/ProfileImage.jsx';
+import { useNavigate } from 'react-router-dom';
 const DashBoards = () => {
-    const { username,role } = useUser();
+    const { username,role,logout } = useUser();
     const [selectedView, setSelectedView] = useState('dashboard'); // Default view
-  
+    const navigate=useNavigate()
     // Content rendering based on selected view
     const renderContent = () => {
       switch (selectedView) {
@@ -34,17 +35,43 @@ const DashBoards = () => {
         case 'settings':
           return <Setting />;
         default:
-          return role === 'admin' ? <AdminDashboard /> :role === 'centerAdmin' ?<CenterAdminstatorDashboard/> :<UserDashboard />;
+          return role === 'ADMIN' ? <AdminDashboard /> :role === 'CENTER_ADMIN' ?<CenterAdminstatorDashboard/> :<UserDashboard />;
       }
     };
+    
+  const logouts=()=>{
+    logout();
+    navigate("/login")
+
+ }
   
     return (
      
-      <div className="container-fluid h-full ">
+      <div className={`container-fluid h-full ${selectedView==='dashboard'?'split-background':''} `}>
+        
         <div className="row vh-100">
           <Sidebar setSelectedView={setSelectedView} />
           <main className="col-md-9 ms-sm-auto col-lg-10 px-4">
-            {/* <h1 className="my-4">{selectedView.charAt(0).toUpperCase() + selectedView.slice(1)}</h1> */}
+            <div className='flex justify-between  py-3 pb-4 -mb-[23px] '>
+                <div className='flex gap-4'>
+                <p>Dashboard</p>
+               {role==='ADMIN'&&<p>Users</p>}
+                <p>Settings</p>
+                </div>
+                <div className='flex gap-4 justify-center items-center'>
+                <ProfileImage  name={username}/>
+                 <p className={` ${selectedView==='dashboard'?'text-white':'text-[#202531]'} -ml-4`}>{username}</p>
+                 <p onClick={logouts} className='text-red-400 font-bold cursor-pointer'>Logout</p>
+                </div>
+               
+            </div>
+            <hr className='-mt-[2px]'/>
+            <div className='flex gap-2 -mt-2 shadow-md border-b '>
+                <a href="/home" className='text-decoration-none'>HOME</a>
+                <p>/</p>
+                <p>{selectedView.charAt(0).toLocaleUpperCase() + selectedView.slice(1)}</p>
+            </div>
+            {/* <hr className='-mt-3' /> */}
             {renderContent()}
           </main>
         </div>

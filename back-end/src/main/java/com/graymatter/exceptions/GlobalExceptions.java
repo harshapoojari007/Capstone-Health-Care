@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptions  {
+<<<<<<< HEAD
 //	@ExceptionHandler(IdNotFoundException.class)
 //	public ResponseEntity<String> handleIdNotFoundException(IdNotFoundException rnfe){
 //		return new ResponseEntity<>(rnfe.getMessage(),HttpStatus.NOT_FOUND);
@@ -31,6 +32,31 @@ public class GlobalExceptions  {
 //		return new ResponseEntity<>(rnfe.getMessage(),HttpStatus.CONFLICT);
 //	}
 //	
+=======
+	@ExceptionHandler(IdNotFoundException.class)
+	public ResponseEntity<String> handleIdNotFoundException(IdNotFoundException rnfe){
+		return new ResponseEntity<>(rnfe.getMessage(),HttpStatus.NOT_FOUND);
+	}
+
+	@ExceptionHandler(InvalidCredentialsException.class)
+	public ResponseEntity<String> handleInvalidCredentialsException(InvalidCredentialsException rnfe){
+		return new ResponseEntity<>(rnfe.getMessage(),HttpStatus.NOT_FOUND);
+	}
+	@ExceptionHandler(ConflictException.class)
+	public ResponseEntity<String> handleConflictException(ConflictException rnfe){
+		return new ResponseEntity<>(rnfe.getMessage(),HttpStatus.CONFLICT);
+	}
+	@ExceptionHandler(UserOrEmailAlreadyPresent.class)
+	public ResponseEntity<String> handleUserOrEmailAlreadyPresent(UserOrEmailAlreadyPresent rnfe){
+		return new ResponseEntity<>(rnfe.getMessage(),HttpStatus.CONFLICT);
+	}
+	
+	@ExceptionHandler(HttpMessageNotWritableException.class)
+	public ResponseEntity<String> handleHttpMessageNotWritableException(HttpMessageNotWritableException rnfe){
+		return new ResponseEntity<>(rnfe.getMessage(),HttpStatus.CONFLICT);
+	}
+	
+>>>>>>> 9e4869d3ecee0e31c4d03784fcf57e1ebf50073e
 	
 	
 

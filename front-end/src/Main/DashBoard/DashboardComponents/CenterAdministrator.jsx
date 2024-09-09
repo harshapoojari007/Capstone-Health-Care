@@ -2,10 +2,12 @@ import React, { useEffect, useState } from 'react';
 import "./centerAdministrator.css";
 import Axios from '../../../configurations/Axios';
 import { Dropdown, Button, Table } from 'react-bootstrap';
+import { paste } from '@testing-library/user-event/dist/paste';
 
 const CenterAdministrator = () => {
     const [centerAdmin, setCenterAdmin] = useState([]);
     const [view, setView] = useState('all'); // State to track the current view
+  
 
     useEffect(() => {
         const fetchAdmins = async () => {
@@ -23,9 +25,13 @@ const CenterAdministrator = () => {
 
     const handleApproveRequest = async (c) => {
         try {
+            
             const response = await Axios.put(`/approve/${c.id}`);
             console.log(response.data.data);
             // Optionally refetch data here or update state to reflect the change
+            const additionalResponse = await Axios.post('/auth/signup', {username:c.username,email:c.email,password:c.password,role:"CENTER_ADMIN"});
+            console.log('Additional Response:', additionalResponse.data.data);
+            alert("Successfully request approved")
         } catch (err) {
             console.log("Error approving request", err);
         }

@@ -26,9 +26,17 @@ import lombok.NoArgsConstructor;
 @Entity
 public class DiagnosticCenter {
 
+<<<<<<< HEAD
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+=======
+	    @Id
+	    @GeneratedValue(strategy = GenerationType.AUTO)
+	    private int id;
+
+
+>>>>>>> 9e4869d3ecee0e31c4d03784fcf57e1ebf50073e
     private String name;
     private String contactNO;
     private String address;
@@ -46,9 +54,5 @@ public class DiagnosticCenter {
     @JoinColumn(name = "centerAdmin_id")
     @JsonIgnore
     private CenterAdministrator centerAdmin;
-    
-//    @Transient
-//    @OneToOne
-//    @JoinColumn(name = "pendingDiagnosticCenterRequest_id")
-//    private PendingDiagnosticCenterRequest pendingDiagnosticCenterRequest;
+
 }

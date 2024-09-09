@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
-
+import ProfileImage from "../../Components/ProfileImage";
 import "./welcome.css"
 import div2img from "../../Components/Images/welcome_changes.avif"
 import div2img2 from "../../Components/Images/welcome_main.jpg"
@@ -27,7 +27,7 @@ const Welcome = () => {
       <h1>Health-Care Appointment</h1>
       <div>
         {!username?<Button href="/login" className="welcome_navbtn">Login</Button>
-        :<div> <h3 className="cursor-pointer" onClick={()=>{navigate("/dashboard")}}>{username} </h3>  <Button onClick={logouts} className="welcome_navbtn">Logout</Button></div> 
+        :<div onClick={()=>navigate('/dashboard')} className="mt-3 cursor-pointer"> <ProfileImage  name={username}/><p className="-mt-2">{username}</p></div> 
         }
     
         <Button className="welcome_navbtn"> Know Us</Button>

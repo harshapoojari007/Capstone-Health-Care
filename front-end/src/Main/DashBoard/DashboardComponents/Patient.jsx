@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Alert, Table, Dropdown } from 'react-bootstrap';
 import Axios from '../../../configurations/Axios';
-
+import { useUser } from '../../../UserContext';
 const Patient = () => {
   const [patients, setPatients] = useState([]);
   const [showAddPatientModal, setShowAddPatientModal] = useState(false);
@@ -10,6 +10,7 @@ const Patient = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [showAlert, setShowAlert] = useState({ show: false, message: '', variant: '' });
+  const {role,username}=useUser()
   const [newPatient, setNewPatient] = useState({
     name: '',
     phoneNo: '',
@@ -29,8 +30,14 @@ const Patient = () => {
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const response = await Axios.get('/patients');
-        setPatients(response.data.data);
+        if(role==='USER'){
+          const response = await Axios.get(`/patient/username/${username}`);
+          setPatients(response.data.data);
+        }else{
+          const response = await Axios.get('/patients');
+          setPatients(response.data.data);
+        }
+        
       } catch (error) {
         console.error('Error fetching patients:', error);
       }

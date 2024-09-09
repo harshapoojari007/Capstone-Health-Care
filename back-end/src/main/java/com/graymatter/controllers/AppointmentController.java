@@ -82,7 +82,7 @@ public class AppointmentController {
 	
 	@GetMapping("/appointment/userId/{id}")
 	public ResponseEntity<?> getAllAppointmentOfUser(@PathVariable("id") int id){
-		return service.getAllAppointments();
+		return service.getAllAppointmentsOfUser(id);
 
 	}
 	

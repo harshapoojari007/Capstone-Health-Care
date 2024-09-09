@@ -59,7 +59,7 @@ public class CenterAdministatorDao {
 
 	public CenterAdministrator getCenterAdministratorByUserId(int userId) {
 		// TODO Auto-generated method stub
-		return repo.findByUserId(userId);
+		return repo.findByUserId(userId);	
 	}
 	}
 

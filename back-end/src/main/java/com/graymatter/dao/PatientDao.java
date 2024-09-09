@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Repository;
 
+import com.graymatter.entities.Appointment;
 import com.graymatter.entities.Patient;
 import com.graymatter.entities.TestResult;
 import com.graymatter.exceptions.IdNotFoundException;
@@ -20,6 +21,9 @@ public class PatientDao {
 	
 	@Autowired
 	TestResultRepository testResultRepo;
+	
+	@Autowired
+	AppointmentDao dao;
 
 	public List<TestResult> getAllTestResults() {
 		return testResultRepo.findAll();
@@ -54,6 +58,13 @@ public class PatientDao {
 
 	public Patient deletePatientById(int id) throws IdNotFoundException {
 		Patient p= patientRepo.findById(id).orElseThrow(()->new IdNotFoundException("patient id: "+id+" is not present"));
+	    List<Appointment> appointments = p.getAppointments();
+
+	        // Delete each appointment by ID
+	        for (Appointment appointment : appointments) {
+	           dao.deleteAppointmentById(appointment.getId());
+	        }
+
 		patientRepo.deleteById(id);
 		return p;
 	}
