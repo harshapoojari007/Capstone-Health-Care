@@ -8,7 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import com.graymatter.entities.PendingDiagnosticCenterRequest;
 import com.graymatter.exceptions.IdNotFoundException;
+import com.graymatter.exceptions.UserOrEmailAlreadyPresent;
 import com.graymatter.repositories.PendingDiagnosticCenterRequestRepository;
+import com.graymatter.repositories.UserRepository;
 
 @Repository
 public class PendingDiagnosticCenterRequestDao {
@@ -16,8 +18,23 @@ public class PendingDiagnosticCenterRequestDao {
 	@Autowired
 	PendingDiagnosticCenterRequestRepository repo;
 	
+   @Autowired
+   UserRepository userRepository;
 	
-	public PendingDiagnosticCenterRequest requestNewDiagnosticCenter(PendingDiagnosticCenterRequest request) {
+	
+	public PendingDiagnosticCenterRequest requestNewDiagnosticCenter(PendingDiagnosticCenterRequest request) throws UserOrEmailAlreadyPresent {
+		if (userRepository.existsByUsername(request.getUsername())) {
+            throw new UserOrEmailAlreadyPresent("Username is already taken");
+        }
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new UserOrEmailAlreadyPresent("Email is already in use");
+        }
+        if (repo.existsByUsername(request.getUsername())) {
+            throw new UserOrEmailAlreadyPresent("Username is already taken");
+        }
+        if (repo.existsByEmail(request.getEmail())) {
+            throw new UserOrEmailAlreadyPresent("Email is already in use");
+        }
         return repo.save(request);
     }
 

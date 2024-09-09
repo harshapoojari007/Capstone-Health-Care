@@ -47,7 +47,7 @@ public class PatientController {
 		return service.getAllTestResult(patientUserName);
 	}
 	@GetMapping("/patient/username/{username}")
-	public ResponseEntity<?> viewPatientByUsername(@PathVariable("id") String patientUsername){
+	public ResponseEntity<?> viewPatientByUsername(@PathVariable("username") String patientUsername){
 		return service.viewPatientByUsername(patientUsername);
 	}
 	@GetMapping("/patient/mobile/{mobile}")

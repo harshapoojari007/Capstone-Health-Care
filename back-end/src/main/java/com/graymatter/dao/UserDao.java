@@ -18,8 +18,8 @@ public class UserDao {
 	@Autowired
 	UserRepository repo;
 	
-	@Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+//	@Autowired
+//    private BCryptPasswordEncoder passwordEncoder;
 
 	public User getUserById(int userId) throws IdNotFoundException {
 		return repo.findById(userId).orElseThrow(()->new IdNotFoundException("User id: "+userId+" is not present"));
@@ -33,17 +33,15 @@ public class UserDao {
 	}
 
 //
-//	public User addNewUser(User user) throws UserOrEmailAlreadyPresent {
-//		if(user.getRole()==null)
-//		user.setRole("USER");
-//		if (repo.existsByUsername(user.getUsername())) {
-//            throw new UserOrEmailAlreadyPresent("Username is already taken");
-//        }
-//        if (repo.existsByEmail(user.getEmail())) {
-//            throw new UserOrEmailAlreadyPresent("Email is already in use");
-//        }
-//	return repo.save(user);
-//	}
+	public User addNewUser(User user) throws UserOrEmailAlreadyPresent {
+		if (repo.existsByUsername(user.getUsername())) {
+            throw new UserOrEmailAlreadyPresent("Username is already taken");
+        }
+        if (repo.existsByEmail(user.getEmail())) {
+            throw new UserOrEmailAlreadyPresent("Email is already in use");
+        }
+	    return repo.save(user);
+	}
 
 	public List<User> getAllUsers() {
 		return repo.findAll();

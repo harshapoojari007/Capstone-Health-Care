@@ -15,6 +15,7 @@ import com.graymatter.dto.PendingDiagnosticCenterRequestDto;
 import com.graymatter.dto.PendingDiagnosticCenterRequestDtoMapper;
 import com.graymatter.entities.PendingDiagnosticCenterRequest;
 import com.graymatter.exceptions.IdNotFoundException;
+import com.graymatter.exceptions.UserOrEmailAlreadyPresent;
 
 @Service
 public class PendingDiagnosticCenterRequestService implements PendingDiagnosticCenterRequestServiceInterface{
@@ -27,7 +28,7 @@ public class PendingDiagnosticCenterRequestService implements PendingDiagnosticC
 	PendingDiagnosticCenterRequestDtoMapper mapper;
 	
 	@Override
-	public ResponseEntity<?> requestNewDiagnosticCenter(PendingDiagnosticCenterRequestDto request) {
+	public ResponseEntity<?> requestNewDiagnosticCenter(PendingDiagnosticCenterRequestDto request) throws UserOrEmailAlreadyPresent {
 		PendingDiagnosticCenterRequestDto newRequest=mapper.mapToPendingDiagnosticCenterRequestDto( dao.requestNewDiagnosticCenter(mapper.mapToPendingDiagnosticCenterRequest(request)));
 		Map<String, Object> map=new HashMap<>();
 		map.put("status",10);

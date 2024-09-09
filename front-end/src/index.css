@@ -98,3 +98,23 @@ code {
   background-color: #555;
   color: white;
 }
+
+.profile-image {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: #009AFE;
+  color: white;
+  font-size: 25px;
+  font-weight:600;
+  text-transform: uppercase;
+  margin-top: -12px;
+}
+
+
+ .split-background{
+  background: linear-gradient(-60deg, #202531 50%, white 50%);
+ }

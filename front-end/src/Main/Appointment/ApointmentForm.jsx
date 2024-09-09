@@ -4,9 +4,14 @@ import Axios from '../../configurations/Axios';
 import { useUser } from '../../UserContext';
 
 const AppointmentForm = () => {
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date();
+  const maxDate = new Date(today);
+  maxDate.setDate(today.getDate() + 7);
+  const todayFormatted = today.toISOString().split('T')[0];
+  const maxDateFormatted = maxDate.toISOString().split('T')[0];
+
   const { id: userId } = useUser();
-  
+
   const [formData, setFormData] = useState({
     patientName: '',
     age: '',
@@ -18,6 +23,7 @@ const AppointmentForm = () => {
     diagnosticCenter: ''
   });
   const [centersWithTests, setCentersWithTests] = useState([]);
+  const [filteredCenters, setFilteredCenters] = useState([]);
   const [selectedCenterId, setSelectedCenterId] = useState(null);
   const [selectedTests, setSelectedTests] = useState([]); // Store selected test IDs from modal
   const [showAlert, setShowAlert] = useState({ show: false, message: '', variant: '' });
@@ -25,13 +31,14 @@ const AppointmentForm = () => {
   const [isShowFields, setIsShowFields] = useState(false);
   const [patientId, setPatientId] = useState(null); // State to store patient ID
   const [showModal, setShowModal] = useState(false);
-  
+  const [isAppointmentDateSelected,setIsAppointmentDateSelected]=useState(false)
+
   useEffect(() => {
     // Fetch diagnostic centers when the component mounts
     const fetchCentersWithTests = async () => {
       try {
         const response = await Axios.get('/diagnosticcenter');
-        setCentersWithTests(response.data.data); // Update this line based on your response structure
+        setCentersWithTests(response.data.data);
       } catch (error) {
         console.error('Error fetching diagnostic centers:', error);
       }
@@ -39,25 +46,42 @@ const AppointmentForm = () => {
 
     fetchCentersWithTests();
   }, []);
-  
+
+  useEffect(() => {
+    if (formData.appointmentDate) {
+      fetchAvailableCenters(formData.appointmentDate);
+    }
+  }, [formData.appointmentDate]);
+
+  const fetchAvailableCenters = async (date) => {
+    try {
+      const response = await Axios.get(`/booking/date/${date}`);
+      const availableCenterIds = response.data;
+      const filtered = centersWithTests.filter(center => availableCenterIds.includes(center.id));
+      setFilteredCenters(filtered);
+    } catch (error) {
+      console.error('Error fetching available centers:', error);
+      setShowAlert({ show: true, message: 'Error fetching available centers.', variant: 'danger' });
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     if (type === 'checkbox') {
-      // Update selectedTests based on checkbox selection
-      console.log(checked)
       setSelectedTests(prevTests => 
         checked ? [...prevTests, value] : prevTests.filter(testId => testId !== value)
       );
     } else if (type === 'radio') {
-      // Update selectedCenterId based on radio selection
       setSelectedCenterId(value);
-      // Reset selectedTests when the center changes
       setSelectedTests([]);
     } else {
       setFormData(prevState => ({
         ...prevState,
         [name]: value
       }));
+      if (name === 'appointmentDate') {
+        setIsAppointmentDateSelected(value !== '');
+      }
     }
   };
 
@@ -65,8 +89,9 @@ const AppointmentForm = () => {
     try {
       const response = await Axios.get(`/patient/mobile/${formData.mobileNumber}`);
       const patientData = response.data.data;
-    
-      if (patientData && typeof patientData !== 'string') {
+      if(patientData && typeof patientData !== 'string' && patientData.user.id !== userId) {
+        setShowAlert({ show: true, message: 'Patient already exists with a different user. Please provide a valid mobile number.', variant: 'warning' });
+      } else if (patientData && typeof patientData !== 'string') {
         setFormData({
           ...formData,
           patientName: patientData.name || '',
@@ -148,8 +173,8 @@ const AppointmentForm = () => {
           id: testId // Send test IDs
         }))
       };
-      console.log(appointmentData)
       const response = await Axios.post('/appointment', appointmentData);
+      //await Axios.put(`/booking/slot/${appointmentData.diagnosticCenter}/date/${appointmentData.appointmentDate}`)
       if (response.status === 200) {
         setShowAlert({ show: true, message: 'Appointment booked successfully!', variant: 'success' });
         setFormData({
@@ -163,6 +188,7 @@ const AppointmentForm = () => {
           diagnosticCenter: ''
         });
         setCentersWithTests([]);
+        setFilteredCenters([]);
         setSelectedCenterId(null); // Clear selected center
         setSelectedTests([]); // Clear selected tests
         setIsNewPatient(false);
@@ -180,24 +206,23 @@ const AppointmentForm = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
-
   };
-  const handleCloseNoSelectModal=()=>{
+
+  const handleCloseNoSelectModal = () => {
     setShowModal(false);
-    setSelectedTests([])
-    setSelectedCenterId(null)
-  }
+    setSelectedTests([]);
+    setSelectedCenterId(null);
+  };
 
   const handleSelectTests = () => {
-    // Set the selected center ID and the selected test IDs
     setFormData(prevState => ({
       ...prevState,
       diagnosticCenter: selectedCenterId,
       diagnosticTests: selectedTests
     }));
     handleCloseModal();
-    setSelectedTests([])
-    setSelectedCenterId(null)
+    setSelectedTests([]);
+    setSelectedCenterId(null);
   };
 
   return (
@@ -303,7 +328,8 @@ const AppointmentForm = () => {
                 name="appointmentDate"
                 value={formData.appointmentDate}
                 onChange={handleChange}
-                min={today}
+                min={todayFormatted}
+                max={maxDateFormatted}
                 required
               />
             </Form.Group>
@@ -312,7 +338,7 @@ const AppointmentForm = () => {
 
         <Row className="mb-3">
           <Col md={4}>
-            <Button className='bg-success border-0' onClick={handleOpenModal}>
+            <Button disabled={!isAppointmentDateSelected} className='bg-success border-0' onClick={handleOpenModal}>
               Select Tests
             </Button>
           </Col>
@@ -324,7 +350,7 @@ const AppointmentForm = () => {
             <Modal.Title>Select Tests</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {centersWithTests.map(center => (
+            {filteredCenters.map(center => (
               <div key={center.id} className="mb-3">
                 <h5>{center.name}</h5>
                 <Form.Check
@@ -375,35 +401,32 @@ const AppointmentForm = () => {
                 />
               </Form.Group>
               <div>
-      {formData.diagnosticTests.map(testId => {
-        // Extract test details based on testId
-        const testDetails = centersWithTests
-          .flatMap(center => center.diagnosticTests) // Flatten the array of test arrays
-          .filter(test => test.id === testId) // Filter tests to match the testId
-          .map(test => ({
-            id: test.id, // Add id to use as a key
-            testName: test.testName,
-            testPrice: test.testPrice
-          }));
-          console.log(testDetails)
-        return (
-          <div key={testId}>
-            {testDetails.length > 0 ? (
-              <ul>
-                {testDetails.map(test => (
-                  <li key={test.id}>
-                    <p>Test Name: {test.testName}</p>
-                    <p>Test Price: ${test.testPrice}</p>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>No details found for Test ID: {testId}</p>
-            )}
-          </div>
-        );
-      })}
-    </div>
+                {formData.diagnosticTests.map(testId => {
+                  var testDetails = centersWithTests
+                    .flatMap(center => center.diagnosticTests);
+                    testDetails.map(test=>{console.log(test.id)})
+                    testDetails=testDetails.filter(test=>test.id==testId)
+                    console.log(testDetails)
+                  return (
+                    <div key={testId}>
+                      {testDetails.length > 0 ? (
+                        <ul>
+                          {testDetails.map(test => (
+                            <li key={test.id}>
+                             <p>Test Name: {test.testName}</p>
+                              <p>Test Price: {test.testPrice} Rs</p>
+                              
+                              
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <p>No details found for Test ID: {testId}</p>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </Col>
           </Row>
         )}

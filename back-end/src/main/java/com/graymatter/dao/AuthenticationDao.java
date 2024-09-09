@@ -10,24 +10,28 @@ import org.springframework.stereotype.Repository;
 import com.graymatter.dto.LoginUserDto;
 import com.graymatter.dto.RegUserDto;
 import com.graymatter.entities.User;
+import com.graymatter.exceptions.UserOrEmailAlreadyPresent;
 import com.graymatter.repositories.UserRepository;
 
 @Repository
 public class AuthenticationDao {
 	
 	@Autowired
-	private UserRepository userRepository;
+	private UserDao userDao;
+	
+	@Autowired
+	UserRepository userRepository;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	public User signUp(RegUserDto regUserDto) {
+	public User signUp(RegUserDto regUserDto) throws UserOrEmailAlreadyPresent {
 		User user = new User();
 		user.setEmail(regUserDto.getEmail());
 		user.setUsername(regUserDto.getUsername());
 		user.setPassword(passwordEncoder.encode(regUserDto.getPassword()));
 		user.setRole(regUserDto.getRole());
-		User savedUser = userRepository.save(user);
+		User savedUser = userDao.addNewUser(user);
 		
 		return savedUser;
 	}

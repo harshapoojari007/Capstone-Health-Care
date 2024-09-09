@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.graymatter.dto.PendingDiagnosticCenterRequestDto;
 import com.graymatter.exceptions.IdNotFoundException;
+import com.graymatter.exceptions.UserOrEmailAlreadyPresent;
 import com.graymatter.services.PendingDiagnosticCenterRequestService;
 
 @RestController
@@ -22,7 +23,7 @@ public class PendingDiagnosticCenterRequestController {
 	PendingDiagnosticCenterRequestService service;
 
     @PostMapping("/request")
-    public ResponseEntity<?> requestNewDiagnosticCenter(@RequestBody PendingDiagnosticCenterRequestDto request) {
+    public ResponseEntity<?> requestNewDiagnosticCenter(@RequestBody PendingDiagnosticCenterRequestDto request) throws UserOrEmailAlreadyPresent {
         return service.requestNewDiagnosticCenter(request);
     }
 

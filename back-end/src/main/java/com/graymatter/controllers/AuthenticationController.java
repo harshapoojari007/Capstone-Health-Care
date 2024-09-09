@@ -12,6 +12,7 @@ import com.graymatter.dto.LoginResponse;
 import com.graymatter.dto.LoginUserDto;
 import com.graymatter.dto.RegUserDto;
 import com.graymatter.entities.User;
+import com.graymatter.exceptions.UserOrEmailAlreadyPresent;
 import com.graymatter.services.AuthenticationService;
 import com.graymatter.services.JwtService;
 
@@ -26,7 +27,7 @@ public class AuthenticationController {
 	private AuthenticationService authService;
 	
 	@PostMapping("/signup")
-	public ResponseEntity<User> signUp(@RequestBody RegUserDto regUserDto){
+	public ResponseEntity<User> signUp(@RequestBody RegUserDto regUserDto) throws UserOrEmailAlreadyPresent{
 		User regUser = authService.signUp(regUserDto);
 		return ResponseEntity.ok(regUser);
 	}

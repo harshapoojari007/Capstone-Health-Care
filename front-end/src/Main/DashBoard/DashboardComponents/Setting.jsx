@@ -119,7 +119,7 @@ const Setting = () => {
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-semibold mb-4 text-center">{role} Settings</h2>
       <div className="bg-white p-6 rounded-lg shadow-lg max-w-lg mx-auto">
-        {role === 'USER' ?
+        {role === 'USER' || role==='CENTER_ADMIN'?
           <>
             <div className="mb-4">
               <h3 className="text-lg font-medium">Username</h3>
@@ -174,7 +174,7 @@ const Setting = () => {
         <Modal.Body>
         <>
         <div className="space-y-4">
-          {!role === 'USER' &&
+          {!role === 'ADMIN'  &&
            
             (<>
           
@@ -219,7 +219,7 @@ const Setting = () => {
                   type="text"
                   name="username"
 
-                  value={role === 'USER' ? editedDetails.username : editedDetails.user.username}
+                  value={role === 'USER' || role==='CENTER_ADMIN'? editedDetails.username : editedDetails.user.username}
                   onChange={handleUserChange}
                   className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
                 />
@@ -230,7 +230,7 @@ const Setting = () => {
                 <input
                   type="password"
                   name="password"
-                  value={role === 'USER' ? editedDetails.password : editedDetails.user.password}
+                  value={role === 'USER' || role==='CENTER_ADMIN' ? editedDetails.password : editedDetails.user.password}
                   onChange={handleUserChange}
                   className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"
                 />
@@ -241,7 +241,7 @@ const Setting = () => {
                 <input
                   type="email"
                   name="email"
-                  value={role === 'USER' ? editedDetails.email : editedDetails.user.email}
+                  value={role === 'USER'|| role==='CENTER_ADMIN' ? editedDetails.email : editedDetails.user.email}
 
                   onChange={handleUserChange}
                   className="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm"

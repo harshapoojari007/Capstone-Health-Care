@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
-import { Dropdown, DropdownButton, Button, Table, Modal, Form } from 'react-bootstrap'; 
+import { Dropdown, DropdownButton, Button, Table, Modal, Form } from 'react-bootstrap';
 import Axios from '../../../configurations/Axios';
-
+import { useUser } from '../../../UserContext';
+import { downloadAppointmentHtmlFile } from '../../../utils/downloadAppointmentHtmlFile';
 const Appointments = () => {
   const [appointmentsList, setAppointmentsList] = useState([]);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
+  const { id: userId, role } = useUser()
   const [selectedDiagnosticTest, setSelectedDiagnosticTest] = useState([]);
+  const [viewTestResultModal, setViewTestResultModal] = useState(false)
   const [formData, setFormData] = useState({
     id: '',
     patientName: '',
@@ -29,8 +32,16 @@ const Appointments = () => {
   // Fetch appointments and set the appointments list
   const fetchAppointments = async () => {
     try {
-      const response = await Axios.get('/appointments');
-      setAppointmentsList(response.data.data || []);
+      if (role === 'USER') {
+
+        const response = await Axios.get(`/appointment/userId/${userId}`)
+        setAppointmentsList(response.data.data || []);
+        console.log(response.data.data)
+      } else {
+        const response = await Axios.get('/appointments');
+        setAppointmentsList(response.data.data || []);
+      }
+
     } catch (error) {
       console.error('Error fetching appointments:', error);
     }
@@ -70,6 +81,13 @@ const Appointments = () => {
     setSelectedAppointment(appointment);
     setShowModal(true);
   };
+
+  const handleViewResult = (id) => {
+    const appointment = appointmentsList.find(app => app.id === id);
+    setSelectedAppointment(appointment);
+    setViewTestResultModal(true);
+
+  }
 
   const handleCloseModal = () => {
     setShowModal(false);
@@ -112,7 +130,7 @@ const Appointments = () => {
 
   const handleTestResultsModal = (id) => {
     const appointment = appointmentsList.find(app => app.id === id);
-    
+
     if (appointment) {
       // Assuming `appointment.testResults` contains existing test results
       const existingTestNames = new Set(appointment.testResults.map(result => result.testName));
@@ -137,11 +155,18 @@ const Appointments = () => {
     }));
   };
 
+
+  const downloadTextFile = (id) => {
+    const appointment = appointmentsList.find(a => a.id === id);
+        downloadAppointmentHtmlFile(appointment, appointment.testResults);
+  };
+
+
   const handleAddTestResult = async (testName) => {
     try {
       // Set the test name to the new test result
       const resultToAdd = { ...newTestResult, testName };
-      
+
       await Axios.post('/testresult', resultToAdd);
       alert('Test result added successfully!');
       setShowTestResultsModal(false);
@@ -170,11 +195,12 @@ const Appointments = () => {
             <th>Appointment Date</th>
             <th>Diagnostic Center</th>
             <th>Test Results</th>
-            <th>Actions</th>
+            {role === 'USER' ? <th>Status</th> : <th>Actions</th>}
+
           </tr>
         </thead>
         <tbody>
-          {appointmentsList.length === 0 ? (
+          {typeof appointmentsList === 'string' ? (
             <tr>
               <td colSpan="6" className="text-center">No appointments found</td>
             </tr>
@@ -186,16 +212,29 @@ const Appointments = () => {
                 <td>{new Date(appointment.appointmentDate).toLocaleDateString()}</td>
                 <td>{appointment.diagnosticCenter ? appointment.diagnosticCenter.name : 'N/A'}</td>
                 <td>
-                  <DropdownButton id={`dropdown-${appointment.id}`} title="Test Results">
-                    <Dropdown.Item as="button" onClick={() => handleTestResultsModal(appointment.id)}>Add Test Result</Dropdown.Item>
-                  </DropdownButton>
+                  {role === 'USER' ?
+                    (
+
+                      <Button as="button" onClick={() => handleViewResult(appointment.id)}>View Test Result</Button>
+
+                    ) :
+                    (<DropdownButton id={`dropdown-${appointment.id}`} title="Test Results">
+                      <Dropdown.Item as="button" onClick={() => handleTestResultsModal(appointment.id)}>Add Test Result</Dropdown.Item>
+                    </DropdownButton>)
+                  }
+
                 </td>
                 <td>
-                  <DropdownButton id={`dropdown-${appointment.id}`} title="Actions">
-                    <Dropdown.Item as="button" onClick={() => handleView(appointment.id)}>View Details</Dropdown.Item>
-                    <Dropdown.Item as="button" onClick={() => handleEdit(appointment.id)} className="text-warning fw-bold">Edit</Dropdown.Item>
-                    <Dropdown.Item as="button" onClick={() => handleDelete(appointment.id)} className="text-danger fw-bold">Delete</Dropdown.Item>
-                  </DropdownButton>
+                  {role === 'USER' ? (
+                    <Button as="button" onClick={() => handleView(appointment.id)}>View Details</Button>)
+                    :
+                    (<DropdownButton id={`dropdown-${appointment.id}`} title="Actions">
+                      <Dropdown.Item as="button" onClick={() => handleView(appointment.id)}>View Details</Dropdown.Item>
+                      <Dropdown.Item as="button" onClick={() => handleEdit(appointment.id)} className="text-warning fw-bold">Edit</Dropdown.Item>
+                      <Dropdown.Item as="button" onClick={() => handleDelete(appointment.id)} className="text-danger fw-bold">Delete</Dropdown.Item>
+                    </DropdownButton>)
+                  }
+
                 </td>
               </tr>
             ))
@@ -213,63 +252,85 @@ const Appointments = () => {
             <Form onSubmit={handleFormSubmit}>
               <Form.Group controlId="patientName">
                 <Form.Label>Patient Name</Form.Label>
-                <Form.Control 
-                  type="text" 
-                  name="patientName" 
-                  value={formData.patientName} 
-                  onChange={handleInputChange} 
-                  required 
+                <Form.Control
+                  type="text"
+                  name="patientName"
+                  value={formData.patientName}
+                  onChange={handleInputChange}
+                  required
                 />
               </Form.Group>
               <Form.Group controlId="mobileNumber">
                 <Form.Label>Mobile Number</Form.Label>
-                <Form.Control 
-                  type="text" 
-                  name="mobileNumber" 
-                  value={formData.mobileNumber} 
-                  onChange={handleInputChange} 
-                  required 
+                <Form.Control
+                  type="text"
+                  name="mobileNumber"
+                  value={formData.mobileNumber}
+                  onChange={handleInputChange}
+                  required
                 />
               </Form.Group>
               <Form.Group controlId="appointmentDate">
                 <Form.Label>Appointment Date</Form.Label>
-                <Form.Control 
-                  type="date" 
-                  name="appointmentDate" 
-                  value={formData.appointmentDate} 
-                  onChange={handleInputChange} 
-                  required 
+                <Form.Control
+                  type="date"
+                  name="appointmentDate"
+                  value={formData.appointmentDate}
+                  onChange={handleInputChange}
+                  required
                 />
               </Form.Group>
               <Form.Group controlId="diagnosticTests">
                 <Form.Label>Diagnostic Tests (comma-separated)</Form.Label>
-                <Form.Control 
-                  type="text" 
-                  name="diagnosticTests" 
-                  value={formData.diagnosticTests.join(', ')} 
-                  onChange={e => setFormData({ ...formData, diagnosticTests: e.target.value.split(',').map(test => test.trim()) })} 
+                <Form.Control
+                  type="text"
+                  name="diagnosticTests"
+                  value={formData.diagnosticTests.join(', ')}
+                  onChange={e => setFormData({ ...formData, diagnosticTests: e.target.value.split(',').map(test => test.trim()) })}
                 />
               </Form.Group>
               <Form.Group controlId="diagnosticCenter">
                 <Form.Label>Diagnostic Center Name</Form.Label>
-                <Form.Control 
-                  type="text" 
-                  name="diagnosticCenter" 
-                  value={formData.diagnosticCenter.name || ''} 
-                  onChange={e => setFormData({ ...formData, diagnosticCenter: { name: e.target.value } })} 
+                <Form.Control
+                  type="text"
+                  name="diagnosticCenter"
+                  value={formData.diagnosticCenter.name || ''}
+                  onChange={e => setFormData({ ...formData, diagnosticCenter: { name: e.target.value } })}
                 />
               </Form.Group>
               <Button variant="primary" type="submit">
                 {isEditing ? 'Update Appointment' : 'Add Appointment'}
               </Button>
             </Form>
-          ) : (
+          ) : (selectedAppointment &&
             <div>
-              <p><strong>Patient Name:</strong> {formData.patientName}</p>
-              <p><strong>Mobile Number:</strong> {formData.mobileNumber}</p>
-              <p><strong>Appointment Date:</strong> {formData.appointmentDate}</p>
-              <p><strong>Diagnostic Center:</strong> {formData.diagnosticCenter.name}</p>
-              <p><strong>Diagnostic Tests:</strong> {formData.diagnosticTests.join(', ')}</p>
+              {console.log(selectedAppointment)}
+              <p><strong>Patient Name:</strong> {selectedAppointment.patient.name}</p>
+              <p><strong>Mobile Number:</strong> {selectedAppointment.patient.phoneNo}</p>
+              <p><strong>Appointment Date:</strong>{new Date(selectedAppointment.appointmentDate).toLocaleDateString()}</p>
+              <p><strong>Diagnostic Center:</strong> {selectedAppointment.diagnosticCenter.name}</p>
+
+              <div>
+                <p><strong>Diagnostic Tests:</strong></p>
+                <table border="1" cellPadding="10" cellSpacing="0" style={{ width: '100%', borderCollapse: 'collapse' }}>
+                  <thead>
+                    <tr>
+                      <th>Test Name</th>
+                      <th>Test Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {(selectedAppointment.diagnosticTests || selectedAppointment.diagnosticTests.length !== 0) && selectedAppointment.diagnosticTests.map(test => (
+                      <tr key={test.id}>
+                        <td>{test.testName}</td>
+                        <td>{test.testPrice} Rs</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {(selectedAppointment.diagnosticTests || selectedAppointment.diagnosticTests.length !== 0) &&
+                <Button variant='primary' onClick={()=>{downloadTextFile(selectedAppointment.id)}}>Print Invice</Button>    }
             </div>
           )}
         </Modal.Body>
@@ -301,26 +362,26 @@ const Appointments = () => {
                 <tr key={index}>
                   <td>{test.testName}</td>
                   <td>
-                    <Form.Control 
-                      type="text" 
-                      name="testReading" 
+                    <Form.Control
+                      type="text"
+                      name="testReading"
                       value={newTestResult.testReading}
                       onChange={e => setNewTestResult(prev => ({ ...prev, testReading: e.target.value }))}
-                      required 
+                      required
                     />
                   </td>
                   <td>
-                    <Form.Control 
-                      type="text" 
-                      name="testCondition" 
+                    <Form.Control
+                      type="text"
+                      name="testCondition"
                       value={newTestResult.testCondition}
                       onChange={e => setNewTestResult(prev => ({ ...prev, testCondition: e.target.value }))}
-                      required 
+                      required
                     />
                   </td>
                   <td>
-                    <Button 
-                      variant="primary" 
+                    <Button
+                      variant="primary"
                       onClick={() => handleAddTestResult(test.testName)}
                     >
                       Add Test Result
@@ -337,6 +398,43 @@ const Appointments = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+
+
+      {/* Modal to View test result */}
+      <Modal show={viewTestResultModal} onHide={() => setViewTestResultModal(false)} size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Test Result</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Table striped bordered hover>
+            <thead>
+              <tr>
+                <th>Test Name</th>
+                <th>Test Reading</th>
+                <th>Test Condition</th>
+              </tr>
+            </thead>
+            <tbody>
+              {selectedAppointment && (selectedAppointment.testResults.length === 0 ?
+                (<td colSpan="6" className="text-center">Test Results are Pending</td>
+                )
+                : selectedAppointment.testResults.map(testResult => (
+                  <tr key={testResult.id}>
+                    <td>{testResult.testName}</td>
+                    <td>{testResult.testReading}</td>
+                    <td>{testResult.testCondition}</td>
+                  </tr>
+                )))}
+            </tbody>
+          </Table>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setViewTestResultModal(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
     </div>
   );
 };

@@ -2,7 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Axios from '../../configurations/Axios';
 import logo from "../../images/MainLogo.png";
- 
+import tablet from "../../images/tablet.png";
+import plus from "../../images/plus.png"
+import symbol from "../../images/symbol.png"
+import sethescope from "../../images/sethescope.png"
 // Validation functions
 const validateUsername = (username) => /^[a-zA-Z0-9_]{3,15}$/.test(username);
 const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -35,14 +38,14 @@ const Signup = () => {
     }
  
     try {
-<<<<<<< HEAD
       if(role==='CENTERADMIN') {
 
         await Axios.post('/request',{ username, password, email, approved:"false" })
+        alert("Request has been sent to Admin, Please wait")
 
       }
       else{
-        await Axios.post('/user', { username, password, email, role });
+        await Axios.post('/auth/signup', { username, password, email, role });
         navigate('/login'); 
         alert("Successfully Registered")
       }
@@ -50,13 +53,9 @@ const Signup = () => {
         
       
       
-=======
-      await Axios.post('/auth/signup', { username, password, email, role });
-      navigate('/login'); 
-      alert("Successfully Registered");
->>>>>>> b27d1802e9ef3437590b2ab13e4bc424b7086e2c
     } catch (err) {
-      setError('Failed to sign up. Please try again.');
+      setError(err.response.data);
+      
       console.log(err);
     }
   };
@@ -137,17 +136,29 @@ const Signup = () => {
           <button type="submit" className="bg-orange-500 w-full">Sign up</button>
         </form>
       </div>
-      <div className='auth-divs absolute w-[350px] h-[400px] -top-24 right-[20%] rotate-6'>
-        <div className='bg-[#FFCC00]'></div>
+      <div className='auth-divs absolute w-[350px] h-[400px] -top-24 right-[22%] rotate-6'>
+        <div className='bg-[#FFCC00]'>
+        <img src={sethescope} className='w-[300px] h-[250px] position-relative left-2 top-24 opacity-5 ' alt="" />
+
+        </div>
       </div>
-      <div className='auth-divs absolute w-[250px] h-[500px] -top-12 -right-[6%] rotate-3'>
-        <div className='bg-[#FF3366]'></div>
+      <div className='auth-divs absolute w-[300px] h-[500px] -top-12 -right-[6%] rotate-3'>
+        <div className='bg-[#FF3366]'>
+        <img src={symbol} className='opacity-5 w-[250px] h-[440px] rounded-[40px] position-relative left-[px] top-8' alt="" />
+
+        </div>
       </div>
       <div className='auth-divs absolute w-[350px] h-[400px] -bottom-[20%] right-[20%] -rotate-6'>
-        <div className='bg-[#22CB88]'></div>
+        <div className='bg-[#22CB88]'>
+        <img src={plus} className='opacity-10 rounded-[50px]' alt="" />
+
+        </div>
       </div>
-      <div className='auth-divs absolute w-[300px] h-[400px] -bottom-72 -right-36'>
-        <div className='bg-[#009AFE]'></div>
+      <div className='auth-divs absolute w-[350px] h-[400px] -bottom-72 -right-36'>
+        <div className='bg-[#009AFE]'>
+        <img src={tablet} className='opacity-10 w-[170px] h-[100px]  rounded-3xl position-relative left-1 top-1' alt="" />
+
+        </div>
       </div>
     </div>
   );

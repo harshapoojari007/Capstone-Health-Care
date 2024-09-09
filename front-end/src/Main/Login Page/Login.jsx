@@ -2,6 +2,10 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import logo from "../../images/MainLogo.png";
+import tablet from "../../images/tablet.png";
+import plus from "../../images/plus.png"
+import symbol from "../../images/symbol.png"
+import sethescope from "../../images/sethescope.png"
 import { useUser } from '../../UserContext';
 const Login = () => {
   const navigate = useNavigate();
@@ -14,19 +18,15 @@ const Login = () => {
     setError('')
 
     try {
-<<<<<<< HEAD
-      await axios.post('http://localhost:8089/api/v1/user/login', { username, password});
-      navigate('/'); 
-=======
+
     const response=await axios.post('http://localhost:8089/api/v1/auth/login', { email, password});
     console.log(response.data)
     const loggedUser=response.data.user
     login(loggedUser)
       navigate('/'); // Redirect to login after successful signup
       alert("Successfully logged in");
->>>>>>> b27d1802e9ef3437590b2ab13e4bc424b7086e2c
     } catch (err) {
-      setError('Failed to login in. Please try again.');
+      setError("Invalid Credentials");
     }
   };
   return (
@@ -69,22 +69,22 @@ const Login = () => {
       </div>
       <div className='auth-divs absolute w-[350px] h-[400px]  -top-24 left-[20%] -rotate-6'>
         <div className='bg-[#FFCC00]'>
-
+                <img src={sethescope} className='w-[400px] h-[250px] position-relative top-24 opacity-5 ' alt="" />
         </div>
       </div>
-      <div className='  auth-divs absolute w-[250px] h-[500px]  -top-12 -left-[6%] -rotate-3'>
+      <div className='  auth-divs absolute w-[260px] h-[500px]  -top-12 -left-[6%] -rotate-3'>
         <div className='bg-[#FF3366]'>
-
+        <img src={symbol} className='opacity-5 w-[250px] h-[440px] rounded-[40px] position-relative left-[px] top-8' alt="" />
         </div>
       </div>
       <div className='auth-divs absolute w-[350px] h-[400px]  -bottom-[20%] left-[20%] rotate-6'>
         <div className=' bg-[#22CB88]'>
-
+        <img src={plus} className='opacity-5 rounded-[50px]' alt="" />
         </div>
       </div>
       <div className='auth-divs absolute w-[350px] h-[400px]  -bottom-72 -left-36' >
         <div className=' bg-[#009AFE]'>
-
+        <img src={tablet} className='opacity-5 w-[170px] h-[100px]  rounded-3xl position-relative -right-36 top-1' alt="" />
         </div>
       </div>
     </div>
