@@ -134,6 +134,22 @@ public class DiagnosticTestService implements DiagnosticTestServiceInterface{
 			
 		}
 	}
+
+	public ResponseEntity<?> getTestsOfCenter(int id) {
+		// TODO Auto-generated method stub
+		List<DiagnosticTestDto> tests= dao.getTestsOfCenter(id).stream().map((test)->mapper.mapToDiagnosticTestDto(test)).collect(Collectors.toList());		Map<String, Object> map=new HashMap<>();
+		if(!tests.isEmpty()) {
+			map.put("status",10);
+			map.put("data", tests);
+			return new ResponseEntity<>(map,HttpStatus.OK);
+			
+		}else {
+			map.put("status",20);
+			map.put("data", "No Tests to display");
+			return new ResponseEntity<>(map,HttpStatus.ACCEPTED);
+			
+		}
+	}
 	
 
 }

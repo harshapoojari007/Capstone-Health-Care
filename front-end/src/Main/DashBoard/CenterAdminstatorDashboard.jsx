@@ -2,30 +2,30 @@
 import React, { useEffect, useState } from 'react'
 import Axios from '../../configurations/Axios';
 import { Card, Row, Col } from 'react-bootstrap';
+import { useUser } from '../../UserContext';
 const  CenterAdminstatorDashboard = () => {
+  const {center_id,id:userId,centerAdd}=useUser();
   const [appointments, setAppointments] = useState(0);
-  const [diagnosticCenters, setDiagnosticCenters] = useState(0)
+  const [diagnosticCenters, setDiagnosticCenters] = useState(1)
   const [diagnosticTests, setDiagnosticTests] = useState(0)
   const [patients, setPatients] = useState(0)
-  const [users, setUsers] = useState(0)
-  const [testresults, setTestResults] = useState(0)
+  
 
   useEffect(() => {
     const fetchAllDetails = async () => {
       try {
-        const Aresponse = await Axios.get('/appointments');
-        const DCResponse = await Axios.get('/diagnosticcenter')
-        const DTResponse = await Axios.get('/diagnostictest')
-        const PResponse = await Axios.get('/patients')
-        const UResponse = await Axios.get('/user')
-        const TResponse = await Axios.get('/testresults')
+        const response = await Axios.get(`/centerAdministrator/user/${userId}`);
+          const centersData = response.data.data.diagnosticCenter;
+        {centersData && typeof centersData!=='string' && centerAdd(centersData.id)}
+        const Aresponse = await Axios.get(`/appointment/center/${center_id}`);
+        const DTResponse = await Axios.get(`/diagnostictest/center/${center_id}`)
         console.log( Aresponse.data.data.length + " length")
         setAppointments(Aresponse.data.data &&Aresponse.data.data.length)
-        setDiagnosticCenters(DCResponse.data.data && DCResponse.data.data.length)
         setDiagnosticTests(DTResponse.data.data && DTResponse.data.data.length)
-        setPatients(PResponse.data.data && PResponse.data.data.length)
-        setTestResults(TResponse.data.data && TResponse.data.data.length)
-        setUsers(UResponse.data.data && UResponse.data.data.length)
+        const appointments=Aresponse.data.data;
+        const patients=appointments.map(appointment=>appointment.patient)
+        setPatients(patients.length)
+        
       } catch (error) {
         console.log("Error in fetching details", error)
       }
@@ -45,12 +45,10 @@ const  CenterAdminstatorDashboard = () => {
     'linear-gradient(to right, #FC413F, #F7525B, #F97478)' 
   ];
   const cardData = [
-    { id: 1, title: 'Appoiments', description: `${appointments}`, bgColor: gradients[2], symbol: <i class="fa-regular fa-calendar-check mr-4"></i> },
+    { id: 1, title: 'Appointments', description: `${appointments}`, bgColor: gradients[2], symbol: <i class="fa-regular fa-calendar-check mr-4"></i> },
     { id: 2, title: 'Diagnostic Centers', description: `${diagnosticCenters}`, bgColor:  gradients[3], symbol: <i class="fa-regular fa-hospital mr-4"></i> },
     { id: 3, title: 'Diagnostic Tests', description: `${diagnosticTests}`, bgColor:  gradients[0], symbol: <i class="fa-solid fa-flask-vial mr-4"></i> },
     { id: 4, title: 'Patients', description: `${patients}`, bgColor:  gradients[1], symbol: <i class="fa-solid fa-bed"></i> },
-    { id: 5, title: 'Test Results', description: `${testresults}`, bgColor:  gradients[4], symbol: <i class="fa-solid fa-square-poll-vertical mr-4"></i> },
-    { id: 6, title: 'Users', description: `${users}`, bgColor:  gradients[5], symbol: <i class="fa-solid fa-user mr-4"></i> },
   ];
   return (
     <div className="content-area mt-4 ">

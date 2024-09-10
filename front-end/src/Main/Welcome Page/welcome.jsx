@@ -30,15 +30,15 @@ const Welcome = () => {
         :<div onClick={()=>navigate('/dashboard')} className="mt-3 cursor-pointer"> <ProfileImage  name={username}/><p className="-mt-2">{username}</p></div> 
         }
     
-        <Button className="welcome_navbtn"> Know Us</Button>
+        <Button href="/about" className="welcome_navbtn"> Know Us</Button>
       </div>
     </div>
     <div className="welcome_one">
       <h1>Get Your Appointment, with just few steps</h1>
       <p>With the help of our service, you can book your appointments within no time and effortlessly!</p>
       <div className="welcome_signup_btn">
-        <Button href="/signup" className="welcome_signupBtn">Signup for free</Button>
-      </div>
+      {username ? <h3 className="text-black font-bold shadow-md">WELCOME {username}</h3> :<Button href="/signup" className="welcome_signupBtn">Signup for free</Button>}  
+          </div>
     </div>
     <div className="welcome_three">
       <div className="welcome_three_left">

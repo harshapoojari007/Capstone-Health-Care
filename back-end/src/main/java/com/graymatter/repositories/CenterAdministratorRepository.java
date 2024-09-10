@@ -1,5 +1,7 @@
 package com.graymatter.repositories;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.graymatter.entities.CenterAdministrator;
@@ -7,6 +9,6 @@ import com.graymatter.entities.CenterAdministrator;
 public interface CenterAdministratorRepository extends JpaRepository<CenterAdministrator,Integer>{
 
 	
-	CenterAdministrator findByUserId(int userId);
+	Optional<CenterAdministrator> findByUserId(int userId);
 
 }

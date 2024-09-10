@@ -37,7 +37,6 @@ const Sidebar = ({ setSelectedView }) => {
     'appointments',
     'diagnosticCenters',
     'diagnosticTests',
-    'testResults',
     'patients',
     'settings'
   ];
@@ -53,7 +52,7 @@ const Sidebar = ({ setSelectedView }) => {
 
   return (
     <nav id="sidebar" className="col-md-3 col-lg-2 d-md-block bg-[#202531] text-white sidebar p-4">
-      <div className='flex gap-2 justify-center items-start -mt-4 pb-[3px] -ml-8 '>
+      <div onClick={()=>navigate('/')} className='cursor-pointer flex gap-2 justify-center items-start -mt-4 pb-[3px] -ml-8 '>
       <img src={logo} className='w-10' alt="Logo" />
       <strong><p className='mt-2'>AAROG PLUS</p></strong>
       </div>
@@ -61,7 +60,7 @@ const Sidebar = ({ setSelectedView }) => {
         <hr className='-mt-[0px]'/>
         <ul className="nav flex-column">
           {linksToShow.map(view => (
-            <li className={`nav-item flex -ml-4 -mr-4 mb-3 ${view==='dashboard' ? '-mt-4':''}`} key={view}>
+            <li className={`nav-item flex -ml-4 -mr-6 mb-3 ${view==='dashboard' ? '-mt-4':''}`} key={view}>
               <a
                 className={`nav-link shadow-sm  ${selectedView === view ? 'active' : ''}`}
                 href="#"
@@ -69,9 +68,9 @@ const Sidebar = ({ setSelectedView }) => {
               >
                 {view==='dashboard' ?<i class="fa-solid fa-gauge mr-4"></i>:
                  view==='appointments'?<i class="fa-regular fa-calendar-check mr-4"></i>:
-                 view==='diagnosticCenters'?<i class="fa-regular fa-hospital mr-4"></i> :
+                 view==='diagnosticCenters'?<i class="fa-regular fa-hospital mr-2"></i> :
                  view==='diagnosticTests'? <i class="fa-solid fa-flask-vial mr-4"></i>:
-                 view==='centerAdministator'? <i class="fa-solid fa-user-tie mr-4"></i>:
+                 view==='centerAdministator'? <i class="fa-solid fa-user-tie mr-2"></i>:
                  view==='testResults'? <i class="fa-solid fa-square-poll-vertical mr-4"></i>:
                  view==='patients'?<i class="fa-solid fa-bed mr-4"></i>
                  :<i class="fa-solid fa-gear mr-4"></i>

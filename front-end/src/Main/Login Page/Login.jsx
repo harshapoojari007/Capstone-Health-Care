@@ -18,21 +18,17 @@ const Login = () => {
     setError('')
 
     try {
-<<<<<<< HEAD
+
+      localStorage.removeItem('token');
      const response= await axios.post('http://localhost:8089/api/v1/auth/login', { email, password});
       const loggedUser=response.data.user
+      const role=loggedUser.role;
       login(loggedUser)
-        navigate('/'); // Redirect to login after successful signup
+      localStorage.setItem('token',response.data.token)
+      console.log(localStorage.getItem('token'))
+    {role==='USER'? navigate('/home'):navigate('/dashboard')}
         alert("Successfully logged in");
-=======
 
-    const response=await axios.post('http://localhost:8089/api/v1/auth/login', { email, password});
-    console.log(response.data)
-    const loggedUser=response.data.user
-    login(loggedUser)
-      navigate('/'); // Redirect to login after successful signup
-      alert("Successfully logged in");
->>>>>>> 9e4869d3ecee0e31c4d03784fcf57e1ebf50073e
     } catch (err) {
       setError("Invalid Credentials");
     }

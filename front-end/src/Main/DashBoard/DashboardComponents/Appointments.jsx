@@ -6,9 +6,10 @@ import { downloadAppointmentHtmlFile } from '../../../utils/downloadAppointmentH
 const Appointments = () => {
   const [appointmentsList, setAppointmentsList] = useState([]);
   const [selectedAppointment, setSelectedAppointment] = useState(null);
+  const [selectedTestName, setSelectedTestName] = useState('')
   const [showModal, setShowModal] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const { id: userId, role } = useUser()
+  const { id: userId, role, center_id } = useUser()
   const [selectedDiagnosticTest, setSelectedDiagnosticTest] = useState([]);
   const [viewTestResultModal, setViewTestResultModal] = useState(false)
   const [formData, setFormData] = useState({
@@ -35,6 +36,11 @@ const Appointments = () => {
       if (role === 'USER') {
 
         const response = await Axios.get(`/appointment/userId/${userId}`)
+        setAppointmentsList(response.data.data || []);
+        console.log(response.data.data)
+      }
+      else if (role == 'CENTER_ADMIN') {
+        const response = await Axios.get(`/appointment/center/${center_id}`)
         setAppointmentsList(response.data.data || []);
         console.log(response.data.data)
       } else {
@@ -158,14 +164,18 @@ const Appointments = () => {
 
   const downloadTextFile = (id) => {
     const appointment = appointmentsList.find(a => a.id === id);
-        downloadAppointmentHtmlFile(appointment, appointment.testResults);
+    downloadAppointmentHtmlFile(appointment, appointment.testResults);
   };
+  const handleStatusForm = async (id) => {
 
+    const response = await Axios.put(`/appointment/${id}`, { approvalStatus: "SUCCESS" });
+    alert("Successfully Updated Status")
+  }
 
   const handleAddTestResult = async (testName) => {
     try {
       // Set the test name to the new test result
-      const resultToAdd = { ...newTestResult, testName };
+      const resultToAdd = { ...newTestResult,testName};
 
       await Axios.post('/testresult', resultToAdd);
       alert('Test result added successfully!');
@@ -185,7 +195,7 @@ const Appointments = () => {
   };
 
   return (
-    
+
     <div className="container mt-4">
       <h2 className="text-center mb-4">Appointments List</h2>
       <Table striped bordered hover>
@@ -193,6 +203,7 @@ const Appointments = () => {
           <tr>
             <th>Patient Name</th>
             <th>Mobile Number</th>
+            <th>Status</th>
             <th>Appointment Date</th>
             <th>Diagnostic Center</th>
             <th>Test Results</th>
@@ -201,11 +212,7 @@ const Appointments = () => {
           </tr>
         </thead>
         <tbody>
-<<<<<<< HEAD
-          { typeof appointmentsList === 'string' ? (
-=======
           {typeof appointmentsList === 'string' ? (
->>>>>>> 9e4869d3ecee0e31c4d03784fcf57e1ebf50073e
             <tr>
               <td colSpan="6" className="text-center">No appointments found</td>
             </tr>
@@ -214,6 +221,17 @@ const Appointments = () => {
               <tr key={appointment.id}>
                 <td>{appointment.patient.name || 'N/A'}</td>
                 <td>{appointment.patient.phoneNo || 'N/A'}</td>
+                <td>
+                  {role === 'USER' ? (
+                    <td>{appointment.approvalStatus || 'N/A'}</td>)
+                    :
+                    (appointment.approvalStatus === 'PENDING' ? <DropdownButton id={`dropdown-${appointment.id}`} title="PENDING">
+                      <Dropdown.Item as="button" onClick={() => handleStatusForm(appointment.id)}>SUCCESS</Dropdown.Item>
+                    </DropdownButton>
+                      : <td>{appointment.approvalStatus || 'N/A'}</td>)
+                  }
+
+                </td>
                 <td>{new Date(appointment.appointmentDate).toLocaleDateString()}</td>
                 <td>{appointment.diagnosticCenter ? appointment.diagnosticCenter.name : 'N/A'}</td>
                 <td>
@@ -235,7 +253,6 @@ const Appointments = () => {
                     :
                     (<DropdownButton id={`dropdown-${appointment.id}`} title="Actions">
                       <Dropdown.Item as="button" onClick={() => handleView(appointment.id)}>View Details</Dropdown.Item>
-                      <Dropdown.Item as="button" onClick={() => handleEdit(appointment.id)} className="text-warning fw-bold">Edit</Dropdown.Item>
                       <Dropdown.Item as="button" onClick={() => handleDelete(appointment.id)} className="text-danger fw-bold">Delete</Dropdown.Item>
                     </DropdownButton>)
                   }
@@ -335,7 +352,7 @@ const Appointments = () => {
                 </table>
               </div>
               {(selectedAppointment.diagnosticTests || selectedAppointment.diagnosticTests.length !== 0) &&
-                <Button variant='primary' onClick={()=>{downloadTextFile(selectedAppointment.id)}}>Print Invice</Button>    }
+                <Button variant='primary' onClick={() => { downloadTextFile(selectedAppointment.id) }}>Print Invice</Button>}
             </div>
           )}
         </Modal.Body>
@@ -357,21 +374,35 @@ const Appointments = () => {
             <thead>
               <tr>
                 <th>Test Name</th>
-                <th>Test Reading</th>
-                <th>Test Condition</th>
-                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
-              {selectedDiagnosticTest.map((test, index) => (
-                <tr key={index}>
-                  <td>{test.testName}</td>
+              <Form.Group controlId="testName">
+                {/* <Form.Label>Select Test</Form.Label> */}
+                <Form.Control
+                  as="select"
+                  value={selectedTestName}
+                  onChange={e => setSelectedTestName(e.target.value)}
+                >
+                  <option value="">Select a test</option>
+                  {selectedDiagnosticTest.map(test => (
+                    <option key={test.id} value={test.testName}>
+                      {test.testName}
+                    </option>
+                  ))}
+                </Form.Control>
+              </Form.Group>
+              {/* {selectedDiagnosticTest.map((test, index) => ( */}
+                <tr >
+                  {/* <td>{test.testName}</td> */}
                   <td>
                     <Form.Control
                       type="text"
                       name="testReading"
                       value={newTestResult.testReading}
                       onChange={e => setNewTestResult(prev => ({ ...prev, testReading: e.target.value }))}
+                      disabled={!selectedTestName}
+                      placeholder='Enter test Reading'
                       required
                     />
                   </td>
@@ -381,19 +412,22 @@ const Appointments = () => {
                       name="testCondition"
                       value={newTestResult.testCondition}
                       onChange={e => setNewTestResult(prev => ({ ...prev, testCondition: e.target.value }))}
+                      disabled={!selectedTestName}
+                      placeholder='Enter test Condition'
                       required
                     />
                   </td>
                   <td>
                     <Button
                       variant="primary"
-                      onClick={() => handleAddTestResult(test.testName)}
+                      onClick={() => handleAddTestResult(selectedTestName)}
+                      disabled={!selectedTestName}
                     >
                       Add Test Result
                     </Button>
                   </td>
                 </tr>
-              ))}
+              {/* ))} */}
             </tbody>
           </Table>
         </Modal.Body>
@@ -445,5 +479,3 @@ const Appointments = () => {
 };
 
 export default Appointments;
-
-

@@ -55,8 +55,7 @@ const DashBoards = () => {
             <div className='flex justify-between  py-3 pb-4 -mb-[23px] '>
                 <div className='flex gap-4'>
                 <p>Dashboard</p>
-               {role==='ADMIN'&&<p>Users</p>}
-                <p>Settings</p>
+              
                 </div>
                 <div className='flex gap-4 justify-center items-center'>
                 <ProfileImage  name={username}/>

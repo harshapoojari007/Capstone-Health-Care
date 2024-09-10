@@ -3,9 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import Axios from '../../configurations/Axios';
 import logo from "../../images/MainLogo.png";
 import tablet from "../../images/tablet.png";
-import plus from "../../images/plus.png"
-import symbol from "../../images/symbol.png"
-import sethescope from "../../images/sethescope.png"
+import plus from "../../images/plus.png";
+import symbol from "../../images/symbol.png";
+import sethescope from "../../images/sethescope.png";
+import emailjs from '@emailjs/browser';
+import "./signup.css"
+ 
 // Validation functions
 const validateUsername = (username) => /^[a-zA-Z0-9_]{3,15}$/.test(username);
 const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -20,13 +23,49 @@ const Signup = () => {
   const [role, setRole] = useState('');
   const [error, setError] = useState('');
   const [formErrors, setFormErrors] = useState({});
+  const [verify, setVerify] = useState(false);
+  const [otp, setOtp] = useState('');
+  const [generatedOtp, setGeneratedOtp] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+ 
+  const generateOTP = () => {
+    return Math.floor(1000 + Math.random() * 9000);
+  };
+ 
+  const handleVerification = async (e) => {
+    e.preventDefault();
+    const otp = generateOTP();
+    setGeneratedOtp(otp); // Save the generated OTP
+    const serviceId = "service_o53pvus";
+    const templateId = "template_oq1towg";
+    const publicKey = "qKvuzAl9rgZ3CirqF";
+    const templateParams = {
+      reply_to: email,
+      otp: otp
+    };
+ 
+    emailjs.send(serviceId, templateId, templateParams, publicKey)
+      .then(() => {
+        setIsModalOpen(true); // Open OTP modal
+      })
+      .catch((error) => console.log(error));
+  };
+ 
+  const handleOtpSubmit = (e) => {
+    e.preventDefault();
+    if (otp === generatedOtp.toString()) {
+      setVerify(true);
+      setIsModalOpen(false);
+    } else {
+      alert("OTP does not match");
+    }
+  };
  
   const handleSubmit = async (e) => {
     e.preventDefault();
     let errors = {};
     setFormErrors({}); // Clear previous errors
  
-    // Validate fields
     if (!validateUsername(username)) errors.username = 'Invalid username. Must be 3-15 alphanumeric characters or underscores.';
     if (!validateEmail(email)) errors.email = 'Invalid email address.';
     if (!validatePassword(password)) errors.password = 'Password must be at least 8 characters long, including at least one letter and one number.';
@@ -38,35 +77,20 @@ const Signup = () => {
     }
  
     try {
-      if(role==='CENTERADMIN') {
-
-        await Axios.post('/request',{ username, password, email, approved:"false" })
-        alert("Request has been sent to Admin, Please wait")
-
-      }
-      else{
+      if (role === 'CENTERADMIN') {
+        await Axios.post('/request', { username, password, email, approved: "false" });
+        alert("Request has been sent to Admin, Please wait");
+      } else {
         await Axios.post('/auth/signup', { username, password, email, role });
-<<<<<<< HEAD
-      navigate('/login'); 
-      alert("Successfully Registered");
+        navigate('/login');
+        alert("Successfully Registered");
       }
-       
-
-=======
-        navigate('/login'); 
-        alert("Successfully Registered")
-      }
-       
-        
-      
-      
->>>>>>> 9e4869d3ecee0e31c4d03784fcf57e1ebf50073e
     } catch (err) {
       setError(err.response.data);
-      
       console.log(err);
     }
   };
+ 
   return (
     <div className='flex items-center h-screen auth relative overflow-hidden'>
       <button onClick={() => navigate('/')} className='rounded-2xl px-4 py-2 bg-[#343434] text-white text-md m-2 absolute top-0'>
@@ -77,7 +101,7 @@ const Signup = () => {
         <h3 className="text-center mb-4 font-bold">Create Account</h3>
         <p className='mt-2 text-md text-center mb-4'>Already a user? <a href="/login" className='text-blue-800 font-semibold text-decoration-none'>Login</a></p>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-        <form id="signupForm" onSubmit={handleSubmit}>
+        <form id="signupForm" onSubmit={verify ? handleSubmit : handleVerification}>
           <div className="mb-3">
             <input
               type="text"
@@ -129,43 +153,61 @@ const Signup = () => {
           </div>
           <div className="mb-3">
             <select
-              className={`form-control ${formErrors.role ? 'border-red-500' : ''} text-white `}
+              className={`form-control ${formErrors.role ? 'border-red-500' : ''} text-white`}
               id="role"
               name="role"
               value={role}
               onChange={(e) => setRole(e.target.value)}
             >
-              <option value="" disabled> Select your role</option>
-              <option value="USER">User</option> 
+              <option value="" disabled>Select your role</option>
+              <option value="USER">User</option>
               <option value="CENTERADMIN">Center Admin</option>
             </select>
             {formErrors.role && <p className="text-red-500 text-sm">{formErrors.role}</p>}
           </div>
-          <button type="submit" className="bg-orange-500 w-full">Sign up</button>
+          <button type="submit" className="bg-orange-500 w-full">{verify ? "Sign up" : "Verify"}</button>
         </form>
       </div>
+     
+      {/* OTP Modal */}
+      {isModalOpen && (
+        <div className="w-[200px] z-[1000] modals-overlay">
+          <div className="modals-content">
+            <h4>Enter OTP</h4>
+            <form onSubmit={handleOtpSubmit}>
+              <input
+                type="text"
+                value={otp}
+                onChange={(e) => setOtp(e.target.value)}
+                placeholder="Enter 4-digit OTP"
+                maxLength="4"
+                required
+              />
+              <button type="submit">Submit</button>
+              <button type="button" onClick={() => setIsModalOpen(false)}>Close</button>
+            </form>
+          </div>
+        </div>
+      )}
+     
       <div className='auth-divs absolute w-[350px] h-[400px] -top-24 right-[22%] rotate-6'>
         <div className='bg-[#FFCC00]'>
-        <img src={sethescope} className='w-[300px] h-[250px] position-relative left-2 top-24 opacity-5 ' alt="" />
-
+          <img src={sethescope} className='w-[300px] h-[250px] position-relative left-2 top-24 opacity-5' alt="" />
         </div>
       </div>
       <div className='auth-divs absolute w-[300px] h-[500px] -top-12 -right-[6%] rotate-3'>
         <div className='bg-[#FF3366]'>
-        <img src={symbol} className='opacity-5 w-[250px] h-[440px] rounded-[40px] position-relative left-[px] top-8' alt="" />
-
+          <img src={symbol} className='opacity-5 w-[250px] h-[440px] rounded-[40px] position-relative left-[px] top-8' alt="" />
         </div>
       </div>
       <div className='auth-divs absolute w-[350px] h-[400px] -bottom-[20%] right-[20%] -rotate-6'>
         <div className='bg-[#22CB88]'>
-        <img src={plus} className='opacity-10 rounded-[50px]' alt="" />
-
+          <img src={plus} className='opacity-10 rounded-[50px]' alt="" />
         </div>
       </div>
       <div className='auth-divs absolute w-[350px] h-[400px] -bottom-72 -right-36'>
         <div className='bg-[#009AFE]'>
-        <img src={tablet} className='opacity-10 w-[170px] h-[100px]  rounded-3xl position-relative left-1 top-1' alt="" />
-
+          <img src={tablet} className='opacity-10 w-[170px] h-[100px] rounded-3xl position-relative left-1 top-1' alt="" />
         </div>
       </div>
     </div>

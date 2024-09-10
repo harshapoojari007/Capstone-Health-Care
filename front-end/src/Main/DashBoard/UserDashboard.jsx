@@ -49,7 +49,7 @@ const UserDashboard = () => {
     'linear-gradient(to right, #FC413F, #F7525B, #F97478)' 
   ];
   const cardData = [
-    { id: 1, title: 'Appoiments', description: `${appointments}`, bgColor: gradients[2], symbol: <i class="fa-regular fa-calendar-check mr-4"></i> },
+    { id: 1, title: 'Appointments', description: `${appointments}`, bgColor: gradients[2], symbol: <i class="fa-regular fa-calendar-check mr-4"></i> },
     { id: 2, title: 'Patients', description: `${patients}`, bgColor:  gradients[1], symbol: <i class="fa-solid fa-bed"></i> },
     { id: 3, title: 'Test Results', description: `${testresults}`, bgColor:  gradients[4], symbol: <i class="fa-solid fa-square-poll-vertical mr-4"></i> },
   ];

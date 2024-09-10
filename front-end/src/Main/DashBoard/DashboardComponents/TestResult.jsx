@@ -8,7 +8,7 @@ const TestResult = () => {
   const [testResults, setTestResults] = useState([]);
   const [selectedTest, setSelectedTest] = useState(null);
   const [showAlert, setShowAlert] = useState({ show: false, message: '', variant: '' });
-  const { id: userId, role } = useUser()
+  const { id: userId, role,center_id } = useUser()
   const [newTestResult, setNewTestResult] = useState({
     testName: '',
     testReading: '',

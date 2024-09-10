@@ -45,7 +45,7 @@ const AdminDashboard = () => {
     'linear-gradient(to right, #FC413F, #F7525B, #F97478)' 
   ];
   const cardData = [
-    { id: 1, title: 'Appoiments', description: `${appointments}`, bgColor: gradients[2], symbol: <i class="fa-regular fa-calendar-check mr-4"></i> },
+    { id: 1, title: 'Appointments', description: `${appointments}`, bgColor: gradients[2], symbol: <i class="fa-regular fa-calendar-check mr-4"></i> },
     { id: 2, title: 'Diagnostic Centers', description: `${diagnosticCenters}`, bgColor:  gradients[3], symbol: <i class="fa-regular fa-hospital mr-4"></i> },
     { id: 3, title: 'Diagnostic Tests', description: `${diagnosticTests}`, bgColor:  gradients[0], symbol: <i class="fa-solid fa-flask-vial mr-4"></i> },
     { id: 4, title: 'Patients', description: `${patients}`, bgColor:  gradients[1], symbol: <i class="fa-solid fa-bed"></i> },

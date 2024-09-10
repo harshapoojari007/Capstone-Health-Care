@@ -66,6 +66,9 @@ export const downloadAppointmentHtmlFile = (appointment, testResults) => {
                 <td>${appointment.id}</td>
             </tr>
             <tr>
+                <td>Appointment ID</td>
+                <td>SUCCESS</td>
+            <tr>
                 <td>Appointment Date</td>
                 <td>${new Date(appointment.appointmentDate).toLocaleDateString()}</td>
             </tr>

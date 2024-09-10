@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
 
 import com.graymatter.entities.User;
@@ -18,8 +19,8 @@ public class UserDao {
 	@Autowired
 	UserRepository repo;
 	
-//	@Autowired
-//    private BCryptPasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	public User getUserById(int userId) throws IdNotFoundException {
 		return repo.findById(userId).orElseThrow(()->new IdNotFoundException("User id: "+userId+" is not present"));
@@ -58,7 +59,9 @@ public class UserDao {
 	            existingUser.setUsername(user.getUsername());
 	        }
 	        if (user.getPassword() != null && !user.getPassword().isEmpty()) {
-	            existingUser.setPassword(user.getPassword());
+	        	String encodedNewPassword = passwordEncoder.encode(user.getPassword());
+				existingUser.setPassword(encodedNewPassword);
+	            
 	        }
 	        if (user.getEmail() != null && !user.getEmail().isEmpty()) {
 	            existingUser.setEmail(user.getEmail());
@@ -84,19 +87,6 @@ public class UserDao {
         return user;
     }
 	
-//	public User updatePassword(long userId, ChangePassword changePassword) {
-//		User existingUser = userRepository.findById(userId).get();
-//		
-//		if(changePassword.getNewPassword() != null && !changePassword.getNewPassword().isEmpty()) {
-//			
-//			// Validate the current password
-//	        if (!passwordEncoder.matches(changePassword.getCurrentPassword(), existingUser.getPassword())) {
-//	            throw new RuntimeException("Current password is incorrect");
-//	        }
-//	        String encodedNewPassword = passwordEncoder.encode(changePassword.getNewPassword());
-//			existingUser.setPassword(encodedNewPassword);
-//		}
-//		return userRepository.save(existingUser);
-//	}
+
 }
 

@@ -85,6 +85,11 @@ public class AppointmentController {
 		return service.getAllAppointmentsOfUser(id);
 
 	}
+	@GetMapping("/appointment/center/{center_id}")
+	public ResponseEntity<?> getAllAppointmentOfCenter(@PathVariable("center_id") int center_id) throws IdNotFoundException{
+		return service.getAllAppointmentsOfCenter(center_id);
+
+	}
 	
 	
 	

@@ -4,7 +4,7 @@ import Axios from '../../../configurations/Axios';
 import { useUser } from '../../../UserContext';
 
 const DiagnosticCenter = () => {
-  const {id:userId,role}=useUser()
+  const {id:userId,role,centerAdd,center_id}=useUser()
   const today = new Date();
   const maxDate = new Date(today);
   maxDate.setDate(today.getDate() + 7);
@@ -61,12 +61,15 @@ const DiagnosticCenter = () => {
       try {
         if(role==="CENTER_ADMIN"){
           const response = await Axios.get(`/centerAdministrator/user/${userId}`);
-          console.log(response)
           const centersData = response.data.data.diagnosticCenter;
           console.log(centersData)
+          // console.log(centersData.id)
+          {centersData && typeof centersData!=='string' && centerAdd(centersData.id)}
           const center=[]
           center.push(centersData)
           setCentersList(center);
+          console.log(center_id)
+          
         }else{
           const response = await Axios.get('/diagnosticcenter');
           const centersData = response.data.data;
@@ -75,6 +78,8 @@ const DiagnosticCenter = () => {
       
       } catch (error) {
         console.error('Error fetching diagnostic centers:', error);
+        setCentersList(error.response.data)
+        console.log(centersList)
       }
     };
 
@@ -112,6 +117,7 @@ const DiagnosticCenter = () => {
       fetchCenters();
     } catch (error) {
       console.error('Error deleting diagnostic center:', error);
+      
     }
   };
 
@@ -251,7 +257,7 @@ const DiagnosticCenter = () => {
   return (
     <div className="container mt-4">
       <h2 className="text-center mb-4">Diagnostic Centers List</h2>
-      {!centersList &&( <Button variant="primary" onClick={handleOpenAddModal} className="mb-3">Add Diagnostic Center</Button>)}
+      {(!centersList || typeof centersList==='string') &&( <Button variant="primary" onClick={handleOpenAddModal} className="mb-3">Add Diagnostic Center</Button>)}
      
       <Table striped bordered hover>
         <thead>
@@ -301,7 +307,9 @@ const DiagnosticCenter = () => {
         <Modal.Body>
           {selectedCenter ? (
             <div className="center-details">
+
               <h5>{selectedCenter.name}</h5>
+              <p><strong>Id: </strong>{selectedCenter.id}</p>
               <p><strong>Contact:</strong> {selectedCenter.contactNO}</p>
               <p><strong>Address:</strong> {selectedCenter.address}</p>
               <p><strong>Email:</strong> {selectedCenter.email}</p>

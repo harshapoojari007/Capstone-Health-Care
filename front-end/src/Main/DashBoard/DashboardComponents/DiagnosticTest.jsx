@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Dropdown, DropdownButton, Button, Modal, Form, Table } from 'react-bootstrap';
 import Axios from '../../../configurations/Axios';
+import { useUser } from '../../../UserContext';
 
 const DiagnosticTest = () => {
+  const {role,center_id}=useUser();
   const [testsList, setTestsList] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -20,9 +22,18 @@ const DiagnosticTest = () => {
   useEffect(() => {
     const fetchDiagnosticTests = async () => {
       try {
-        const response = await Axios.get('/diagnostictest');
+        if(role==='CENTER_ADMIN'){
+          
+          const response = await Axios.get(`/diagnostictest/center/${center_id}`);
+          console.log(center_id)
         const testData = response.data.data;
         setTestsList(testData || []);
+        }else{
+          const response = await Axios.get('/diagnostictest');
+          const testData = response.data.data;
+          setTestsList(testData || []);
+        }
+       
       } catch (error) {
         console.error('Error fetching tests:', error);
       }

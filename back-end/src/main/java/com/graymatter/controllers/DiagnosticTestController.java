@@ -56,4 +56,9 @@ public class DiagnosticTestController {
 	public ResponseEntity<?> getUnitsOfTest(@PathVariable("testName")String testName) {
 		return service.getUnitsOfTest(testName);
 	}
+	
+	@GetMapping("/diagnostictest/center/{id}")
+	public ResponseEntity<?> getTestsOfCenter(@PathVariable("id")int id) {
+		return service.getTestsOfCenter(id);
+	}
 }

@@ -18,12 +18,15 @@ import ApointmentForm from './Main/Appointment/ApointmentForm';
 import DashBoards from './Main/DashBoard/Dashboards';
 import InvalidUrlPage from './Components/InvalidUrlPage';
 import ContactUs from './Main/ContactUs/ContactUs';
+import AboutUs from './Main/AboutUS/AboutUs';
 function App() {
   return (<Router>
      <Routes>
        <Route element={<LayoutWithNavigation />}>
-       <Route path="/home" element={<PrivateRoute element={ <Home/>}/>}/> 
+       {/* <Route path="/home" element={<PrivateRoute element={ <Home/>}/>}/>  */}
+       <Route path='/home' element={<Home/>}/>
        <Route path="/contact" element={<ContactUs/>}/>
+       <Route path="/about" element={<AboutUs/>}/>
        <Route path="/appointmentBooking" element={<PrivateRoute element={<ApointmentForm />} />}/> 
       </Route>
 

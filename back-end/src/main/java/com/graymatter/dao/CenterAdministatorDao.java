@@ -1,6 +1,7 @@
 package com.graymatter.dao;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -57,9 +58,10 @@ public class CenterAdministatorDao {
         return repo.save(existingCenterAdministrator);
     }
 
-	public CenterAdministrator getCenterAdministratorByUserId(int userId) {
-		// TODO Auto-generated method stub
-		return repo.findByUserId(userId);	
+	public CenterAdministrator getCenterAdministratorByUserId(int userId)  {
+		
+		 return repo.findByUserId(userId).get();
+				
 	}
 	}
 

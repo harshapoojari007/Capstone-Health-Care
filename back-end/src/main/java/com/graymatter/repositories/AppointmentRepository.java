@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.graymatter.entities.Appointment;
+import com.graymatter.entities.DiagnosticCenter;
 import com.graymatter.entities.Patient;
 
 
@@ -24,6 +25,8 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Intege
 	 @Query("SELECT a FROM Appointment a WHERE a.patient.id IN " +
            "(SELECT p.id FROM Patient p WHERE p.user.id = :userId)")
     List<Appointment> findAllAppointmentsByUserId(@Param("userId") int userId);
+
+	List<Appointment> findByDiagnosticCenter(DiagnosticCenter diagnosticCenter);
 	
 	
 }

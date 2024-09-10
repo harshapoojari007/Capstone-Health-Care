@@ -7,6 +7,7 @@ export const UserProvider = ({ children }) => {
   const [email, setEmail] = useState(''); 
   const [role, setRole] = useState(''); 
   const [id,setId]=useState('');
+  const [center_id,setCenterId]=useState('')
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
 
@@ -49,8 +50,12 @@ export const UserProvider = ({ children }) => {
     setIsAuthenticated(false)
   };
 
+  const centerAdd=(center_id)=>{
+  setCenterId(center_id);
+  }
+  
   return (
-    <UserContext.Provider value={{isAuthenticated, username,email,role,id, login, logout }}>
+    <UserContext.Provider value={{isAuthenticated, username,email,role,id,center_id,centerAdd, login, logout }}>
       {children}
     </UserContext.Provider>
   );

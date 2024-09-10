@@ -1,9 +1,12 @@
 import React from "react";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "./NavLink.css"
-
+import { useUser } from "../../UserContext";
+import ProfileImage from "../ProfileImage";
 const NavLinks =props=>{
+    const {username}=useUser()
+    const navigate=useNavigate()
 return <ul className="nav-links">
 <li>
     <NavLink to="/" exact>Welcome Page</NavLink>
@@ -12,17 +15,17 @@ return <ul className="nav-links">
     <NavLink to="/home" exact>Home</NavLink>
 </li>
 <li>
-    <NavLink to="/AboutUs">About Us</NavLink>
+    <NavLink to="/about">About Us</NavLink>
 </li>
 <li>
     <NavLink to="/contact">Contact Us</NavLink>
 </li>
-<li>
-    <NavLink to="/donate">Service</NavLink>
-</li>
+
 
 <li>
-<NavLink to="/dashboard">User</NavLink>
+
+<div onClick={()=>navigate('/dashboard')} className="flex gap-2 mt-3 cursor-pointer text-white"> <ProfileImage  name={username}/><p className="-mt-2">{username}</p></div> 
+
 </li>
 
 </ul>

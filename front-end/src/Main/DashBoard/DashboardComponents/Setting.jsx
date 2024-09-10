@@ -167,18 +167,18 @@ const Setting = () => {
         </Alert>
       )}
 
-      <Modal show={showEditModal} onHide={handleCloseEditModal}>
+      <Modal show={showEditModal}  onHide={handleCloseEditModal}>
         <Modal.Header closeButton>
           <Modal.Title>Edit User Details</Modal.Title>
         </Modal.Header>
         <Modal.Body>
         <>
-        <div className="space-y-4">
-          {!role === 'ADMIN'  &&
+        <div className="space-y-4 ">
+          {role === 'ADMIN'  &&
            
             (<>
           
-                <div>
+                <div className=''>
                   <label className="block text-sm font-medium text-gray-700">Name</label>
                   <input
                     type="text"

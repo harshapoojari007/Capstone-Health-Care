@@ -26,17 +26,11 @@ import lombok.NoArgsConstructor;
 @Entity
 public class DiagnosticCenter {
 
-<<<<<<< HEAD
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-=======
-	    @Id
-	    @GeneratedValue(strategy = GenerationType.AUTO)
-	    private int id;
 
-
->>>>>>> 9e4869d3ecee0e31c4d03784fcf57e1ebf50073e
     private String name;
     private String contactNO;
     private String address;

@@ -1,6 +1,7 @@
 
 package com.graymatter.dao;
 
+import java.util.Collection;
 import java.util.List;
 
 
@@ -68,6 +69,10 @@ public class DiagnosticTestDao {
           return null;
       
     }
+	public List<DiagnosticTest> getTestsOfCenter(int id) {
+		// TODO Auto-generated method stub
+		return repo.findByCenter(id);
+	}
 
 
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Button, Form, Alert, Table, Dropdown } from 'react-bootstrap';
 import Axios from '../../../configurations/Axios';
 import { useUser } from '../../../UserContext';
+import { downloadAppointmentHtmlFile } from '../../../utils/downloadAppointmentHtmlFile';
 const Patient = () => {
   const [patients, setPatients] = useState([]);
   const [showAddPatientModal, setShowAddPatientModal] = useState(false);
@@ -10,7 +11,7 @@ const Patient = () => {
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [showAlert, setShowAlert] = useState({ show: false, message: '', variant: '' });
-  const {role,username}=useUser()
+  const {role,username,center_id}=useUser();
   const [newPatient, setNewPatient] = useState({
     name: '',
     phoneNo: '',
@@ -33,7 +34,14 @@ const Patient = () => {
         if(role==='USER'){
           const response = await Axios.get(`/patient/username/${username}`);
           setPatients(response.data.data);
-        }else{
+        }else if(role==='CENTER_ADMIN'){
+          const response = await Axios.get(`/appointment/center/${center_id}`);
+          const appointments=response.data.data;
+          const patients=appointments.map(appointment=>appointment.patient)
+          console.log(patients)
+          setPatients(patients);
+        }
+        else{
           const response = await Axios.get('/patients');
           setPatients(response.data.data);
         }
@@ -130,9 +138,11 @@ const Patient = () => {
     }
   };
 
-  const handlePrintInvoice = (appointmentId) => {
-    // Logic for printing invoice, e.g., open a new window with invoice details
-    alert(`Print invoice for appointment ID: ${appointmentId}`);
+  const handlePrintInvoice = (id) => {
+ 
+      const appointment = appointments.find(a => a.id === id);
+          downloadAppointmentHtmlFile(appointment, appointment.testResults);
+  
   };
 
   return (
@@ -173,8 +183,8 @@ const Patient = () => {
 
                     <Dropdown.Menu>
                       <Dropdown.Item onClick={() => handleShowAppointmentsModal(patient)}>View Appointments</Dropdown.Item>
-                      <Dropdown.Item onClick={() => handleUpdatePatient(patient.id)}>Update</Dropdown.Item>
-                      <Dropdown.Item onClick={() => handleDeletePatient(patient.id)}>Delete</Dropdown.Item>
+                    {role==='ADMIN' &&  <Dropdown.Item onClick={() => handleUpdatePatient(patient.id)}>Update</Dropdown.Item>}
+                    {role!=='CENTER_ADMIN'&& <Dropdown.Item onClick={() => handleDeletePatient(patient.id)}>Delete</Dropdown.Item>}
                     </Dropdown.Menu>
                   </Dropdown>
                 </td>
@@ -273,7 +283,7 @@ const Patient = () => {
               <tr>
                 <th>Date</th>
                 <th>Approval Status</th>
-                <th>Diagnostic Tests</th>
+                {/* <th>Diagnostic Tests</th> */}
                 <th>Center</th>
                 <th>Actions</th>
               </tr>
@@ -288,10 +298,11 @@ const Patient = () => {
                   <tr key={appointment.id}>
                     <td>{new Date(appointment.appointmentDate).toLocaleDateString()}</td>
                     <td>{appointment.approvalStatus}</td>
-                    <td>{appointment.diagnosticTests.map(test => test.name).join(', ')}</td>
+                    {/* <td>{appointment.diagnosticTests.map(test => test.name).join(" ")}</td> */}
                     <td>{appointment.diagnosticCenter.name}</td>
                     <td>
-                      <Button variant="link" onClick={() => handlePrintInvoice(appointment.id)}>
+                    
+                      <Button disabled={appointment.approvalStatus==='PENDING'} variant="primary" onClick={() => handlePrintInvoice(appointment.id)}>
                         Print Invoice
                       </Button>
                     </td>
