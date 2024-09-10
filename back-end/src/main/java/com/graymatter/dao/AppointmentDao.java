@@ -67,6 +67,8 @@ public class AppointmentDao{
 		if(updatedAppointment.getDiagnosticCenter()!=null)
 			existingAppoinment.setDiagnosticCenter(updatedAppointment.getDiagnosticCenter());
 		if(updatedAppointment.getDiagnosticTests()!=null)
+			existingAppoinment.setDiagnosticTests(updatedAppointment.getDiagnosticTests());
+		if(updatedAppointment.getPatient()!=null)
 			existingAppoinment.setPatient(updatedAppointment.getPatient());
 		if(updatedAppointment.getTestResults()!=null)
 			existingAppoinment.setTestResults(updatedAppointment.getTestResults());

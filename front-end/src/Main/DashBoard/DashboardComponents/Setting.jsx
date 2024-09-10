@@ -96,7 +96,7 @@ const Setting = () => {
 
   const handleUserChange = (e) => {
     const { name, value } = e.target;
-    if(role==='USER'){
+    if(role==='USER' || role==='CENTER_ADMIN'){
       setEditedDetails((prev) => ({
         ...prev,
        [name]: value 

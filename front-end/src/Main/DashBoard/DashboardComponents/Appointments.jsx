@@ -203,7 +203,7 @@ const Appointments = () => {
           <tr>
             <th>Patient Name</th>
             <th>Mobile Number</th>
-            <th>Status</th>
+            {/* <th>Status</th> */}
             <th>Appointment Date</th>
             <th>Diagnostic Center</th>
             <th>Test Results</th>
@@ -221,7 +221,7 @@ const Appointments = () => {
               <tr key={appointment.id}>
                 <td>{appointment.patient.name || 'N/A'}</td>
                 <td>{appointment.patient.phoneNo || 'N/A'}</td>
-                <td>
+                {/* <td>
                   {role === 'USER' ? (
                     <td>{appointment.approvalStatus || 'N/A'}</td>)
                     :
@@ -231,7 +231,7 @@ const Appointments = () => {
                       : <td>{appointment.approvalStatus || 'N/A'}</td>)
                   }
 
-                </td>
+                </td> */}
                 <td>{new Date(appointment.appointmentDate).toLocaleDateString()}</td>
                 <td>{appointment.diagnosticCenter ? appointment.diagnosticCenter.name : 'N/A'}</td>
                 <td>
@@ -349,6 +349,25 @@ const Appointments = () => {
                       </tr>
                     ))}
                   </tbody>
+                  <thead>
+              <tr>
+                <th>Test Name</th>
+                <th>Test Reading</th>
+                <th>Test Condition</th>
+              </tr>
+            </thead>
+            <tbody>
+              {selectedAppointment && (selectedAppointment.testResults.length === 0 ?
+                (<td colSpan="6" className="text-center">Test Results are Pending</td>
+                )
+                : selectedAppointment.testResults.map(testResult => (
+                  <tr key={testResult.id}>
+                    <td>{testResult.testName}</td>
+                    <td>{testResult.testReading}</td>
+                    <td>{testResult.testCondition}</td>
+                  </tr>
+                )))}
+            </tbody>
                 </table>
               </div>
               {(selectedAppointment.diagnosticTests || selectedAppointment.diagnosticTests.length !== 0) &&

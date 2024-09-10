@@ -27,8 +27,7 @@ public class AppointmentServiceTest {
 	
 	@Test
 	public void testAddAppointment() {
-		ApprovalStatus ap= ApprovalStatus.APPROVED;
-		List<DiagnosticCenter>=new DiagnosticCenter(1,"Naman","8322102831","324Dcross murugeshpalya","namanbhat123@gmial.com",null,)
-		Appointment a = new Appointment(1,"2024-09-03",ap,);
+		
 
+}
 }
