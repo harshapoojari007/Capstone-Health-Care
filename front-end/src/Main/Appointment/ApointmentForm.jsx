@@ -9,7 +9,7 @@ const AppointmentForm = () => {
   maxDate.setDate(today.getDate() + 7);
   const todayFormatted = today.toISOString().split('T')[0];
   const maxDateFormatted = maxDate.toISOString().split('T')[0];
-
+  const [isChecked,setIsChecked]=useState(false)
   const { id: userId } = useUser();
 
   const [formData, setFormData] = useState({
@@ -31,7 +31,8 @@ const AppointmentForm = () => {
   const [isShowFields, setIsShowFields] = useState(false);
   const [patientId, setPatientId] = useState(null); // State to store patient ID
   const [showModal, setShowModal] = useState(false);
-  const [isAppointmentDateSelected,setIsAppointmentDateSelected]=useState(false)
+  const [isAppointmentDateSelected, setIsAppointmentDateSelected] = useState(false);
+  const [mobileNumberValid, setMobileNumberValid] = useState(false); // New state for mobile number validation
 
   useEffect(() => {
     // Fetch diagnostic centers when the component mounts
@@ -66,10 +67,11 @@ const AppointmentForm = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked, } = e.target;
+     setIsChecked(checked)
     if (type === 'checkbox') {
       setSelectedTests(prevTests => 
-        checked ? [...prevTests, value] : prevTests.filter(testId => testId !== value)
+        checked ? [...prevTests, value] : prevTests.filter(testId => testId != value)
       );
     } else if (type === 'radio') {
       setSelectedCenterId(value);
@@ -82,14 +84,25 @@ const AppointmentForm = () => {
       if (name === 'appointmentDate') {
         setIsAppointmentDateSelected(value !== '');
       }
+      if (name === 'mobileNumber') {
+        const mobileNumberPattern = /^[6789][0-9]{9}$/;
+        setMobileNumberValid(mobileNumberPattern.test(value));
+      }
     }
   };
 
   const handleFetchPatient = async () => {
+    // Validate mobile number format
+    const mobileNumberPattern = /^[6789][0-9]{9}$/;
+    if (!mobileNumberPattern.test(formData.mobileNumber)) {
+      setShowAlert({ show: true, message: 'Please enter a valid 10-digit mobile number starting with 6, 7, 8, or 9.', variant: 'warning' });
+      return;
+    }
+
     try {
       const response = await Axios.get(`/patient/mobile/${formData.mobileNumber}`);
       const patientData = response.data.data;
-      if(patientData && typeof patientData !== 'string' && patientData.user.id !== userId) {
+      if (patientData && typeof patientData !== 'string' && patientData.user.id !== userId) {
         setShowAlert({ show: true, message: 'Patient already exists with a different user. Please provide a valid mobile number.', variant: 'warning' });
       } else if (patientData && typeof patientData !== 'string') {
         setFormData({
@@ -206,6 +219,8 @@ const AppointmentForm = () => {
 
   const handleCloseModal = () => {
     setShowModal(false);
+    // setSelectedCenterId(null);
+    // setSelectedTests([]);
   };
 
   const handleCloseNoSelectModal = () => {
@@ -214,21 +229,30 @@ const AppointmentForm = () => {
     setSelectedCenterId(null);
   };
 
+  const handleTestChange = (testId) => {
+    setSelectedTests((prevSelectedTests) => 
+      prevSelectedTests.includes(testId) 
+        ? prevSelectedTests.filter(id => id !== testId) 
+        : [...prevSelectedTests, testId]
+    );
+  };
+
   const handleSelectTests = () => {
     setFormData(prevState => ({
       ...prevState,
-      diagnosticCenter: selectedCenterId,
-      diagnosticTests: selectedTests
+      diagnosticTests: selectedTests,
+      diagnosticCenter: selectedCenterId
     }));
     handleCloseModal();
-    setSelectedTests([]);
-    setSelectedCenterId(null);
+    
   };
 
   return (
-    <div className="container flex justify-center mt-20 text-sm">
+
+       <div className="container flex justify-center mt-20 text-sm">
       <Form className="form-container w-2/3 border p-4 rounded shadow" onSubmit={handleSubmit}>
         <h3 className="text-center mb-2">Appointment Form</h3>
+     
         {showAlert.show && <Alert className='custom-alert' variant={showAlert.variant}>{showAlert.message}</Alert>}
         
         {/* Mobile Number Input and Find Button */}
@@ -242,12 +266,19 @@ const AppointmentForm = () => {
                 name="mobileNumber"
                 value={formData.mobileNumber}
                 onChange={handleChange}
+                pattern="[6789][0-9]{9}"
+                title="Mobile number must be 10 digits and start with 6, 7, 8, or 9."
                 required
               />
             </Form.Group>
           </Col>
           <Col md={4}>
-            <Button variant="primary" onClick={handleFetchPatient} className="w-100 mt-[28px]">
+            <Button 
+              variant="primary" 
+              onClick={handleFetchPatient} 
+              className="w-100 mt-[28px]"
+              disabled={!mobileNumberValid} // Disable button if mobile number is not valid
+            >
               Find
             </Button>
           </Col>
@@ -355,21 +386,21 @@ const AppointmentForm = () => {
                 <h5>{center.name}</h5>
                 <Form.Check
                   type="radio"
-                  id={`center-${center.id}`}
+                  id={center.id}
                   label={`Select ${center.name}`}
                   value={center.id}
-                  checked={selectedCenterId === center.id}
-                  onChange={() => setSelectedCenterId(center.id)}
+                  checked={selectedCenterId == center.id}
+                  onChange={handleChange}
                 />
-                {selectedCenterId === center.id && center.diagnosticTests.map(test => (
+                {selectedCenterId == center.id && center.diagnosticTests.map(test => (
                   <Form.Check
                     key={test.id}
                     type="checkbox"
-                    id={`test-${test.id}`}
+                    id={test.id}
                     label={`${test.testName} - ${test.testPrice}`}
                     value={test.id}
                     checked={selectedTests.includes(test.id)}
-                    onChange={handleChange}
+                    onChange={() => handleTestChange(test.id)}
                   />
                 ))}
               </div>
